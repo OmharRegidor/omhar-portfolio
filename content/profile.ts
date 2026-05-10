@@ -19,6 +19,17 @@ const data: Profile = {
   // Featured awards intentionally empty — the rotator hides at length<=1.
   // Add real awards (hackathon wins, cert honors, etc.) here when they land.
   featuredAwards: [],
+  // Optional decorative card in the right sidebar of the homepage.
+  // Edit any field; remove this block entirely to hide the card.
+  accessCard: {
+    label: "PORTFOLIO",
+    subLabel: "ACCESS CARD",
+    memberLabel: "MEMBER",
+    ownerName: "OMHAR REGIDOR",
+    role: "AGENTIC ENGINEER",
+    // QR encodes this URL when present; falls back to calendlyUrl otherwise.
+    // qrUrl: "https://github.com/OmharRegidor",
+  },
 };
 
 export const profile = ProfileSchema.parse(data);

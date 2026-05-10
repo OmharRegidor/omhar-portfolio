@@ -11,10 +11,12 @@ export const FeaturedAwardSchema = z.object({
 });
 
 export const AccessCardSchema = z.object({
-  label: z.string().min(1),
-  subLabel: z.string().min(1),
-  ownerName: z.string().min(1),
-  role: z.string().min(1),
+  label: z.string().min(1),         // top heading, e.g. "PORTFOLIO"
+  subLabel: z.string().min(1),      // top sub-heading, e.g. "ACCESS CARD"
+  memberLabel: z.string().min(1),   // membership type, e.g. "MEMBER" / "FOUNDING MEMBER"
+  ownerName: z.string().min(1),     // big name in middle
+  role: z.string().min(1),          // bottom small label, e.g. "DEVELOPER"
+  qrUrl: z.string().url().optional(),  // QR encodes this if set, else portfolio root
 });
 
 export const ProfileSchema = z.object({
