@@ -4,7 +4,7 @@ const data: Profile = {
   name: "Owner Name",                                    // EDIT ME
   role: "Software Engineer",                             // EDIT ME
   location: "City, Country",                             // EDIT ME
-  photoSrc: "/profile.jpg",                              // EDIT ME — drop file in /public/
+  photoSrc: "/next.svg",                                 // EDIT ME — drop your own photo file in /public/ then update this path
   bioParagraphs: [
     "Replace this paragraph with a real bio.",           // EDIT ME
   ],
