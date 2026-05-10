@@ -26,14 +26,14 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   try {
     raw = readFileSync(file, "utf8");
   } catch {
-    notFound();
+    return notFound();
   }
   const parsed = matter(raw);
   let fm: ReturnType<typeof MdxFrontmatterSchema.parse>;
   try {
     fm = MdxFrontmatterSchema.parse(parsed.data);
   } catch {
-    notFound();
+    return notFound();
   }
   const { content } = await compileMDX({
     source: parsed.content,

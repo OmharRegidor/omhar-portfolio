@@ -3,6 +3,9 @@ import { Redis } from "@upstash/redis";
 import { getEnv } from "./env";
 
 // Hard guard: bypass MUST NEVER be active in production. Module-load assertion.
+// Reads process.env directly (not getEnv()) because getEnv() requires Upstash creds
+// which the bypass user explicitly doesn't have. The schema in env.ts validates
+// shape; this guard validates intent.
 if (process.env.RATE_LIMIT_BYPASS === "1" && process.env.NODE_ENV === "production") {
   throw new Error("RATE_LIMIT_BYPASS=1 is forbidden in production. Refusing to start.");
 }

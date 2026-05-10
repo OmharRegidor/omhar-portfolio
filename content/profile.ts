@@ -2,7 +2,7 @@ import { ProfileSchema, type Profile } from "./schemas";
 
 const data: Profile = {
   name: "Omhar Regidor",
-  role: "Agentic Engineer || Web Developer",
+  role: "Agentic Engineer & Web Developer",
   location: "Batangas, Philippines",
   photoSrc: "/omhar/me-pro-image.JPG",
   bioParagraphs: [
@@ -16,9 +16,9 @@ const data: Profile = {
     { label: "Facebook", url: "https://www.facebook.com/christian.omhar.regidor" },
   ],
   calendlyUrl: "https://calendly.com/omharregidor/30min",
-  featuredAwards: [
-    { title: "BS Information Technology, Major in Business Analytics" },
-  ],
+  // Featured awards intentionally empty — the rotator hides at length<=1.
+  // Add real awards (hackathon wins, cert honors, etc.) here when they land.
+  featuredAwards: [],
 };
 
 export const profile = ProfileSchema.parse(data);

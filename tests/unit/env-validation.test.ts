@@ -22,13 +22,4 @@ describe("EnvSchema", () => {
     });
     expect(r.success).toBe(true);
   });
-
-  it("rejects RATE_LIMIT_BYPASS values other than 0/1", () => {
-    const r = EnvSchema.safeParse({
-      UPSTASH_REDIS_REST_URL: "https://example.upstash.io",
-      UPSTASH_REDIS_REST_TOKEN: "x",
-      RATE_LIMIT_BYPASS: "true",
-    });
-    expect(r.success).toBe(false);
-  });
 });

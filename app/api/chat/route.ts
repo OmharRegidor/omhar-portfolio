@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function GET() {
-  return err("METHOD_NOT_ALLOWED", "POST only", 405);
+  return err("METHOD_NOT_ALLOWED", "POST only", 405, { Allow: "POST" });
 }
 export const PUT = GET;
 export const DELETE = GET;

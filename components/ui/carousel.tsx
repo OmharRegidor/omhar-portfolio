@@ -13,6 +13,7 @@ interface CarouselProps {
   plugins?: CarouselPlugin;
   className?: string;
   children?: React.ReactNode;
+  "aria-label"?: string;
 }
 
 interface CarouselContextValue {
@@ -33,21 +34,24 @@ function useCarousel() {
 }
 
 const Carousel = React.forwardRef<HTMLDivElement, CarouselProps & React.HTMLAttributes<HTMLDivElement>>(
-  ({ opts, plugins, className, children, ...props }, ref) => {
-    const reduceMotion =
-      typeof window !== "undefined" &&
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
+  ({ opts, plugins, className, children, "aria-label": ariaLabel = "Carousel", ...props }, ref) => {
     const [carouselRef, api] = useEmblaCarousel(
       {
         align: "start",
         loop: false,
         ...opts,
-        ...(reduceMotion ? { duration: 0 } : {}),
       },
       plugins,
     );
+
+    React.useEffect(() => {
+      if (!api) return;
+      const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const apply = () => api.reInit({ duration: mq.matches ? 0 : undefined });
+      apply();
+      mq.addEventListener("change", apply);
+      return () => mq.removeEventListener("change", apply);
+    }, [api]);
 
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
@@ -91,6 +95,7 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps & React.HTMLAttr
           onKeyDown={onKey}
           className={cn("relative", className)}
           role="region"
+          aria-label={ariaLabel}
           aria-roledescription="carousel"
           tabIndex={0}
           {...props}

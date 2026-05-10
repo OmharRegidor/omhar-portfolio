@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with: { version: 9 }
+        with: { version: "9.15.9" }
       - uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -54,8 +54,6 @@ jobs:
         run: pnpm test
       - name: Build
         run: pnpm build
-        env:
-          RATE_LIMIT_BYPASS: "1"
       - name: Install Playwright
         run: pnpm exec playwright install --with-deps chromium
       - name: E2E

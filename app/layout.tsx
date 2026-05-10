@@ -17,8 +17,23 @@ const openRunde = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio",
-  description: "Personal portfolio.",
+  title: "Omhar Regidor — Agentic Engineer & Web Developer",
+  description:
+    "Personal portfolio of Omhar Regidor — building scalable web systems and AI-powered workflows from Batangas, Philippines.",
+  openGraph: {
+    title: "Omhar Regidor — Agentic Engineer & Web Developer",
+    description:
+      "Personal portfolio of Omhar Regidor — building scalable web systems and AI-powered workflows from Batangas, Philippines.",
+    images: ["/omhar/me-pro-image.JPG"],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Omhar Regidor — Agentic Engineer & Web Developer",
+    description:
+      "Personal portfolio of Omhar Regidor — building scalable web systems and AI-powered workflows from Batangas, Philippines.",
+    images: ["/omhar/me-pro-image.JPG"],
+  },
 };
 
 export default function RootLayout({
