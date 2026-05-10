@@ -17,6 +17,13 @@ const openRunde = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000",
+  ),
   title: "Omhar Regidor — Agentic Engineer & Web Developer",
   description:
     "Personal portfolio of Omhar Regidor — building scalable web systems and AI-powered workflows from Batangas, Philippines.",
