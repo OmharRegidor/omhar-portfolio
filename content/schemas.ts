@@ -35,13 +35,9 @@ export type Profile = z.infer<typeof ProfileSchema>;
 export const ProjectSchema = z.object({
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "lowercase letters/digits, hyphens only between segments"),
   name: z.string().min(1),
-  blurb: z.string().min(1).max(160),
+  blurb: z.string().min(1).max(220),
   url: z.string().url(),
   tags: z.array(z.string()).optional(),
-  // Set to true when a matching content/projects/<slug>.mdx file exists.
-  // Drives both generateStaticParams (which slugs to pre-render) and project
-  // card behavior (case-study badge + internal link vs external link).
-  caseStudy: z.boolean().default(false),
 });
 export const ProjectsSchema = z.array(ProjectSchema).min(1).refine(
   (arr) => new Set(arr.map((p) => p.slug)).size === arr.length,
