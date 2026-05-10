@@ -1136,17 +1136,13 @@ git commit -m "feat(theme): next-themes provider with class strategy + dark defa
 **Files:**
 - Create: `components/theme/theme-toggle.tsx`
 
-- [ ] **Step 1: Install lucide (PIN exact version — deep-import path layout shifted in newer releases)**
+- [ ] **Step 1: Install lucide and use named imports** (the deep-import path `lucide-react/dist/esm/icons/<name>` resolves at runtime in 0.469.0 but ships no `.d.ts` declarations, breaking strict TypeScript. Named imports + treeshaking via lucide-react's `sideEffects` field is the working path — verified empirically.)
 
 ```bash
 pnpm add lucide-react@0.469.0
 ```
 
-Verify the deep-import path resolves before proceeding:
-```bash
-pnpm exec node -e "console.log(require.resolve('lucide-react/dist/esm/icons/sun'))"
-```
-Expected: prints a path. If it errors, the package version's icon paths differ — adjust to named imports `import { Sun } from "lucide-react"` and rely on tree-shaking.
+Use icon imports as: `import { Sun, Moon } from "lucide-react";`
 
 - [ ] **Step 2: Create the toggle**
 
