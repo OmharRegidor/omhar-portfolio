@@ -1,16 +1,8 @@
 import Link from "next/link";
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import type { Project } from "@/content/schemas";
 
-// Server-side fs access is safe only in static-generation mode.
-// Do not add `force-dynamic` to any page importing ProjectCard without removing this check.
-function hasCaseStudy(slug: string): boolean {
-  return existsSync(join(process.cwd(), "content", "projects", `${slug}.mdx`));
-}
-
 export function ProjectCard({ project }: { project: Project }) {
-  const internal = hasCaseStudy(project.slug);
+  const internal = project.caseStudy;
   const href = internal ? `/projects/${project.slug}` : project.url;
   const external = !internal;
   return (

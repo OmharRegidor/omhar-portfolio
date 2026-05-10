@@ -3,7 +3,7 @@ import { Section } from "./section";
 import { ProjectCard } from "./project-card";
 import { FolderGit2 } from "lucide-react";
 
-export const RECENT_PROJECTS_COUNT = 4;
+export const RECENT_PROJECTS_COUNT = 5;
 
 export function RecentProjects() {
   const slice = projects.slice(0, RECENT_PROJECTS_COUNT);

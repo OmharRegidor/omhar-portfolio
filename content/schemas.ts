@@ -38,6 +38,10 @@ export const ProjectSchema = z.object({
   blurb: z.string().min(1).max(160),
   url: z.string().url(),
   tags: z.array(z.string()).optional(),
+  // Set to true when a matching content/projects/<slug>.mdx file exists.
+  // Drives both generateStaticParams (which slugs to pre-render) and project
+  // card behavior (case-study badge + internal link vs external link).
+  caseStudy: z.boolean().default(false),
 });
 export const ProjectsSchema = z.array(ProjectSchema).min(1).refine(
   (arr) => new Set(arr.map((p) => p.slug)).size === arr.length,
