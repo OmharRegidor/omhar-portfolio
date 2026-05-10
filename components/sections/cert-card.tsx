@@ -7,10 +7,10 @@ export function CertCard({ cert }: { cert: Certification }) {
       href={cert.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4 hover:bg-[hsl(var(--muted))] transition-colors"
+      className="group block rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4 hover:bg-[hsl(var(--muted))] transition-colors"
     >
-      <h3 className="text-[length:var(--text-h3)] font-semibold">{cert.name}</h3>
-      <p className="text-sm text-[hsl(var(--muted-foreground))]">{cert.issuer}</p>
+      <h3 className="text-sm font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">{cert.name}</h3>
+      <p className="text-xs text-[hsl(var(--muted-foreground))]">{cert.issuer}</p>
     </Link>
   );
 }
