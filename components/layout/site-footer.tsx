@@ -13,7 +13,7 @@ const ICONS = {
 export function SiteFooter() {
   return (
     <footer className="border-t border-[hsl(var(--border))] py-6">
-      <div className="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[hsl(var(--muted-foreground))]">
+      <div className="mx-auto max-w-4xl px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-[hsl(var(--muted-foreground))]">
         <p>© {new Date().getFullYear()} {profile.name}. All rights reserved.</p>
         {profile.socials.length > 0 && (
           <ul className="flex items-center gap-4">

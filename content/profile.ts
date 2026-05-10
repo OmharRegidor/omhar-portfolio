@@ -2,7 +2,7 @@ import { ProfileSchema, type Profile } from "./schemas";
 
 const data: Profile = {
   name: "Omhar Regidor",
-  role: "Agentic Engineer & Web Developer",
+  role: "Agentic Engineer \\ Web Developer",
   location: "Batangas, Philippines",
   photoSrc: "/omhar/me-pro-image-kb.jpg",
   bioParagraphs: [
