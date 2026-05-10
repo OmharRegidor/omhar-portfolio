@@ -19,6 +19,13 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
+  // Defensive: ensure content/projects MDX files are bundled with the
+  // /projects/[slug] route's serverless function. SSG pre-renders these
+  // at build time, but if Vercel ever invokes the route handler at
+  // runtime, fs.readFileSync needs the files in the function bundle.
+  outputFileTracingIncludes: {
+    "/projects/[slug]": ["./content/projects/**/*.mdx"],
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
