@@ -22,11 +22,11 @@ export function ProfileCard() {
             {profile.name}
             <BadgeCheck className="h-5 w-5 fill-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] shrink-0" aria-label="Verified" />
           </h1>
-          <p className="inline-flex items-center gap-1 text-[hsl(var(--muted-foreground))]">
+          <p className="inline-flex items-center gap-1 text-sm text-[hsl(var(--muted-foreground))]">
             <MapPin className="h-4 w-4" aria-hidden />
             {profile.location}
           </p>
-          <p className="text-[hsl(var(--foreground))]">{profile.role}</p>
+          <p className="text-sm text-[hsl(var(--foreground))]">{profile.role}</p>
           {profile.featuredAwards.length > 0 && (
             <FeaturedAward awards={profile.featuredAwards} />
           )}

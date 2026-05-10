@@ -28,7 +28,7 @@ export function Section({ title, isEmpty, emptyHint, emptyIcon, children }: Sect
 
   return (
     <section aria-labelledby={id}>
-      <h2 id={id} className="text-[length:var(--text-h2)] font-bold mb-4">
+      <h2 id={id} className="text-lg font-bold mb-4">
         {title}
       </h2>
       {children}

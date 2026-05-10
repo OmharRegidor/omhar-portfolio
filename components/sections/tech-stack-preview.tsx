@@ -19,12 +19,12 @@ export function TechStackPreview() {
       <div className="space-y-4">
         {entries.map(([cat, items]) => (
           <div key={cat}>
-            <h3 className="text-[length:var(--text-h3)] font-semibold mb-2">{cat}</h3>
+            <h3 className="text-sm font-semibold mb-2">{cat}</h3>
             <div className="flex flex-wrap gap-2">
               {items.slice(0, PREVIEW_CHIPS).map((t) => (
                 <span
                   key={t}
-                  className="rounded-md bg-[hsl(var(--muted))] px-2.5 py-1 text-sm"
+                  className="rounded-md bg-[hsl(var(--muted))] px-2 py-0.5 text-xs"
                 >
                   {t}
                 </span>
