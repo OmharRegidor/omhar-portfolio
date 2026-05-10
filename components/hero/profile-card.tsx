@@ -15,7 +15,7 @@ export function ProfileCard() {
           width={160}
           height={160}
           priority
-          className="rounded-xl object-cover"
+          className="rounded-xl object-cover object-top shrink-0"
         />
         <div className="flex flex-col gap-3">
           <h1 className="inline-flex items-center gap-2 text-[length:var(--text-display)] font-bold tracking-tight">
