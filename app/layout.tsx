@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     title: "Omhar Regidor — Agentic Engineer & Web Developer",
     description:
       "Personal portfolio of Omhar Regidor — building scalable web systems and AI-powered workflows from Batangas, Philippines.",
-    images: ["/omhar/me-pro-image.JPG"],
+    images: ["/omhar/me-pro-image-kb.jpg"],
     type: "website",
   },
   twitter: {
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     title: "Omhar Regidor — Agentic Engineer & Web Developer",
     description:
       "Personal portfolio of Omhar Regidor — building scalable web systems and AI-powered workflows from Batangas, Philippines.",
-    images: ["/omhar/me-pro-image.JPG"],
+    images: ["/omhar/me-pro-image-kb.jpg"],
   },
 };
 
