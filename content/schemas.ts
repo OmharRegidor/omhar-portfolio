@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const SocialSchema = z.object({
-  label: z.enum(["LinkedIn", "GitHub", "X", "Instagram"]),
+  label: z.enum(["LinkedIn", "GitHub", "X", "Instagram", "Facebook"]),
   url: z.string().url(),
 });
 

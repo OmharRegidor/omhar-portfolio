@@ -1,15 +1,25 @@
 import type { MDXComponents } from "mdx/types";
 import type { AnchorHTMLAttributes } from "react";
 
-const Anchor = (props: AnchorHTMLAttributes<HTMLAnchorElement>) => {
-  const isExternal = !!props.href && /^https?:\/\//.test(props.href);
+const Anchor = ({ href, title, children }: AnchorHTMLAttributes<HTMLAnchorElement>) => {
+  const isExternal = !!href && /^https?:\/\//.test(href);
+  if (isExternal) {
+    return (
+      <a
+        href={href}
+        title={title}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-[hsl(var(--accent))] underline"
+      >
+        {children}
+      </a>
+    );
+  }
   return (
-    <a
-      className="text-[hsl(var(--accent))] underline"
-      target={isExternal ? "_blank" : undefined}
-      rel={isExternal ? "noopener noreferrer" : undefined}
-      {...props}
-    />
+    <a href={href} title={title} className="text-[hsl(var(--accent))] underline">
+      {children}
+    </a>
   );
 };
 
