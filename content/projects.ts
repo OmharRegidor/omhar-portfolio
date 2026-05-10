@@ -6,13 +6,13 @@ const data: Project[] = [
   {
     slug: "noxa-loyalty",
     name: "Noxa Loyalty",
-    blurb: "Customer loyalty rewards and digital membership platform.",
+    blurb: "Customer loyalty rewards platform — web + iOS mobile app.",
     url: "https://www.noxaloyalty.com/",
   },
   {
     slug: "sweetblooms",
     name: "SweetBlooms",
-    blurb: "Fresh flower arrangements and bouquet delivery service.",
+    blurb: "Florist e-commerce with internal admin, staff, and manufacturing system.",
     url: "https://www.sweetblooms.ph/",
   },
   {
