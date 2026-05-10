@@ -9,7 +9,7 @@ export function CertCard({ cert }: { cert: Certification }) {
       rel="noopener noreferrer"
       className="group block rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4 hover:bg-[hsl(var(--muted))] transition-colors"
     >
-      <h3 className="text-sm font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">{cert.name}</h3>
+      <h3 className="text-sm font-semibold">{cert.name}</h3>
       <p className="text-xs text-[hsl(var(--muted-foreground))]">{cert.issuer}</p>
     </Link>
   );

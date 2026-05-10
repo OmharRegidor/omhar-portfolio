@@ -16,7 +16,7 @@ export function SpeakingCta() {
         href={profile.calendlyUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-sm text-[hsl(var(--accent))] hover:underline"
+        className="text-sm text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:underline"
       >
         Get in touch →
       </Link>

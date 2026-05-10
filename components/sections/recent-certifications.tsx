@@ -19,7 +19,7 @@ export function RecentCertifications() {
         hasMore ? (
           <Link
             href="/certifications"
-            className="text-sm text-[hsl(var(--accent))] hover:underline whitespace-nowrap"
+            className="text-sm text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))] hover:underline whitespace-nowrap"
           >
             View All →
           </Link>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { ChatLauncher } from "@/components/chat/chat-launcher";
 import "./globals.css";
@@ -53,7 +52,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={openRunde.variable}>
       <body>
         <ThemeProvider>
-          <SiteHeader />
           <main className="mx-auto max-w-4xl px-4 py-8">{children}</main>
           <SiteFooter />
           <ChatLauncher />

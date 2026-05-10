@@ -9,9 +9,7 @@ export function ProjectCard({ project }: { project: Project }) {
       rel="noopener noreferrer"
       className="group block rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4 hover:bg-[hsl(var(--muted))] transition-colors"
     >
-      <h3 className="text-sm font-semibold group-hover:text-[hsl(var(--accent))] transition-colors">
-        {project.name}
-      </h3>
+      <h3 className="text-sm font-semibold">{project.name}</h3>
       <p className="mt-1 text-xs text-[hsl(var(--muted-foreground))]">{project.blurb}</p>
       <p className="mt-2 font-mono text-xs text-[hsl(var(--muted-foreground))]">
         {new URL(project.url).host}
