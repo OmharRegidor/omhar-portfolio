@@ -1,0 +1,66 @@
+name: CI
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 9 }
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - name: Cache .next/cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: nextjs-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('app/**','components/**','content/**','lib/**') }}
+          restore-keys: nextjs-${{ hashFiles('pnpm-lock.yaml') }}-
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Typecheck
+        run: pnpm tsc --noEmit
+      - name: Placeholder scan
+        run: |
+          if grep -irE 'your-(name|bio|google|photo|handle)|owner name|software engineer|city,\s*country|replace this paragraph|edit me' content/ public/ app/ 2>/dev/null; then
+            echo "::error::Placeholder strings found in production sources"
+            exit 1
+          fi
+      - name: Anthropic key leak scan
+        run: |
+          if grep -rE 'sk-ant-[a-zA-Z0-9]{30,}' . --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.next 2>/dev/null; then
+            echo "::error::Anthropic API key pattern found in source"
+            exit 1
+          fi
+      - name: Audit
+        run: pnpm audit --audit-level=high
+      - name: Unit tests
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+        env:
+          RATE_LIMIT_BYPASS: "1"
+      - name: Install Playwright
+        run: pnpm exec playwright install --with-deps chromium
+      - name: E2E
+        run: pnpm e2e
+        env:
+          RATE_LIMIT_BYPASS: "1"
+          UPSTASH_REDIS_REST_URL: https://example.upstash.io
+          UPSTASH_REDIS_REST_TOKEN: ci-bypass-token
