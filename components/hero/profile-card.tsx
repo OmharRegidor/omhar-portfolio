@@ -18,9 +18,9 @@ export function ProfileCard() {
           className="w-40 h-40 rounded-xl object-cover object-top shrink-0"
         />
         <div className="flex flex-col gap-3">
-          <h1 className="inline-flex items-center gap-2 text-[length:var(--text-display)] font-bold tracking-tight">
+          <h1 className="inline-flex items-center gap-2 text-lg md:text-2xl font-bold tracking-tight truncate">
             {profile.name}
-            <BadgeCheck className="h-6 w-6 fill-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))]" aria-label="Verified" />
+            <BadgeCheck className="h-5 w-5 fill-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] shrink-0" aria-label="Verified" />
           </h1>
           <p className="inline-flex items-center gap-1 text-[hsl(var(--muted-foreground))]">
             <MapPin className="h-4 w-4" aria-hidden />
