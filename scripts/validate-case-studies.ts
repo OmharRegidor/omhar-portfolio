@@ -1,32 +1,30 @@
-import { readdirSync, existsSync } from "node:fs";
-import { join } from "node:path";
 import { projects } from "../content/projects";
+import { caseStudies } from "../content/case-studies";
 
-const dir = join(process.cwd(), "content", "projects");
-if (!existsSync(dir)) {
-  console.log("No content/projects/ directory; skipping case-study validation.");
-  process.exit(0);
+// Cross-check the manifest in content/case-studies.ts against
+// projects.ts caseStudy: true entries. Both must agree.
+
+const manifestSlugs = new Set(Object.keys(caseStudies));
+const projectsWithCaseStudy = projects.filter((p) => p.caseStudy).map((p) => p.slug);
+
+const missing = projectsWithCaseStudy.filter((slug) => !manifestSlugs.has(slug));
+const orphans = [...manifestSlugs].filter(
+  (slug) => !projectsWithCaseStudy.includes(slug),
+);
+
+if (missing.length > 0) {
+  console.error(
+    "Project entries marked caseStudy:true but missing from content/case-studies.ts:",
+    missing,
+  );
+  process.exit(1);
 }
-
-const files = readdirSync(dir).filter((f) => f.endsWith(".mdx"));
-const slugs = new Set(projects.map((p) => p.slug));
-
-const orphans: string[] = [];
-for (const f of files) {
-  const slug = f.replace(/\.mdx$/, "");
-  if (!slugs.has(slug)) orphans.push(f);
-}
-
 if (orphans.length > 0) {
-  console.error("MDX files without matching project slug:", orphans);
+  console.error(
+    "Entries in content/case-studies.ts without a corresponding caseStudy:true project in projects.ts:",
+    orphans,
+  );
   process.exit(1);
 }
 
-const noCaseStudy = projects
-  .map((p) => p.slug)
-  .filter((s) => !files.includes(`${s}.mdx`));
-if (noCaseStudy.length > 0) {
-  console.log(`Projects without MDX case study (cards link external): ${noCaseStudy.join(", ")}`);
-}
-
-console.log(`OK ${files.length} case study/studies validated.`);
+console.log(`OK ${manifestSlugs.size} case study/studies validated.`);
