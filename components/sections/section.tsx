@@ -8,10 +8,11 @@ interface SectionProps {
   isEmpty: boolean;
   emptyHint?: { title: string; hint: string };
   emptyIcon?: ReactNode;
+  headerRight?: ReactNode;
   children: ReactNode;
 }
 
-export function Section({ title, isEmpty, emptyHint, emptyIcon, children }: SectionProps) {
+export function Section({ title, isEmpty, emptyHint, emptyIcon, headerRight, children }: SectionProps) {
   const id = `section-${title.replace(/\s+/g, "-").toLowerCase()}`;
 
   if (isEmpty) {
@@ -28,9 +29,12 @@ export function Section({ title, isEmpty, emptyHint, emptyIcon, children }: Sect
 
   return (
     <section aria-labelledby={id}>
-      <h2 id={id} className="text-lg font-bold mb-4">
-        {title}
-      </h2>
+      <div className="flex items-center justify-between mb-4 gap-2">
+        <h2 id={id} className="text-lg font-bold">
+          {title}
+        </h2>
+        {headerRight}
+      </div>
       {children}
     </section>
   );

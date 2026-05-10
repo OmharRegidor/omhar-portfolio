@@ -7,14 +7,26 @@ export const PREVIEW_CATEGORIES = 3;
 export const PREVIEW_CHIPS = 6;
 
 export function TechStackPreview() {
-  const entries = Object.entries(techStack).slice(0, PREVIEW_CATEGORIES);
+  const allEntries = Object.entries(techStack);
+  const entries = allEntries.slice(0, PREVIEW_CATEGORIES);
   const isEmpty = entries.length === 0;
+  const hasMore = allEntries.length > PREVIEW_CATEGORIES;
   return (
     <Section
       title="Tech Stack"
       isEmpty={isEmpty}
       emptyIcon={<Code2 className="h-6 w-6" />}
       emptyHint={{ title: "Tech stack empty", hint: "Edit content/tech-stack.ts." }}
+      headerRight={
+        hasMore ? (
+          <Link
+            href="/tech-stack"
+            className="text-sm text-[hsl(var(--accent))] hover:underline whitespace-nowrap"
+          >
+            View All →
+          </Link>
+        ) : undefined
+      }
     >
       <div className="space-y-4">
         {entries.map(([cat, items]) => (
@@ -33,12 +45,6 @@ export function TechStackPreview() {
           </div>
         ))}
       </div>
-      <Link
-        href="/tech-stack"
-        className="mt-4 inline-block text-sm text-[hsl(var(--accent))] hover:underline"
-      >
-        View all →
-      </Link>
     </Section>
   );
 }
