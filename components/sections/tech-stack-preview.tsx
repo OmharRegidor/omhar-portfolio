@@ -24,7 +24,7 @@ export function TechStackPreview() {
               {items.slice(0, PREVIEW_CHIPS).map((t) => (
                 <span
                   key={t}
-                  className="rounded-md bg-[hsl(var(--muted))] px-2 py-0.5 text-xs"
+                  className="rounded-md border border-[hsl(var(--border))] px-2 py-0.5 text-xs"
                 >
                   {t}
                 </span>
