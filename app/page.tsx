@@ -25,9 +25,9 @@ export default function HomePage() {
           <PartnerCta />
           <RecommendationsCarousel />
           <MembershipBlock />
+          <Gallery />
         </aside>
       </div>
-      <Gallery />
     </div>
   );
 }
