@@ -15,11 +15,17 @@ export default function HomePage() {
     <div className="space-y-12">
       <ProfileCard />
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
-        <div className="space-y-12">
+        <div className="flex flex-col gap-12">
           <About />
           <TechStackPreview />
           <RecentProjects />
           <RecentCertifications />
+          {/* mt-auto pushes Social Links to the bottom of the column so its
+              bottom edge aligns with the Gallery's bottom edge in the right
+              column (grid items-stretch makes both columns the same height) */}
+          <div className="mt-auto">
+            <SocialLinks />
+          </div>
         </div>
         <aside className="space-y-4">
           <ExperienceTimeline />
@@ -29,7 +35,6 @@ export default function HomePage() {
           <Gallery />
         </aside>
       </div>
-      <SocialLinks />
     </div>
   );
 }
