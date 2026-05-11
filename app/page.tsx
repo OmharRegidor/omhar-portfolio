@@ -7,7 +7,7 @@ import { ExperienceTimeline } from "@/components/sections/experience-timeline";
 import { RecommendationsCarousel } from "@/components/sections/recommendations-carousel";
 import { MembershipBlock } from "@/components/sections/membership-block";
 import { PartnerCta } from "@/components/sections/partner-cta";
-import { GalleryCarousel } from "@/components/sections/gallery-carousel";
+import { Gallery } from "@/components/sections/gallery";
 
 export default function HomePage() {
   return (
@@ -27,7 +27,7 @@ export default function HomePage() {
           <MembershipBlock />
         </aside>
       </div>
-      <GalleryCarousel />
+      <Gallery />
     </div>
   );
 }
