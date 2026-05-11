@@ -8,6 +8,7 @@ import { RecommendationsCarousel } from "@/components/sections/recommendations-c
 import { MembershipBlock } from "@/components/sections/membership-block";
 import { PartnerCta } from "@/components/sections/partner-cta";
 import { Gallery } from "@/components/sections/gallery";
+import { SocialLinks } from "@/components/sections/social-links";
 
 export default function HomePage() {
   return (
@@ -28,6 +29,7 @@ export default function HomePage() {
           <Gallery />
         </aside>
       </div>
+      <SocialLinks />
     </div>
   );
 }
