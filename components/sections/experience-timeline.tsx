@@ -20,21 +20,28 @@ export function ExperienceTimeline() {
           aria-hidden
           className="pointer-events-none absolute left-[0.375rem] top-2 bottom-2 w-px bg-[hsl(var(--foreground))]/20"
         />
-        {experience.map((e, i) => (
-          <li key={i} className="group flex items-start gap-3">
-            <span
-              aria-hidden
-              className="relative z-10 mt-1 h-3 w-3 rounded-sm border border-[hsl(var(--foreground))]/40 bg-[hsl(var(--card))] shrink-0 transition-colors group-hover:bg-[hsl(var(--foreground))]"
-            />
-            <div className="flex-1 min-w-0">
-              <h3 className="text-sm font-semibold">{e.title}</h3>
-              <p className="text-xs text-[hsl(var(--muted-foreground))]">{e.org}</p>
-            </div>
-            <span className="mt-1 text-xs text-[hsl(var(--muted-foreground))] shrink-0">
-              {e.year}
-            </span>
-          </li>
-        ))}
+        {experience.map((e, i) => {
+          const isActive = i === 0;
+          return (
+            <li key={i} className="group flex items-start gap-3">
+              <span
+                aria-hidden
+                className={
+                  isActive
+                    ? "relative z-10 mt-1 h-3 w-3 rounded-sm border border-[hsl(var(--foreground))] bg-[hsl(var(--foreground))] shrink-0"
+                    : "relative z-10 mt-1 h-3 w-3 rounded-sm border border-[hsl(var(--foreground))]/40 bg-[hsl(var(--card))] shrink-0 transition-colors group-hover:bg-[hsl(var(--foreground))]"
+                }
+              />
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-semibold">{e.title}</h3>
+                <p className="text-xs text-[hsl(var(--muted-foreground))]">{e.org}</p>
+              </div>
+              <span className="mt-1 text-xs text-[hsl(var(--muted-foreground))] shrink-0">
+                {e.year}
+              </span>
+            </li>
+          );
+        })}
       </ol>
     </Section>
   );

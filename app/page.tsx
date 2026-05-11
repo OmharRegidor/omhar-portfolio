@@ -8,7 +8,6 @@ import { RecommendationsCarousel } from "@/components/sections/recommendations-c
 import { MembershipBlock } from "@/components/sections/membership-block";
 import { SpeakingCta } from "@/components/sections/speaking-cta";
 import { GalleryCarousel } from "@/components/sections/gallery-carousel";
-import { AccessCard } from "@/components/sections/access-card";
 
 export default function HomePage() {
   return (
@@ -22,7 +21,6 @@ export default function HomePage() {
           <RecentCertifications />
         </div>
         <aside className="space-y-6">
-          <AccessCard />
           <ExperienceTimeline />
           <SpeakingCta />
           <MembershipBlock />

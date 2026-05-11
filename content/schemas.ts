@@ -10,14 +10,6 @@ export const FeaturedAwardSchema = z.object({
   url: z.string().url().optional(),
 });
 
-export const AccessCardSchema = z.object({
-  label: z.string().min(1),         // top heading, e.g. "PORTFOLIO"
-  subLabel: z.string().min(1),      // top sub-heading, e.g. "ACCESS CARD"
-  memberLabel: z.string().min(1),   // membership type, e.g. "MEMBER" / "FOUNDING MEMBER"
-  ownerName: z.string().min(1),     // big name in middle
-  role: z.string().min(1),          // bottom small label, e.g. "DEVELOPER"
-  qrUrl: z.string().url().optional(),  // QR encodes this if set, else portfolio root
-});
 
 export const ProfileSchema = z.object({
   name: z.string().min(1),
@@ -28,7 +20,6 @@ export const ProfileSchema = z.object({
   socials: z.array(SocialSchema).default([]),
   calendlyUrl: z.string().url(),
   featuredAwards: z.array(FeaturedAwardSchema).default([]),
-  accessCard: AccessCardSchema.optional(),
 });
 export type Profile = z.infer<typeof ProfileSchema>;
 
