@@ -12,7 +12,7 @@ import { SocialLinks } from "@/components/sections/social-links";
 
 export default function HomePage() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-6">
       <ProfileCard />
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
         <div className="flex flex-col">

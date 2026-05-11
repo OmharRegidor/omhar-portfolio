@@ -8,7 +8,7 @@ import { FeaturedAward } from "./featured-award";
 
 export function ProfileCard() {
   return (
-    <div className="relative p-6 sm:p-8">
+    <div className="relative px-6 pt-6 pb-4 sm:px-8 sm:pt-8 sm:pb-4">
       {/* Theme switch top-right */}
       <ThemeSwitch className="absolute right-4 top-4 sm:right-6 sm:top-6" />
 
