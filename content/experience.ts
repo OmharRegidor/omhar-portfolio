@@ -4,7 +4,7 @@ import { ExperienceItemSchema, type ExperienceItem } from "./schemas";
 // Most recent first. Year is a 4-digit string (validated by schema).
 const data: ExperienceItem[] = [
   {
-    title: "Web Developer / Agentic Engineer",
+    title: "Software Developer / Agentic Engineer",
     org: "Noxa",
     year: "2026",
   },

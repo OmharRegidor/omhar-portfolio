@@ -24,11 +24,11 @@ export const metadata: Metadata = {
         ? `https://${process.env.VERCEL_URL}`
         : "http://localhost:3000",
   ),
-  title: "Omhar Regidor — Agentic Engineer & Web Developer",
+  title: "Omhar Regidor — Agentic Engineer & Software Developer",
   description:
     "Personal portfolio of Omhar Regidor — building scalable web systems and AI-powered workflows from Batangas, Philippines.",
   openGraph: {
-    title: "Omhar Regidor — Agentic Engineer & Web Developer",
+    title: "Omhar Regidor — Agentic Engineer & Software Developer",
     description:
       "Personal portfolio of Omhar Regidor — building scalable web systems and AI-powered workflows from Batangas, Philippines.",
     images: ["/omhar/me-pro-image-crop.jpg"],
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Omhar Regidor — Agentic Engineer & Web Developer",
+    title: "Omhar Regidor — Agentic Engineer & Software Developer",
     description:
       "Personal portfolio of Omhar Regidor — building scalable web systems and AI-powered workflows from Batangas, Philippines.",
     images: ["/omhar/me-pro-image-crop.jpg"],
