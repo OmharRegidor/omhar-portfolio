@@ -19,7 +19,7 @@ export function ProfileCard() {
         <div className="group relative w-40 h-40 shrink-0">
           {/* Light mode — default */}
           <Image
-            src="/omhar/profile-light-1.png"
+            src="/omhar/profile-photo-light-default.png"
             alt={`Profile photo of ${profile.name}`}
             width={160}
             height={160}
@@ -28,7 +28,7 @@ export function ProfileCard() {
           />
           {/* Light mode — hover */}
           <Image
-            src="/omhar/profile-light-shy.png"
+            src="/omhar/profile-photo-light-hover.png"
             alt=""
             aria-hidden
             width={160}
@@ -37,7 +37,7 @@ export function ProfileCard() {
           />
           {/* Dark mode — default */}
           <Image
-            src="/omhar/profile-dark-1.png"
+            src="/omhar/profile-photo-dark-default.png"
             alt=""
             aria-hidden
             width={160}
@@ -47,7 +47,7 @@ export function ProfileCard() {
           />
           {/* Dark mode — hover */}
           <Image
-            src="/omhar/profile-dark-shy.png"
+            src="/omhar/profile-photo-dark-hover.png"
             alt=""
             aria-hidden
             width={160}
