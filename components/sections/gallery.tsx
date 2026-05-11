@@ -4,7 +4,16 @@ import Image from "next/image";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { ChevronLeft, ChevronRight, X, ImageOff } from "lucide-react";
 import { gallery } from "@/content/gallery";
+import type { GalleryImage } from "@/content/schemas";
 import { Section } from "./section";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  CarouselDots,
+} from "@/components/ui/carousel";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -53,25 +62,47 @@ export function Gallery() {
   const current = openIndex !== null ? (gallery[openIndex] ?? null) : null;
   const open = openIndex !== null;
 
+  const renderThumb = (img: GalleryImage, i: number) => (
+    <button
+      type="button"
+      onClick={() => setOpenIndex(i)}
+      aria-label={`View ${img.alt} (image ${i + 1} of ${gallery.length})`}
+      className="group relative aspect-square w-full overflow-hidden rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))] cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]"
+    >
+      <Image
+        src={img.src}
+        alt={img.alt}
+        fill
+        sizes="(min-width: 768px) 400px, 100vw"
+        className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+      />
+    </button>
+  );
+
   return (
     <Section title="Gallery" isEmpty={false}>
-      <div className="grid grid-cols-2 gap-4">
+      {/* Mobile: single-image carousel with dots above and on-image arrows */}
+      <div className="md:hidden">
+        <Carousel opts={{ align: "start", loop: false }} aria-label="Gallery images">
+          <CarouselDots className="mb-2" />
+          <div className="relative">
+            <CarouselContent className="ml-0">
+              {gallery.map((img, i) => (
+                <CarouselItem key={img.src} className="pl-0">
+                  {renderThumb(img, i)}
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-2" />
+            <CarouselNext className="right-2" />
+          </div>
+        </Carousel>
+      </div>
+
+      {/* Tablet / Desktop: 2x2 grid */}
+      <div className="hidden md:grid grid-cols-2 gap-4">
         {gallery.map((img, i) => (
-          <button
-            key={img.src}
-            type="button"
-            onClick={() => setOpenIndex(i)}
-            aria-label={`View ${img.alt} (image ${i + 1} of ${gallery.length})`}
-            className="group relative aspect-square overflow-hidden rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--muted))] cursor-zoom-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]"
-          >
-            <Image
-              src={img.src}
-              alt={img.alt}
-              fill
-              sizes="(min-width: 768px) 400px, 50vw"
-              className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
-            />
-          </button>
+          <React.Fragment key={img.src}>{renderThumb(img, i)}</React.Fragment>
         ))}
       </div>
 

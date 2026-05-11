@@ -14,21 +14,28 @@ export default function HomePage() {
   return (
     <div className="space-y-6">
       <ProfileCard />
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
-        <div className="flex flex-col">
-          <About />
-          <div className="mt-12"><TechStackPreview /></div>
-          <div className="mt-6"><RecentProjects /></div>
-          <RecentCertifications />
-          <div className="mt-auto pt-2"><SocialLinks /></div>
+      {/*
+        Mobile (< md): outer is `flex flex-col` and the two column wrappers use
+        `display: contents` so all items become direct flex children — `order-N`
+        then interleaves left/right items into the requested mobile sequence.
+        md+ : outer switches to grid, wrappers switch to flex-col, restoring
+        the two-column desktop layout with its per-item margins.
+      */}
+      <div className="flex flex-col gap-y-12 md:grid md:grid-cols-[1fr_320px] md:gap-x-8 md:gap-y-0">
+        <div className="contents md:flex md:flex-col">
+          <div className="order-1 md:order-none"><About /></div>
+          <div className="order-3 md:order-none md:mt-12"><TechStackPreview /></div>
+          <div className="order-4 md:order-none md:mt-6"><RecentProjects /></div>
+          <div className="order-9 md:order-none md:mt-12 empty:hidden"><RecentCertifications /></div>
+          <div className="order-7 md:order-none md:mt-auto md:pt-2"><SocialLinks /></div>
         </div>
-        <aside className="space-y-4">
-          <ExperienceTimeline />
-          <PartnerCta />
-          <RecommendationsCarousel />
-          <MembershipBlock />
-          <Gallery />
-        </aside>
+        <div className="contents md:flex md:flex-col md:gap-y-4">
+          <div className="order-2 md:order-none"><ExperienceTimeline /></div>
+          <div className="order-6 md:order-none"><PartnerCta /></div>
+          <div className="order-5 md:order-none"><RecommendationsCarousel /></div>
+          <div className="order-10 md:order-none empty:hidden"><MembershipBlock /></div>
+          <div className="order-8 md:order-none"><Gallery /></div>
+        </div>
       </div>
     </div>
   );
