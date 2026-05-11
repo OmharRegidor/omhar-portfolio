@@ -28,7 +28,7 @@ export function RecommendationsCarousel() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselDots className="mt-3" />
+        <CarouselDots className="mt-2" />
       </Carousel>
     </Section>
   );

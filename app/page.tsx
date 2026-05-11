@@ -20,7 +20,7 @@ export default function HomePage() {
           <RecentProjects />
           <RecentCertifications />
         </div>
-        <aside className="space-y-6">
+        <aside className="space-y-4">
           <ExperienceTimeline />
           <PartnerCta />
           <RecommendationsCarousel />

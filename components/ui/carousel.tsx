@@ -204,7 +204,7 @@ const CarouselDots = ({ className }: { className?: string }) => {
   const { scrollSnaps, selectedIndex, scrollTo } = useCarousel();
   if (scrollSnaps.length <= 1) return null;
   return (
-    <div className={cn("flex justify-center gap-1.5", className)} role="tablist" aria-label="Slide navigation">
+    <div className={cn("flex justify-center gap-1", className)} role="tablist" aria-label="Slide navigation">
       {scrollSnaps.map((_, i) => (
         <button
           key={i}
