@@ -6,7 +6,7 @@ import { RecentCertifications } from "@/components/sections/recent-certification
 import { ExperienceTimeline } from "@/components/sections/experience-timeline";
 import { RecommendationsCarousel } from "@/components/sections/recommendations-carousel";
 import { MembershipBlock } from "@/components/sections/membership-block";
-import { HireCta } from "@/components/sections/hire-cta";
+import { PartnerCta } from "@/components/sections/partner-cta";
 import { GalleryCarousel } from "@/components/sections/gallery-carousel";
 
 export default function HomePage() {
@@ -22,7 +22,7 @@ export default function HomePage() {
         </div>
         <aside className="space-y-6">
           <ExperienceTimeline />
-          <HireCta />
+          <PartnerCta />
           <MembershipBlock />
         </aside>
       </div>
