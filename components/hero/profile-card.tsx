@@ -8,7 +8,7 @@ import { FeaturedAward } from "./featured-award";
 
 export function ProfileCard() {
   return (
-    <div className="relative rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 sm:p-8">
+    <div className="relative p-6 sm:p-8">
       {/* Theme switch top-right */}
       <ThemeSwitch className="absolute right-4 top-4 sm:right-6 sm:top-6" />
 
