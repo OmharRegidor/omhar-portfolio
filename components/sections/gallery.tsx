@@ -127,10 +127,6 @@ export function Gallery() {
                 />
               </div>
             )}
-
-            <div className="pointer-events-auto absolute bottom-6 left-1/2 -translate-x-1/2 rounded-md bg-white px-3 py-1.5 text-xs font-medium text-black">
-              Use arrow keys to navigate &bull; ESC to close
-            </div>
           </DialogPrimitive.Content>
         </DialogPrimitive.Portal>
       </DialogPrimitive.Root>
