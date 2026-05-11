@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* Tailwind v4 default `dark:` variant is media-query based
+   (prefers-color-scheme: dark). next-themes toggles a `.dark` class on
+   <html>, so we override the variant to match that class. Without this
+   override, `dark:` utilities like `dark:opacity-100` never fire even
+   though the theme is dark. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --font-sans: var(--font-open-runde), ui-sans-serif, system-ui, sans-serif;
 
