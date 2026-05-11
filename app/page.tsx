@@ -1,6 +1,5 @@
 import { ProfileCard } from "@/components/hero/profile-card";
 import { About } from "@/components/sections/about";
-import { HowIWork } from "@/components/sections/how-i-work";
 import { TechStackPreview } from "@/components/sections/tech-stack-preview";
 import { RecentProjects } from "@/components/sections/recent-projects";
 import { RecentCertifications } from "@/components/sections/recent-certifications";
@@ -17,7 +16,6 @@ export default function HomePage() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
         <div className="space-y-12">
           <About />
-          <HowIWork />
           <TechStackPreview />
           <RecentProjects />
           <RecentCertifications />
