@@ -25,10 +25,10 @@ export default function HomePage() {
         <aside className="space-y-6">
           <ExperienceTimeline />
           <PartnerCta />
+          <RecommendationsCarousel />
           <MembershipBlock />
         </aside>
       </div>
-      <RecommendationsCarousel />
       <GalleryCarousel />
     </div>
   );
