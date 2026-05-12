@@ -44,9 +44,6 @@ export default function ResumePage() {
             <p className="mt-1 text-sm text-gray-800">{profile.role}</p>
             <p className="mt-1 text-xs text-gray-600">{profile.location}</p>
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-700">
-              <a href={profile.calendlyUrl} className="underline">
-                {profile.calendlyUrl.replace(/^https?:\/\//, "")}
-              </a>
               {profile.socials.map((s) => (
                 <a key={s.label} href={s.url} className="underline">
                   {s.label}
