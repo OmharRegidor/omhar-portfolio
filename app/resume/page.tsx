@@ -71,7 +71,7 @@ export default function ResumePage() {
           <p className="mt-1 text-xs leading-relaxed text-gray-800">{summary}</p>
         </section>
 
-        <section className="mt-4">
+        <section className="mt-4 border-t-2 border-black pt-4">
           <h2 className="text-xs font-bold uppercase tracking-wider text-gray-900">Experience &amp; Education</h2>
           <ul className="mt-1 space-y-2">
             {experience.map((e) => (
@@ -86,7 +86,7 @@ export default function ResumePage() {
           </ul>
         </section>
 
-        <section className="mt-4">
+        <section className="mt-4 border-t-2 border-black pt-4">
           <h2 className="text-xs font-bold uppercase tracking-wider text-gray-900">Selected Projects</h2>
           <ul className="mt-1 space-y-2">
             {projects.map((p) => (
@@ -103,7 +103,7 @@ export default function ResumePage() {
           </ul>
         </section>
 
-        <section className="mt-4">
+        <section className="mt-4 border-t-2 border-black pt-4">
           <h2 className="text-xs font-bold uppercase tracking-wider text-gray-900">Tech Stack</h2>
           <ul className="mt-1 space-y-1">
             {Object.entries(techStack).map(([cat, items]) => (
