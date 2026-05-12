@@ -19,6 +19,8 @@ export const ProfileSchema = z.object({
   bioParagraphs: z.array(z.string().min(1)).min(1),
   socials: z.array(SocialSchema).default([]),
   calendlyUrl: z.string().url(),
+  email: z.string().email().optional(),
+  phone: z.string().min(1).optional(),
   featuredAwards: z.array(FeaturedAwardSchema).default([]),
 });
 export type Profile = z.infer<typeof ProfileSchema>;

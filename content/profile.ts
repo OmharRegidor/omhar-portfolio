@@ -16,6 +16,8 @@ const data: Profile = {
     { label: "Facebook", url: "https://www.facebook.com/christian.omhar.regidor" },
   ],
   calendlyUrl: "https://calendly.com/omharregidor/30min",
+  email: "omharregidor@gmail.com",
+  phone: "+639506009518",
   // Featured awards intentionally empty — the rotator hides at length<=1.
   // Add real awards (hackathon wins, cert honors, etc.) here when they land.
   featuredAwards: [],
