@@ -1,7 +1,7 @@
 import { TechStackSchema, type TechStack } from "./schemas";
 
 const data: TechStack = {
-  "AI Tools": ["Claude Code", "Agent Team", "Sub-agents"],
+  "AI Tools": ["Claude Code", "Agent Team", "Lovable", "v0", "Google Stitch"],
   "Cloud, Hosting & BaaS": ["Supabase", "Vercel"],
   "UI Frameworks & Styling": ["React", "React Native", "Next.js", "Tailwind CSS", "MUI"],
   "Frontend Foundations": ["HTML5", "CSS3", "JavaScript", "TypeScript"],
