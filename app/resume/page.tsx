@@ -72,21 +72,6 @@ export default function ResumePage() {
         </section>
 
         <section className="mt-4 border-t-2 border-black pt-4">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-gray-900">Experience &amp; Education</h2>
-          <ul className="mt-1 space-y-2">
-            {experience.map((e) => (
-              <li key={`${e.year}-${e.title}`} className="text-xs text-gray-800">
-                <div className="flex items-baseline justify-between gap-2">
-                  <span className="font-semibold">{e.title}</span>
-                  <span className="text-gray-600 tabular-nums">{e.year}</span>
-                </div>
-                <p className="text-gray-700">{e.org}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="mt-4 border-t-2 border-black pt-4">
           <h2 className="text-xs font-bold uppercase tracking-wider text-gray-900">Selected Projects</h2>
           <ul className="mt-1 space-y-2">
             {projects.map((p) => (
@@ -110,6 +95,21 @@ export default function ResumePage() {
               <li key={cat} className="text-xs text-gray-800">
                 <span className="font-semibold">{cat}:</span>{" "}
                 <span className="text-gray-700">{items.join(" · ")}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="mt-4 border-t-2 border-black pt-4">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-gray-900">Experience &amp; Education</h2>
+          <ul className="mt-1 space-y-2">
+            {experience.map((e) => (
+              <li key={`${e.year}-${e.title}`} className="text-xs text-gray-800">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-semibold">{e.title}</span>
+                  <span className="text-gray-600 tabular-nums">{e.year}</span>
+                </div>
+                <p className="text-gray-700">{e.org}</p>
               </li>
             ))}
           </ul>
