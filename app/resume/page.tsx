@@ -72,7 +72,7 @@ export default function ResumePage() {
         </section>
 
         <section className="mt-4 border-t-2 border-black pt-4">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-gray-900">Projects I Built</h2>
+          <h2 className="text-xs font-bold uppercase tracking-wider text-gray-900">Projects</h2>
           <ul className="mt-1 space-y-2">
             {projects.map((p) => (
               <li key={p.slug} className="text-xs text-gray-800">
