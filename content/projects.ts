@@ -8,7 +8,7 @@ const data: Project[] = [
     name: "BiNuKBoK View Point Resort",
     blurb:
       "Full-stack resort booking site + admin dashboard featuring an AI assistant that answers live availability and guest-arrival questions from the database. Online reservations, availability calendar, and QR-code check-in.",
-    url: "http://www.binukbok-viewpoint.vercel.app",
+    url: "https://binukbok-viewpoint.vercel.app",
   },
   {
     slug: "noxa-loyalty",
