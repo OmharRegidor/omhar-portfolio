@@ -8,6 +8,8 @@ import { cn } from "@/lib/cn";
 export function ThemeSwitch({ className }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  // next-themes hydration guard — a one-time mount flag is the documented pattern.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => setMounted(true), []);
 
   // First-paint placeholder so layout doesn't shift while next-themes hydrates.

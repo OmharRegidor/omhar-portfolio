@@ -74,6 +74,8 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps & React.HTMLAttr
 
     React.useEffect(() => {
       if (!api) return;
+      // Sync embla's external state on init (standard embla-react pattern).
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setScrollSnaps(api.scrollSnapList());
       onSelect(api);
       api.on("reInit", onReInit);
