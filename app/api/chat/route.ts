@@ -1,19 +1,36 @@
 import { NextRequest, NextResponse } from "next/server";
-import { ChatRequestSchema } from "@/content/schemas";
+import { ChatRequestSchemaV2 } from "@/content/schemas";
 import { getRateLimit } from "@/lib/rate-limit";
+import { getChatConfig } from "@/lib/ai/config";
+import { allowDailyUsage } from "@/lib/chat/usage";
+import { runChatWithFallback } from "@/lib/chat/run-chat";
+import { STATIC_FALLBACK_REPLY } from "@/lib/ai/providers/static";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const FIXED_REPLY = "Chat is coming soon — reach me via Calendly for now.";
+// Multi-turn payloads are larger than the old single-message body.
+const MAX_BODY_BYTES = 16384;
 
 function err(code: string, message: string, status: number, headers?: Record<string, string>) {
   return NextResponse.json({ error: { code, message } }, { status, headers });
 }
 
+function staticReply() {
+  return new Response(STATIC_FALLBACK_REPLY, {
+    status: 200,
+    headers: {
+      "content-type": "text/plain; charset=utf-8",
+      "cache-control": "no-store",
+      "x-chat-provider": "static",
+    },
+  });
+}
+
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
 
+  // 1. Per-IP rate limit (burst protection).
   let limit;
   try {
     limit = await getRateLimit().limit(ip);
@@ -24,19 +41,26 @@ export async function POST(req: NextRequest) {
     return err("RATE_LIMITED", "Too many requests", 429, { "Retry-After": "60" });
   }
 
+  // 2. Raw body-size cap (before parsing).
   const len = Number(req.headers.get("content-length") ?? "0");
-  if (len > 4096) return err("PAYLOAD_TOO_LARGE", "Body too large", 413);
+  if (len > MAX_BODY_BYTES) return err("PAYLOAD_TOO_LARGE", "Body too large", 413);
 
+  // 3. Parse + strict-validate the multi-turn body.
   let body: unknown;
   try {
     body = await req.json();
   } catch {
     return err("BAD_REQUEST", "Invalid JSON", 400);
   }
-  const parsed = ChatRequestSchema.safeParse(body);
+  const parsed = ChatRequestSchemaV2.safeParse(body);
   if (!parsed.success) return err("BAD_REQUEST", "Schema validation failed", 400);
 
-  return NextResponse.json({ reply: FIXED_REPLY });
+  // 4. Kill-switch + daily cost ceiling — degrade to the static reply, never error.
+  if (!getChatConfig().enabled) return staticReply();
+  if (!(await allowDailyUsage())) return staticReply();
+
+  // 5. Stream the grounded answer through the provider fallback chain.
+  return runChatWithFallback({ messages: parsed.data.messages, signal: req.signal });
 }
 
 export async function GET() {

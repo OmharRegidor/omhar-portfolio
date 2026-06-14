@@ -85,3 +85,17 @@ export const ChatRequestSchema = z.object({
   message: z.string().min(1).max(1000).trim(),
 }).strict();
 export type ChatRequest = z.infer<typeof ChatRequestSchema>;
+
+// v2: multi-turn chat. The client sends the recent thread; the server bounds it.
+// Roles are limited to user/assistant — the system prompt is assembled server-side
+// and must never be injectable by the client.
+export const ChatMessageSchema = z.object({
+  role: z.enum(["user", "assistant"]),
+  content: z.string().min(1).max(1000).trim(),
+}).strict();
+export type ChatMessage = z.infer<typeof ChatMessageSchema>;
+
+export const ChatRequestSchemaV2 = z.object({
+  messages: z.array(ChatMessageSchema).min(1).max(8),
+}).strict();
+export type ChatRequestV2 = z.infer<typeof ChatRequestSchemaV2>;
