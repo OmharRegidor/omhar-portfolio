@@ -30,7 +30,7 @@ export const groqProvider: ChatProvider = {
         model: cfg.groqModel,
         stream: true,
         temperature: opts.temperature,
-        max_tokens: opts.maxOutputTokens,
+        max_completion_tokens: opts.maxOutputTokens,
         messages: [
           { role: "system", content: opts.system },
           ...opts.messages.map((m) => ({ role: m.role, content: m.content })),
@@ -40,7 +40,8 @@ export const groqProvider: ChatProvider = {
     });
 
     if (!res.ok || !res.body) {
-      throw new Error(`groq: HTTP ${res.status}`);
+      const body = await res.text().catch(() => "");
+      throw new Error(`groq: HTTP ${res.status} ${body.slice(0, 300)}`.trim());
     }
 
     for await (const payload of iterateSSE(res.body)) {

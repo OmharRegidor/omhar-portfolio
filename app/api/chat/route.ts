@@ -41,14 +41,24 @@ export async function POST(req: NextRequest) {
     return err("RATE_LIMITED", "Too many requests", 429, { "Retry-After": "60" });
   }
 
-  // 2. Raw body-size cap (before parsing).
+  // 2. Body-size cap. The content-length header is a fast early-out, but it is
+  //    client-controlled (absent on chunked requests), so the actual byte length
+  //    is the authoritative check.
   const len = Number(req.headers.get("content-length") ?? "0");
   if (len > MAX_BODY_BYTES) return err("PAYLOAD_TOO_LARGE", "Body too large", 413);
+
+  let raw: ArrayBuffer;
+  try {
+    raw = await req.arrayBuffer();
+  } catch {
+    return err("BAD_REQUEST", "Invalid body", 400);
+  }
+  if (raw.byteLength > MAX_BODY_BYTES) return err("PAYLOAD_TOO_LARGE", "Body too large", 413);
 
   // 3. Parse + strict-validate the multi-turn body.
   let body: unknown;
   try {
-    body = await req.json();
+    body = JSON.parse(new TextDecoder().decode(raw));
   } catch {
     return err("BAD_REQUEST", "Invalid JSON", 400);
   }

@@ -127,6 +127,15 @@ export function ChatPanel({
     }
   }, [messages]);
 
+  // Abort any in-flight request when the panel closes (the Stop button lives
+  // inside the portal and disappears on close) or when the component unmounts —
+  // otherwise the request keeps consuming free-tier output tokens for an answer
+  // nobody will read.
+  useEffect(() => {
+    if (!open) abortRef.current?.abort();
+  }, [open]);
+  useEffect(() => () => abortRef.current?.abort(), []);
+
   useEffect(() => {
     endRef.current?.scrollIntoView?.({ behavior: "smooth", block: "end" });
   }, [messages, streaming]);
@@ -180,6 +189,9 @@ export function ChatPanel({
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+    // Don't submit while an IME composition is active — pressing Enter to confirm
+    // a candidate (CJK input) must commit the candidate, not send the message.
+    if (e.nativeEvent.isComposing || e.keyCode === 229) return;
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       void send(input);
@@ -242,7 +254,14 @@ export function ChatPanel({
         {messages.map((m, i) => (
           <MessageBubble key={i} role={m.role} content={m.content} />
         ))}
-        {streaming !== null && <MessageBubble role="assistant" content={streaming} streaming />}
+        {/* The growing partial answer is hidden from assistive tech so screen
+            readers aren't spammed with every token; the committed message below
+            is announced once when it lands. */}
+        {streaming !== null && (
+          <div aria-hidden>
+            <MessageBubble role="assistant" content={streaming} streaming />
+          </div>
+        )}
         <div ref={endRef} />
       </div>
 

@@ -36,13 +36,19 @@ export const geminiProvider: ChatProvider = {
         generationConfig: {
           temperature: opts.temperature,
           maxOutputTokens: opts.maxOutputTokens,
+          // gemini-2.5-flash enables "dynamic thinking" by default, and thinking
+          // tokens count against maxOutputTokens — with a small budget the model
+          // can spend it all reasoning and return EMPTY text. Disable it for this
+          // fast, grounded Q&A use case so the budget is spent on the answer.
+          thinkingConfig: { thinkingBudget: 0 },
         },
       }),
       signal: opts.signal,
     });
 
     if (!res.ok || !res.body) {
-      throw new Error(`gemini: HTTP ${res.status}`);
+      const body = await res.text().catch(() => "");
+      throw new Error(`gemini: HTTP ${res.status} ${body.slice(0, 300)}`.trim());
     }
 
     for await (const payload of iterateSSE(res.body)) {

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ChatPanel } from "@/components/chat/chat-panel";
 
@@ -73,5 +73,40 @@ describe("ChatPanel", () => {
     await waitFor(() =>
       expect(screen.getByText(/sending messages a little quickly/i)).toBeInTheDocument(),
     );
+  });
+
+  it("does not send while an IME composition is active (Enter confirms a candidate)", () => {
+    const fetchMock = vi.fn().mockResolvedValue(streamingResponse("x"));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<ChatPanel open onOpenChange={() => {}} />);
+    const textarea = screen.getByPlaceholderText(/ask/i);
+    fireEvent.change(textarea, { target: { value: "こんにちは" } });
+    fireEvent.keyDown(textarea, { key: "Enter", isComposing: true, keyCode: 229 });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("aborts the in-flight request when the panel closes (no error bubble, controls reset)", async () => {
+    const fetchMock = vi.fn((_url: string, init: RequestInit) => {
+      const signal = init.signal as AbortSignal;
+      const body = new ReadableStream<Uint8Array>({
+        start(c) {
+          signal.addEventListener("abort", () => c.error(new DOMException("aborted", "AbortError")));
+        },
+      });
+      return Promise.resolve(new Response(body, { status: 200, headers: { "content-type": "text/plain" } }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    const { rerender } = render(<ChatPanel open onOpenChange={() => {}} />);
+    await user.type(screen.getByPlaceholderText(/ask/i), "hi");
+    await user.keyboard("{Enter}");
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+
+    rerender(<ChatPanel open={false} onOpenChange={() => {}} />); // closing aborts
+    rerender(<ChatPanel open onOpenChange={() => {}} />); // reopen to inspect state
+
+    // The abort clears busy (Send returns, not Stop) and appends no error bubble.
+    await waitFor(() => expect(screen.getByRole("button", { name: /send/i })).toBeInTheDocument());
+    expect(screen.queryByText(/something went wrong/i)).not.toBeInTheDocument();
   });
 });

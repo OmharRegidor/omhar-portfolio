@@ -21,6 +21,13 @@ function num(value: string | undefined, fallback: number): number {
   return Number.isFinite(n) && n > 0 ? n : fallback;
 }
 
+/** Like num() but allows 0 (used for CHAT_DAILY_CAP, where 0 means "no cap"). */
+function nonNegInt(value: string | undefined, fallback: number): number {
+  if (value === undefined || value.trim() === "") return fallback;
+  const n = Number(value);
+  return Number.isInteger(n) && n >= 0 ? n : fallback;
+}
+
 export function getChatConfig(): ChatConfig {
   return {
     groqApiKey: process.env.GROQ_API_KEY?.trim() ?? "",
@@ -30,7 +37,7 @@ export function getChatConfig(): ChatConfig {
       .map((s) => s.trim())
       .filter(Boolean),
     enabled: (process.env.CHAT_ENABLED ?? "1") !== "0",
-    dailyCap: num(process.env.CHAT_DAILY_CAP, 500),
+    dailyCap: nonNegInt(process.env.CHAT_DAILY_CAP, 500),
     timeoutMs: num(process.env.CHAT_PROVIDER_TIMEOUT_MS, 8000),
     groqModel: process.env.GROQ_MODEL?.trim() || "llama-3.1-8b-instant",
     geminiModel: process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash",

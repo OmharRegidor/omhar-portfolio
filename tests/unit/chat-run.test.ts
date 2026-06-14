@@ -1,7 +1,7 @@
-import { describe, it, expect } from "vitest";
-import { runChatWithFallback } from "@/lib/chat/run-chat";
+import { describe, it, expect, afterEach } from "vitest";
+import { runChatWithFallback, toProviderMessages } from "@/lib/chat/run-chat";
 import { staticProvider, STATIC_FALLBACK_REPLY } from "@/lib/ai/providers/static";
-import type { ChatProvider } from "@/lib/ai/types";
+import type { ChatProvider, ChatStreamOptions } from "@/lib/ai/types";
 import type { ChatMessage } from "@/content/schemas";
 
 const ask: ChatMessage[] = [{ role: "user", content: "who is Omhar?" }];
@@ -12,6 +12,22 @@ function yielding(id: string, parts: string[]): ChatProvider {
     isConfigured: () => true,
     async *streamChat() {
       for (const p of parts) yield p;
+    },
+  };
+}
+
+/** Accepts the request but never produces a chunk until aborted. */
+function stalling(id: string): ChatProvider {
+  return {
+    id,
+    isConfigured: () => true,
+    async *streamChat(opts: ChatStreamOptions) {
+      await new Promise<void>((_, reject) => {
+        opts.signal?.addEventListener("abort", () =>
+          reject(new DOMException("aborted", "AbortError")),
+        );
+      });
+      yield "unreachable";
     },
   };
 }
@@ -54,5 +70,53 @@ describe("runChatWithFallback", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("X-Chat-Provider")).toBe("static");
     expect(await res.text()).toBe(STATIC_FALLBACK_REPLY);
+  });
+
+  it("falls through when a provider succeeds but yields nothing", async () => {
+    const res = await runChatWithFallback({
+      messages: ask,
+      providers: [yielding("groq", []), yielding("google", ["ok"]), staticProvider],
+    });
+    expect(res.headers.get("X-Chat-Provider")).toBe("google");
+    expect(await res.text()).toBe("ok");
+  });
+
+  it("times out a stalled provider and advances to the next one", async () => {
+    process.env.CHAT_PROVIDER_TIMEOUT_MS = "50";
+    try {
+      const res = await runChatWithFallback({
+        messages: ask,
+        providers: [stalling("groq"), yielding("google", ["recovered"]), staticProvider],
+      });
+      expect(res.headers.get("X-Chat-Provider")).toBe("google");
+      expect(await res.text()).toBe("recovered");
+    } finally {
+      delete process.env.CHAT_PROVIDER_TIMEOUT_MS;
+    }
+  });
+});
+
+describe("toProviderMessages", () => {
+  afterEach(() => undefined);
+
+  it("strips leading assistant turns so the thread begins with a user turn", () => {
+    const out = toProviderMessages([
+      { role: "assistant", content: "earlier reply" },
+      { role: "user", content: "now" },
+    ]);
+    expect(out.map((m) => m.role)).toEqual(["user"]);
+    expect(out[0]!.content).toContain("now");
+  });
+
+  it("wraps user content as untrusted data but passes assistant turns through", () => {
+    const out = toProviderMessages([
+      { role: "user", content: "hello" },
+      { role: "assistant", content: "hi there" },
+      { role: "user", content: "more" },
+    ]);
+    expect(out.map((m) => m.role)).toEqual(["user", "assistant", "user"]);
+    expect(out[0]!.content).not.toBe("hello"); // wrapped
+    expect(out[0]!.content).toContain("hello");
+    expect(out[1]!.content).toBe("hi there"); // passed through
   });
 });

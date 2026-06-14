@@ -23,9 +23,11 @@ describe("chat eval set (gated by RUN_CHAT_EVAL=1 + a provider key)", () => {
           ).toBe(true);
         }
         if (c.expectOffersCalendly) {
+          // Require the actual booking URL, not a loose " call" substring that
+          // "recall"/"tough call" would satisfy.
           expect(
-            reply.includes("calendly") || reply.includes(" call"),
-            `expected a Calendly/call redirect in: ${reply}`,
+            reply.includes("calendly.com/omharregidor"),
+            `expected the Calendly booking URL in: ${reply}`,
           ).toBe(true);
         }
         for (const f of c.forbidIncludes ?? []) {

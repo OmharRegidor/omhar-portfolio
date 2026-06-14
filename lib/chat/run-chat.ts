@@ -2,6 +2,7 @@ import type { ChatMessage } from "@/content/schemas";
 import { boundMessages } from "@/lib/chat/history";
 import { buildSystemPrompt, wrapUserMessage } from "@/lib/chat/system-prompt";
 import { getProviderChain } from "@/lib/ai/registry";
+import { getChatConfig } from "@/lib/ai/config";
 import { STATIC_FALLBACK_REPLY } from "@/lib/ai/providers/static";
 import type { ChatProvider, ProviderMessage } from "@/lib/ai/types";
 
@@ -15,15 +16,24 @@ export interface RunChatArgs {
   providers?: ChatProvider[];
 }
 
-function toProviderMessages(messages: ChatMessage[]): ProviderMessage[] {
+export function toProviderMessages(messages: ChatMessage[]): ProviderMessage[] {
   const mapped: ProviderMessage[] = messages.map((m) =>
     m.role === "user"
       ? { role: "user", content: wrapUserMessage(m.content) }
       : { role: "assistant", content: m.content },
   );
-  // Providers like Gemini require the thread to begin with a user turn.
-  while (mapped.length > 1 && mapped[0]?.role === "assistant") mapped.shift();
+  // Providers like Gemini require the thread to BEGIN with a user turn — strip
+  // any leading assistant turns unconditionally (a bounded window can start with
+  // one). An all-assistant thread (only reachable via a crafted API call) reduces
+  // to [] and degrades to the static reply, which is acceptable.
+  while (mapped[0]?.role === "assistant") mapped.shift();
   return mapped;
+}
+
+/** Combine the inbound request signal with a per-attempt timeout. */
+function attemptSignal(timeoutMs: number, inbound?: AbortSignal): AbortSignal {
+  const timeout = AbortSignal.timeout(timeoutMs);
+  return inbound ? AbortSignal.any([inbound, timeout]) : timeout;
 }
 
 function streamResponse(
@@ -67,15 +77,18 @@ function streamResponse(
  */
 export async function runChatWithFallback(args: RunChatArgs): Promise<Response> {
   const providers = args.providers ?? getProviderChain();
-  const opts = {
+  const { timeoutMs } = getChatConfig();
+  const base = {
     system: buildSystemPrompt(),
     messages: toProviderMessages(boundMessages(args.messages)),
     maxOutputTokens: MAX_OUTPUT_TOKENS,
     temperature: TEMPERATURE,
-    signal: args.signal,
   };
 
   for (const provider of providers) {
+    // A fresh timeout per attempt so a provider that accepts then stalls before
+    // the first chunk is aborted and the chain advances (instead of hanging).
+    const opts = { ...base, signal: attemptSignal(timeoutMs, args.signal) };
     const iterator = provider.streamChat(opts)[Symbol.asyncIterator]();
     try {
       const first = await iterator.next();

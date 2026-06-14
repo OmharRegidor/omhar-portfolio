@@ -129,6 +129,16 @@ describe("POST /api/chat", () => {
     expect(res.status).toBe(413);
   });
 
+  it("returns 413 on an oversized actual body even if content-length under-reports it", async () => {
+    vi.doMock("@/lib/rate-limit", () => OK_LIMIT);
+    mockRunChat();
+    allowUsage();
+    const { POST } = await import("@/app/api/chat/route");
+    const big = { messages: [{ role: "user", content: "a".repeat(20000) }] };
+    const res = await POST(jsonReq(big, { "content-length": "10" }));
+    expect(res.status).toBe(413);
+  });
+
   it("returns 503 when the rate limiter throws", async () => {
     vi.doMock("@/lib/rate-limit", () => ({
       getRateLimit: () => ({ limit: vi.fn().mockRejectedValue(new Error("upstash down")) }),
