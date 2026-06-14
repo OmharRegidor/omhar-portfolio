@@ -32,6 +32,25 @@ function stalling(id: string): ChatProvider {
   };
 }
 
+/** Yields the first chunk immediately, then delays the second (honoring abort). */
+function slowSecondChunk(id: string): ChatProvider {
+  return {
+    id,
+    isConfigured: () => true,
+    async *streamChat(opts: ChatStreamOptions) {
+      yield "first ";
+      await new Promise<void>((resolve, reject) => {
+        const t = setTimeout(resolve, 120);
+        opts.signal?.addEventListener("abort", () => {
+          clearTimeout(t);
+          reject(new DOMException("aborted", "AbortError"));
+        });
+      });
+      yield "second";
+    },
+  };
+}
+
 function throwingOnFirstChunk(id: string): ChatProvider {
   return {
     id,
@@ -90,6 +109,20 @@ describe("runChatWithFallback", () => {
       });
       expect(res.headers.get("X-Chat-Provider")).toBe("google");
       expect(await res.text()).toBe("recovered");
+    } finally {
+      delete process.env.CHAT_PROVIDER_TIMEOUT_MS;
+    }
+  });
+
+  it("does NOT truncate a slow stream once the first chunk has arrived (timeout = time-to-first-chunk only)", async () => {
+    process.env.CHAT_PROVIDER_TIMEOUT_MS = "50";
+    try {
+      const res = await runChatWithFallback({
+        messages: ask,
+        providers: [slowSecondChunk("groq"), staticProvider],
+      });
+      expect(res.headers.get("X-Chat-Provider")).toBe("groq");
+      expect(await res.text()).toBe("first second");
     } finally {
       delete process.env.CHAT_PROVIDER_TIMEOUT_MS;
     }

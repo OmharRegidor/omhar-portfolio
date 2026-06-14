@@ -30,10 +30,20 @@ export function toProviderMessages(messages: ChatMessage[]): ProviderMessage[] {
   return mapped;
 }
 
-/** Combine the inbound request signal with a per-attempt timeout. */
-function attemptSignal(timeoutMs: number, inbound?: AbortSignal): AbortSignal {
-  const timeout = AbortSignal.timeout(timeoutMs);
-  return inbound ? AbortSignal.any([inbound, timeout]) : timeout;
+/**
+ * Build a per-attempt signal whose timeout bounds ONLY time-to-first-chunk. Call
+ * `clear()` the moment the first chunk arrives so a slow-but-valid stream is not
+ * truncated mid-response — after that the stream is bound only to the inbound
+ * (client-disconnect) signal.
+ */
+function firstChunkDeadline(timeoutMs: number, inbound?: AbortSignal) {
+  const controller = new AbortController();
+  const timer = setTimeout(
+    () => controller.abort(new DOMException("first-chunk timeout", "TimeoutError")),
+    timeoutMs,
+  );
+  const signal = inbound ? AbortSignal.any([inbound, controller.signal]) : controller.signal;
+  return { signal, clear: () => clearTimeout(timer) };
 }
 
 function streamResponse(
@@ -86,15 +96,27 @@ export async function runChatWithFallback(args: RunChatArgs): Promise<Response> 
   };
 
   for (const provider of providers) {
-    // A fresh timeout per attempt so a provider that accepts then stalls before
-    // the first chunk is aborted and the chain advances (instead of hanging).
-    const opts = { ...base, signal: attemptSignal(timeoutMs, args.signal) };
-    const iterator = provider.streamChat(opts)[Symbol.asyncIterator]();
+    // The deadline bounds time-to-first-chunk only, so a provider that accepts
+    // then stalls is skipped — but a slow, successful stream is not truncated.
+    const deadline = firstChunkDeadline(timeoutMs, args.signal);
+    const iterator = provider
+      .streamChat({ ...base, signal: deadline.signal })
+      [Symbol.asyncIterator]();
     try {
       const first = await iterator.next();
+      deadline.clear(); // first chunk in — stop the deadline; stream is now client-bound
       if (first.done) continue; // provider produced nothing — try the next one
       return streamResponse(provider.id, iterator, first.value);
-    } catch {
+    } catch (e) {
+      deadline.clear();
+      // Surface WHY a provider was skipped (the error carries the upstream body)
+      // so a misconfiguration is diagnosable instead of silently degrading.
+      if (process.env.NODE_ENV !== "test") {
+        console.error(
+          `[chat] provider "${provider.id}" failed before first chunk:`,
+          e instanceof Error ? e.message : e,
+        );
+      }
       continue; // provider failed before first chunk — try the next one
     }
   }

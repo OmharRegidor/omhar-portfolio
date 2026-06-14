@@ -228,6 +228,7 @@ export function ChatPanel({
         role="log"
         aria-live="polite"
         aria-atomic="false"
+        aria-busy={busy}
         className="min-h-0 flex-1 space-y-3 overflow-y-auto py-3"
       >
         {messages.length === 0 && streaming === null && (
@@ -264,6 +265,15 @@ export function ChatPanel({
         )}
         <div ref={endRef} />
       </div>
+
+      {/* Polite, one-shot SR cue while a reply is in flight (the streamed bubble
+          itself is aria-hidden to avoid per-token spam; the committed answer is
+          announced when it lands). */}
+      {streaming !== null && (
+        <p role="status" className="sr-only">
+          Omhar&apos;s AI assistant is responding…
+        </p>
+      )}
 
       {/* Composer */}
       <div className="border-t border-[hsl(var(--border))] pt-3">
