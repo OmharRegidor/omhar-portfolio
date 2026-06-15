@@ -49,3 +49,6 @@ next-env.d.ts
 
 # noxa dev-team working scaffolding (local verify/build artifacts)
 .noxa/
+
+# superpowers visual-brainstorm mockups (local only)
+.superpowers/
