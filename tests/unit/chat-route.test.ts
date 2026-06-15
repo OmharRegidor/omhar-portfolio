@@ -139,14 +139,16 @@ describe("POST /api/chat", () => {
     expect(res.status).toBe(413);
   });
 
-  it("returns 503 when the rate limiter throws", async () => {
+  it("fails open (proceeds, 200) when the rate limiter is unreachable", async () => {
     vi.doMock("@/lib/rate-limit", () => ({
       getRateLimit: () => ({ limit: vi.fn().mockRejectedValue(new Error("upstash down")) }),
     }));
-    mockRunChat();
+    mockRunChat("Omhar is a developer.");
     allowUsage();
     const { POST } = await import("@/app/api/chat/route");
-    expect((await POST(jsonReq(valid))).status).toBe(503);
+    const res = await POST(jsonReq(valid));
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe("Omhar is a developer.");
   });
 
   it("returns a static reply (200) when CHAT_ENABLED=0, without calling the AI", async () => {
