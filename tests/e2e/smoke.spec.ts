@@ -1,6 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-const routes = ["/", "/projects", "/projects/first-project", "/tech-stack", "/certifications"];
+// Project cards link to external URLs — there is no /projects/[slug] detail page,
+// so only the real internal routes are smoke-tested.
+const routes = ["/", "/projects", "/tech-stack", "/certifications", "/resume"];
 
 for (const route of routes) {
   test(`${route} renders without errors`, async ({ page }) => {
