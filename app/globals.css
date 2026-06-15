@@ -25,6 +25,18 @@
   --text-h3: clamp(1.125rem, 1vw + 0.875rem, 1.375rem);
   --text-body: 1rem;
   --text-small: 0.875rem;
+
+  /* Motion — Phase 2 foundation. Duration scale (emitted as :root vars) +
+     one brand easing curve. --ease-* is a Tailwind v4 namespace, so this also
+     generates the `ease-brand` utility. Durations feed the duration-* @utility
+     shims below and any var()-based call site. Strict prefers-reduced-motion
+     contract lives in the guard at the bottom of this file.
+     See docs/superpowers/specs/2026-06-15-phase2-motion-design-system-design.md */
+  --motion-fast: 120ms; /* micro-feedback: color/opacity hovers */
+  --motion-base: 200ms; /* default UI transitions */
+  --motion-slow: 320ms; /* larger surfaces: panels, reveals */
+  --motion-deliberate: 520ms; /* showcase: hero, staggered entrances */
+  --ease-brand: cubic-bezier(0.2, 0, 0, 1); /* fast departure, smooth settle */
 }
 
 @layer base {
@@ -65,5 +77,35 @@
     outline: 2px solid hsl(var(--accent));
     outline-offset: 2px;
     border-radius: var(--radius-md);
+  }
+}
+
+/* Ergonomic duration utilities bound to the motion tokens, so Phase 2 code
+   reads `duration-base ease-brand` instead of arbitrary var() values.
+   (`ease-brand` is generated automatically from the --ease-brand theme key.) */
+@utility duration-fast {
+  transition-duration: var(--motion-fast);
+}
+@utility duration-base {
+  transition-duration: var(--motion-base);
+}
+@utility duration-slow {
+  transition-duration: var(--motion-slow);
+}
+@utility duration-deliberate {
+  transition-duration: var(--motion-deliberate);
+}
+
+/* Reduced-motion contract — the conventional "Andy Bell" reset. Collapses every
+   transition AND animation to ~instant (0.01ms, non-zero so transitionend /
+   animationend still fire) and disables smooth scrolling. Unlayered + !important
+   so it wins over utilities. Pairs with the `motion-safe:` authoring convention,
+   which already strips transform motion at the source under reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

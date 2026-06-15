@@ -29,7 +29,7 @@ export function ExperienceTimeline() {
                 className={
                   isActive
                     ? "relative z-10 mt-1 h-3 w-3 rounded-sm border border-[hsl(var(--foreground))] bg-[hsl(var(--foreground))] shrink-0"
-                    : "relative z-10 mt-1 h-3 w-3 rounded-sm border border-[hsl(var(--foreground))]/40 bg-[hsl(var(--card))] shrink-0 transition-colors group-hover:bg-[hsl(var(--foreground))]"
+                    : "relative z-10 mt-1 h-3 w-3 rounded-sm border border-[hsl(var(--foreground))]/40 bg-[hsl(var(--card))] shrink-0 motion-safe:transition-colors group-hover:bg-[hsl(var(--foreground))]"
                 }
               />
               <div className="flex-1 min-w-0">

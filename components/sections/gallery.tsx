@@ -74,7 +74,7 @@ export function Gallery() {
         alt={img.alt}
         fill
         sizes="(min-width: 768px) 400px, 100vw"
-        className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
+        className="object-cover motion-safe:transition-transform duration-300 ease-out motion-safe:group-hover:scale-105"
       />
     </button>
   );
@@ -122,7 +122,7 @@ export function Gallery() {
             </div>
 
             <DialogPrimitive.Close
-              className="pointer-events-auto absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-md text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+              className="pointer-events-auto absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-md text-white/80 motion-safe:transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
               aria-label="Close"
             >
               <X className="h-5 w-5" />
@@ -132,7 +132,7 @@ export function Gallery() {
               type="button"
               onClick={prev}
               aria-label="Previous image"
-              className="pointer-events-auto absolute left-4 top-1/2 -translate-y-1/2 inline-flex h-12 w-12 items-center justify-center rounded-md text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+              className="pointer-events-auto absolute left-4 top-1/2 -translate-y-1/2 inline-flex h-12 w-12 items-center justify-center rounded-md text-white/80 motion-safe:transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
             >
               <ChevronLeft className="h-6 w-6" />
             </button>
@@ -141,7 +141,7 @@ export function Gallery() {
               type="button"
               onClick={next}
               aria-label="Next image"
-              className="pointer-events-auto absolute right-4 top-1/2 -translate-y-1/2 inline-flex h-12 w-12 items-center justify-center rounded-md text-white/80 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
+              className="pointer-events-auto absolute right-4 top-1/2 -translate-y-1/2 inline-flex h-12 w-12 items-center justify-center rounded-md text-white/80 motion-safe:transition-colors hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
             >
               <ChevronRight className="h-6 w-6" />
             </button>

@@ -7,7 +7,7 @@ export function CertCard({ cert }: { cert: Certification }) {
       href={cert.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4 hover:bg-[hsl(var(--muted))] transition-colors"
+      className="group block rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4 hover:bg-[hsl(var(--muted))] motion-safe:transition-colors"
     >
       <h3 className="text-sm font-semibold">{cert.name}</h3>
       <p className="text-xs text-[hsl(var(--muted-foreground))]">{cert.issuer}</p>

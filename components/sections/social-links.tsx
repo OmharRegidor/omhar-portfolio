@@ -24,7 +24,7 @@ export function SocialLinks() {
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-2 text-sm hover:bg-[hsl(var(--muted))] transition-colors"
+                className="inline-flex items-center gap-2 rounded-sm border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-2 text-sm hover:bg-[hsl(var(--muted))] motion-safe:transition-colors"
               >
                 <Icon className="h-4 w-4" aria-hidden />
                 <span>{s.label}</span>
