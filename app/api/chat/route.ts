@@ -30,12 +30,21 @@ function staticReply() {
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
 
-  // 1. Per-IP rate limit (burst protection).
+  // 1. Per-IP rate limit (burst protection). Fails OPEN — a limiter outage must
+  //    not take the chat down (mirrors allowDailyUsage in lib/chat/usage.ts).
+  //    The kill-switch + daily cap + free-tier providers still bound abuse.
+  //    Logged so a real outage is diagnosable instead of silently degrading.
   let limit;
   try {
     limit = await getRateLimit().limit(ip);
-  } catch {
-    return err("SERVICE_UNAVAILABLE", "Rate limiter unreachable", 503);
+  } catch (e) {
+    if (process.env.NODE_ENV !== "test") {
+      console.warn(
+        "[chat] rate limiter unreachable — failing open:",
+        e instanceof Error ? e.message : e,
+      );
+    }
+    limit = { success: true, limit: 0, remaining: 0, reset: 0 };
   }
   if (!limit.success) {
     return err("RATE_LIMITED", "Too many requests", 429, { "Retry-After": "60" });
