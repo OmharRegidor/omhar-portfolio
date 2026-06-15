@@ -9,14 +9,13 @@
 ## Goal
 
 Make the "Ask Omhar AI" chat launcher gently invite attention with a subtle,
-breathing accent ring — without nagging. It breathes only until the visitor
-first opens the chat, then goes quiet for the session, and it never animates for
-visitors who prefer reduced motion.
+breathing accent ring. It breathes continuously (a gentle loop) and never
+animates for visitors who prefer reduced motion.
 
 Chosen direction (validated live in the visual companion):
 - **Form:** keep the pill with the "Ask Omhar AI" label + chat icon (variant D).
 - **Effect:** a thin accent ring around the pill that breathes (scales + fades).
-- **Trigger:** breathe until the first chat open, then stop (remembered for the session).
+- **Trigger:** always breathing — a continuous gentle loop while the launcher is visible.
 - **Intensity:** subtle/premium — slow cadence, low opacity, small scale.
 
 Non-goals: changing the chat panel, the launcher's position/label/icon, or adding
@@ -82,36 +81,36 @@ hover transition, and `ChatPanel` wiring are unchanged.
 
 ```tsx
 <div className="fixed bottom-6 right-6 z-30 print:hidden">
-  <button type="button" onClick={openChat} aria-label="Ask Omhar AI"
+  <button type="button" onClick={() => setOpen(true)} aria-label="Ask Omhar AI"
           className="relative z-10 inline-flex items-center gap-2 rounded-full …">
     <MessageSquare className="h-4 w-4" aria-hidden />
     <span>Ask Omhar AI</span>
   </button>
-  {breathing && <span aria-hidden className="… motion-safe:animate-breathe" />}
+  <span aria-hidden className="… motion-safe:animate-breathe" />
 </div>
 <ChatPanel open={open} onOpenChange={setOpen} />
 ```
 
-### 4. Lifecycle — breathe until first open (SSR-safe)
+### 4. Lifecycle — always on (no state)
 
-- `SEEN_KEY = "omhar-chat-launcher-seen"`.
-- `const [breathing, setBreathing] = useState(false)` — starts **false** so the
-  server render and first client paint match (no hydration mismatch / flash).
-- On mount, an effect enables breathing only if the visitor hasn't opened before:
-  `useEffect(() => { if (!sessionStorage.getItem(SEEN_KEY)) setBreathing(true); }, [])`
-  (wrapped in try/catch like the existing history read).
-- `openChat()` = `setOpen(true)` + `setBreathing(false)` + persist
-  `sessionStorage.setItem(SEEN_KEY, "1")` (try/catch). The ring unmounts; reopening
-  within the session shows a plain pill. A fresh session breathes again.
+The ring is rendered unconditionally and animates continuously; there is no
+`breathing` state, mount effect, or sessionStorage. SSR-safe by construction —
+server and client render the same static `<span>`, and `opacity-0` keeps it
+invisible until the (motion-safe) animation drives opacity, so no hydration
+flash. The button's only job is `setOpen(true)`.
+
+> **Revised 2026-06-15:** originally "breathe until first open, then stop"
+> (sessionStorage `omhar-chat-launcher-seen`). Changed to a continuous gentle
+> loop after live testing — stopping after the first open meant the owner and
+> returning visitors almost never saw it. Reduced-motion still suppresses it.
 
 ### 5. Testing
 
 1. **Unit (RTL, `tests/unit/chat-launcher.test.tsx` — new):**
-   - Breathes when unseen: with `sessionStorage` empty, after mount the ring
-     (`[aria-hidden]` with the `animate-breathe` class) is present.
-   - Stops on open: clicking the button removes the ring and sets
-     `sessionStorage[SEEN_KEY]`.
-   - No breathe when already seen: with the flag pre-set, no ring renders.
+   - The ring (`[aria-hidden]` with the `animate-breathe` class, `pointer-events-none`)
+     always renders.
+   - It keeps breathing after the chat is opened (clicking the button does not
+     remove it).
    - (matchMedia is stubbed by `vitest.setup.ts`; assert on class presence, not
      computed animation.)
 2. **Static:** extend `tests/unit/motion-tokens.test.ts` to assert
@@ -122,8 +121,8 @@ hover transition, and `ChatPanel` wiring are unchanged.
 ## Acceptance criteria
 
 - [ ] `--animate-breathe` + `@keyframes breathe` present in `globals.css` `@theme`.
-- [ ] Launcher shows a subtle breathing accent ring on a fresh session.
-- [ ] Ring stops and stays gone after the first chat open (persisted for the session).
+- [ ] Launcher shows a subtle breathing accent ring continuously.
+- [ ] Ring keeps breathing after the chat is opened (no stop/dismiss).
 - [ ] Ring is fully invisible under `prefers-reduced-motion: reduce`.
 - [ ] No hydration warning; label/icon/position/hover unchanged; clicks unaffected.
 - [ ] Unit + static tests pass; `lint`, `tsc`, `test`, `build`, `e2e` all green.
