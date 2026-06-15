@@ -2,12 +2,21 @@ import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { getEnv } from "./env";
 
-// Hard guard: bypass MUST NEVER be active in production. Module-load assertion.
-// Reads process.env directly (not getEnv()) because getEnv() requires Upstash creds
-// which the bypass user explicitly doesn't have. The schema in env.ts validates
-// shape; this guard validates intent.
-if (process.env.RATE_LIMIT_BYPASS === "1" && process.env.NODE_ENV === "production") {
-  throw new Error("RATE_LIMIT_BYPASS=1 is forbidden in production. Refusing to start.");
+// Hard guard: bypass MUST NEVER be active on the live (Vercel) deployment.
+// Module-load assertion. Reads process.env directly (not getEnv()) because getEnv()
+// requires Upstash creds which the bypass user explicitly doesn't have. The schema
+// in env.ts validates shape; this guard validates intent.
+//
+// Scoped to `VERCEL` (set by Vercel at BOTH build and runtime, on production AND
+// preview deploys) so every internet-facing deployment is protected — while CI/e2e
+// and local production builds, which are not internet-facing and have no real
+// Upstash, may legitimately use the bypass.
+if (
+  process.env.RATE_LIMIT_BYPASS === "1" &&
+  process.env.NODE_ENV === "production" &&
+  process.env.VERCEL
+) {
+  throw new Error("RATE_LIMIT_BYPASS=1 is forbidden on the live deployment. Refusing to start.");
 }
 
 const BYPASS_RESULT = {
