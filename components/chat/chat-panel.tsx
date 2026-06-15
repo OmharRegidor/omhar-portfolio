@@ -204,8 +204,10 @@ export function ChatPanel({
 
   const Body = (
     <div className="flex h-full min-h-0 flex-col">
-      {/* Persona header + always-visible booking CTA */}
-      <div className="flex items-center gap-3 border-b border-[hsl(var(--border))] pb-3">
+      {/* Persona header + always-visible booking CTA. pr-8 reserves room for the
+          dialog/sheet close (×) at absolute right-4 top-4, so the CTA never sits
+          under it. */}
+      <div className="flex items-center gap-3 border-b border-[hsl(var(--border))] pb-3 pr-8">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={profile.photoSrc}
