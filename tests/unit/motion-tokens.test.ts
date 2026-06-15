@@ -22,6 +22,11 @@ describe("motion design system — globals.css", () => {
     expect(css).toMatch(/--ease-brand:\s*cubic-bezier\([^)]*\)/);
   });
 
+  it("defines the launcher breathe animation token + keyframes", () => {
+    expect(css).toMatch(/--animate-breathe:\s*breathe\b/);
+    expect(css).toMatch(/@keyframes\s+breathe\s*\{/);
+  });
+
   it("exposes ergonomic duration-* @utility shims bound to the tokens", () => {
     for (const [name, token] of [
       ["fast", "--motion-fast"],
