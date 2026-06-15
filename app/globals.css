@@ -37,6 +37,15 @@
   --motion-slow: 320ms; /* larger surfaces: panels, reveals */
   --motion-deliberate: 520ms; /* showcase: hero, staggered entrances */
   --ease-brand: cubic-bezier(0.2, 0, 0, 1); /* fast departure, smooth settle */
+
+  /* Launcher breathing ring — subtle "alive" pulse that invites a first chat.
+     Symmetric ease-in-out (a breathe, not the brand ease-out). Only used via the
+     `animate-breathe` utility, gated with motion-safe: at the call site. */
+  --animate-breathe: breathe 3.5s ease-in-out infinite;
+  @keyframes breathe {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(1.08); }
+  }
 }
 
 @layer base {
