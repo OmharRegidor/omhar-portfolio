@@ -137,7 +137,11 @@ export function ChatPanel({
   useEffect(() => () => abortRef.current?.abort(), []);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView?.({ behavior: "smooth", block: "end" });
+    // Respect prefers-reduced-motion: an explicit `behavior: "smooth"` overrides
+    // the element's computed scroll-behavior (CSSOM View), so the global CSS
+    // guard can't govern it — we must pick the behavior here, like the carousel.
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    endRef.current?.scrollIntoView?.({ behavior: reduce ? "auto" : "smooth", block: "end" });
   }, [messages, streaming]);
 
   async function send(text: string) {

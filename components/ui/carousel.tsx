@@ -216,7 +216,7 @@ const CarouselDots = ({ className }: { className?: string }) => {
           aria-selected={i === selectedIndex}
           onClick={() => scrollTo(i)}
           className={cn(
-            "h-1.5 w-1.5 rounded-full transition-colors",
+            "h-1.5 w-1.5 rounded-full motion-safe:transition-colors",
             i === selectedIndex
               ? "bg-[hsl(var(--foreground))]"
               : "bg-[hsl(var(--foreground))]/30 hover:bg-[hsl(var(--foreground))]/60",

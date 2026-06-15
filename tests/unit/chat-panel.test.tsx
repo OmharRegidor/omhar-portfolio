@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ChatPanel } from "@/components/chat/chat-panel";
@@ -108,5 +108,66 @@ describe("ChatPanel", () => {
     // The abort clears busy (Send returns, not Stop) and appends no error bubble.
     await waitFor(() => expect(screen.getByRole("button", { name: /send/i })).toBeInTheDocument());
     expect(screen.queryByText(/something went wrong/i)).not.toBeInTheDocument();
+  });
+});
+
+// The auto-scroll effect calls scrollIntoView with an explicit `behavior`, which
+// (per CSSOM View) overrides the element's scroll-behavior — so the global CSS
+// reduced-motion guard cannot govern it. The component must pick the behavior
+// from the user's preference. These tests pin both branches.
+describe("ChatPanel — reduced-motion auto-scroll", () => {
+  const realScrollIntoView = Element.prototype.scrollIntoView;
+  const realMatchMedia = window.matchMedia;
+  let scrollSpy: ReturnType<typeof vi.fn>;
+
+  function setReducedMotion(reduce: boolean) {
+    window.matchMedia = ((query: string) =>
+      ({
+        matches: reduce && query.includes("prefers-reduced-motion"),
+        media: query,
+        onchange: null,
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        addListener: () => {},
+        removeListener: () => {},
+        dispatchEvent: () => false,
+      })) as unknown as typeof window.matchMedia;
+  }
+
+  beforeEach(() => {
+    scrollSpy = vi.fn();
+    Element.prototype.scrollIntoView = scrollSpy as unknown as typeof Element.prototype.scrollIntoView;
+  });
+
+  afterEach(() => {
+    Element.prototype.scrollIntoView = realScrollIntoView;
+    window.matchMedia = realMatchMedia;
+  });
+
+  it("scrolls instantly (behavior: auto) when the visitor prefers reduced motion", async () => {
+    setReducedMotion(true);
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(streamingResponse("Sure — here's a reply.")));
+    const user = userEvent.setup();
+    render(<ChatPanel open onOpenChange={() => {}} />);
+    // Sending changes messages/streaming, re-running the auto-scroll effect once the ref is attached.
+    await user.type(screen.getByPlaceholderText(/ask/i), "hi");
+    await user.keyboard("{Enter}");
+
+    await waitFor(() => expect(scrollSpy).toHaveBeenCalled());
+    for (const call of scrollSpy.mock.calls) {
+      expect(call[0]).toMatchObject({ behavior: "auto" });
+    }
+  });
+
+  it("scrolls smoothly when motion is allowed", async () => {
+    setReducedMotion(false);
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(streamingResponse("Sure — here's a reply.")));
+    const user = userEvent.setup();
+    render(<ChatPanel open onOpenChange={() => {}} />);
+    await user.type(screen.getByPlaceholderText(/ask/i), "hi");
+    await user.keyboard("{Enter}");
+
+    await waitFor(() => expect(scrollSpy).toHaveBeenCalled());
+    expect(scrollSpy.mock.calls.some((c) => c[0]?.behavior === "smooth")).toBe(true);
   });
 });

@@ -36,7 +36,7 @@ export function ThemeSwitch({ className }: { className?: string }) {
         "relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full",
         "border border-[hsl(var(--border))]",
         "bg-[hsl(var(--muted))] data-[state=checked]:bg-[hsl(var(--muted))]",
-        "transition-colors",
+        "motion-safe:transition-colors",
         className,
       )}
     >
@@ -47,7 +47,7 @@ export function ThemeSwitch({ className }: { className?: string }) {
         className={cn(
           "pointer-events-none block h-5 w-5 rounded-full bg-[hsl(var(--card))]",
           "shadow-[0_1px_2px_hsl(0_0%_0%_/_0.2)]",
-          "translate-x-0.5 transition-transform data-[state=checked]:translate-x-[calc(2.75rem-1.25rem-0.125rem)]",
+          "translate-x-0.5 motion-safe:transition-transform data-[state=checked]:translate-x-[calc(2.75rem-1.25rem-0.125rem)]",
         )}
       />
     </SwitchPrimitive.Root>

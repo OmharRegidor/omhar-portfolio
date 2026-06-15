@@ -10,7 +10,7 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
         <button
           type="button"
           onClick={reset}
-          className="inline-flex items-center justify-center rounded-md border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 h-10 text-sm hover:bg-[hsl(var(--muted))] transition-colors"
+          className="inline-flex items-center justify-center rounded-md border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 h-10 text-sm hover:bg-[hsl(var(--muted))] motion-safe:transition-colors"
         >
           Try again
         </button>

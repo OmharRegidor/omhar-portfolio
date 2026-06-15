@@ -87,28 +87,42 @@ collision appears, fall back to the Tailwind v4-native shorthand
 
 ### 3. Reduced-motion contract — two layers
 
-**Layer A — global safety net** (new block in `app/globals.css`):
+**Layer A — global safety net** (new block in `app/globals.css`) — the
+conventional "Andy Bell" reduced-motion reset:
 
 ```css
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;       /* kill keyframe motion */
     animation-iteration-count: 1 !important;
-    transition-duration: var(--motion-fast) !important;  /* clamp any stray transition to ≤120ms */
+    transition-duration: 0.01ms !important;      /* collapse every transition to ~instant */
     scroll-behavior: auto !important;
   }
 }
 ```
 
+> **Correction vs first draft (2026-06-15):** the first draft clamped
+> `transition-duration` to `var(--motion-fast)` (120ms). That is a bug: CSS's
+> initial `transition-property` is `all`, and most elements never override it,
+> so a universal 120ms duration would make *every* property change — including
+> transforms and layout — animate over 120ms. That **amplifies** motion for the
+> users who asked for less. The fix is to clamp to `0.01ms` (effectively
+> instant; non-zero only so `transitionend`/`animationend` still fire). This
+> disables transforms, transitions, and animations universally. Consequence:
+> the "keep ≤120ms opacity fades" nicety is dropped — under reduced motion all
+> motion is instant, which is the standard, safe behavior.
+
 **Layer B — convention + retrofit:** all *transform* motion in our code is gated
 with `motion-safe:`, so under reduced motion its `transition-property` is absent
-and the transform is genuinely disabled (not merely fast). Color/opacity fades
-survive, clamped by Layer A to ≤120ms.
+and the transform is genuinely disabled at the source (not relying solely on the
+guard). Layer A is the universal net for anything un-gated, third-party, or
+future-authored.
 
-**Net effect of A+B:** transforms off; short fades kept — exactly the contract.
+**Net effect of A+B:** under reduced motion, no motion — transforms, transitions,
+and animations are all instant.
 
 Why both layers: Layer B makes our own intent explicit and predictable; Layer A
-is the universal net for anything un-gated, third-party, or future-authored.
+is the universal safety net.
 
 ### 4. Retrofit scope (fix the existing inconsistency)
 
@@ -131,11 +145,22 @@ is the universal net for anything un-gated, third-party, or future-authored.
 Real count is ~10–12 spots (the "~6" earlier estimate was low); the shared
 `button.tsx` base collapses several.
 
-**Left intentionally bare (the kept fades):**
-- `components/hero/profile-card.tsx` — opacity crossfades; become the canonical
-  "≤120ms opacity fade," clamped by Layer A.
+**Left intentionally bare (no `motion-safe:` retrofit needed):**
+- `components/hero/profile-card.tsx` — opacity crossfades. Opacity-only (no
+  movement); under normal motion they crossfade as before, under reduced motion
+  Layer A makes them instant. No retrofit needed.
 - `components/ui/dialog.tsx` / `sheet.tsx` close buttons — bare
-  `transition-opacity`; opacity, kept and clamped by Layer A.
+  `transition-opacity`; same rationale.
+
+**JS-initiated motion (found in Wave-2 review, fixed):**
+- `components/chat/chat-panel.tsx` — the conversation auto-scroll calls
+  `scrollIntoView({ behavior: "smooth" })` on every streamed chunk. Per CSSOM
+  View, an explicit `behavior` option overrides the element's computed
+  `scroll-behavior`, so the global CSS guard provably cannot govern it — the log
+  would keep smooth-scrolling under reduced motion. Fixed at the call site: read
+  `matchMedia("(prefers-reduced-motion: reduce)")` and pass `"auto"` when reduced
+  (mirrors `carousel.tsx`). Pinned by two tests in `tests/unit/chat-panel.test.tsx`.
+  The CSS guard cannot cover JS scroll APIs; this was the one motion path it missed.
 
 **Out of scope (follow-up, not this change):** migrating existing
 `duration-300` / `duration-500` literals to the new tokens. The foundation does
@@ -149,10 +174,10 @@ To be written test-first during implementation (TDD):
    `--motion-fast: 120ms`, `--motion-base: 200ms`, `--motion-slow: 320ms`,
    `--motion-deliberate: 520ms`, `--ease-brand:`, the four `@utility duration-*`
    shims, and the `@media (prefers-reduced-motion: reduce)` guard block.
-2. **Behavioral (Playwright e2e)** — load the home page with
-   `emulateMedia({ reducedMotion: 'reduce' })`; assert a sampled interactive
-   element's computed `transition-duration` ≤ 120ms, and that the global guard
-   applies.
+2. **Behavioral (Playwright e2e)** — load the home page under
+   `reducedMotion: 'reduce'`; assert a sampled interactive element's computed
+   `transition-duration` is clamped to ~instant (≤ a few ms) by the guard, and
+   that `scroll-behavior` resolves to `auto`.
 3. **Build** — `pnpm build` succeeds (validates the `@utility` shims compile and
    don't collide with Tailwind's numeric `duration-*`).
 
@@ -160,8 +185,8 @@ To be written test-first during implementation (TDD):
 
 - [ ] Duration tokens + `--ease-brand` present in `@theme`; `ease-brand` utility usable.
 - [ ] Four `duration-*` `@utility` shims present and compiling.
-- [ ] Global `prefers-reduced-motion` guard present (kills animations, clamps
-      transitions to ≤120ms, disables smooth scroll).
+- [ ] Global `prefers-reduced-motion` guard present (clamps transitions AND
+      animations to ~0/0.01ms, disables smooth scroll).
 - [ ] All bare transform transitions gated with `motion-safe:`.
 - [ ] All bare `transition-colors` gated with `motion-safe:` per the list above.
 - [ ] `profile-card` opacity fades left bare (kept, clamped).
