@@ -9,6 +9,7 @@ import { MembershipBlock } from "@/components/sections/membership-block";
 import { PartnerCta } from "@/components/sections/partner-cta";
 import { Gallery } from "@/components/sections/gallery";
 import { SocialLinks } from "@/components/sections/social-links";
+import { Reveal } from "@/components/motion/reveal";
 
 export default function HomePage() {
   return (
@@ -23,18 +24,18 @@ export default function HomePage() {
       */}
       <div className="flex flex-col gap-y-12 md:grid md:grid-cols-[1fr_320px] md:gap-x-8 md:gap-y-0">
         <div className="contents md:flex md:flex-col">
-          <div className="order-1 md:order-none"><About /></div>
-          <div className="order-3 md:order-none md:mt-12"><TechStackPreview /></div>
-          <div className="order-4 md:order-none md:mt-6"><RecentProjects /></div>
-          <div className="order-9 md:order-none md:mt-12 empty:hidden"><RecentCertifications /></div>
-          <div className="order-7 md:order-none md:mt-auto md:pt-2"><SocialLinks /></div>
+          <Reveal className="order-1 md:order-none"><About /></Reveal>
+          <Reveal className="order-3 md:order-none md:mt-12"><TechStackPreview /></Reveal>
+          <Reveal className="order-4 md:order-none md:mt-6"><RecentProjects /></Reveal>
+          <Reveal className="order-9 md:order-none md:mt-12 empty:hidden"><RecentCertifications /></Reveal>
+          <Reveal className="order-7 md:order-none md:mt-auto md:pt-2"><SocialLinks /></Reveal>
         </div>
         <div className="contents md:flex md:flex-col md:gap-y-4">
-          <div className="order-2 md:order-none"><ExperienceTimeline /></div>
-          <div className="order-6 md:order-none"><PartnerCta /></div>
-          <div className="order-5 md:order-none"><RecommendationsCarousel /></div>
-          <div className="order-10 md:order-none empty:hidden"><MembershipBlock /></div>
-          <div className="order-8 md:order-none"><Gallery /></div>
+          <Reveal className="order-2 md:order-none"><ExperienceTimeline /></Reveal>
+          <Reveal className="order-6 md:order-none"><PartnerCta /></Reveal>
+          <Reveal className="order-5 md:order-none"><RecommendationsCarousel /></Reveal>
+          <Reveal className="order-10 md:order-none empty:hidden"><MembershipBlock /></Reveal>
+          <Reveal className="order-8 md:order-none"><Gallery /></Reveal>
         </div>
       </div>
     </div>
