@@ -51,34 +51,37 @@ A `"use client"` component that wraps one block and reveals it on first scroll-i
   `order-*` classes (and anything else) the block already needs.
 
 **Behavior (progressive enhancement, flash-free)**
-- The wrapper renders a `<div>` around `children`.
-- Two flags drive it: `mounted` (false until the mount effect runs) and `revealed`.
-  - **Before mount** (SSR + first client paint + no-JS): visible, **no** transition/
-    hidden classes → content is always present and crawlable, zero layout shift.
-  - **On mount** (effect): set `mounted`. Then:
-    - If `matchMedia("(prefers-reduced-motion: reduce)").matches` **or**
-      `typeof IntersectionObserver === "undefined"` → set `revealed = true` and stop
-      (always visible, no observer, no animation).
-    - Else read `ref.current.getBoundingClientRect()`. If the element is **already in
-      view** (top < viewport height) → `revealed = true` immediately (no flash for
-      above-fold blocks). If **below the fold** → leave `revealed = false` (its hidden
-      state paints off-screen, so no visible flash) and `observe()`; on the first
-      `isIntersecting` entry set `revealed = true`, then `unobserve()` (once-only).
-  - Cleanup disconnects the observer.
+- The wrapper renders a `<div>` around `children`. A single `phase` state drives it:
+  `"initial"` → `"hidden"` → `"shown"`.
+  - **Before mount** (SSR + first client paint + no-JS): `phase = "initial"` → visible,
+    **no** transition/hidden classes → content is always present and crawlable, zero
+    layout shift, no hydration mismatch.
+  - **On mount** (effect): if `prefers-reduced-motion: reduce`, no `IntersectionObserver`,
+    or the element is `display:none` (an empty section collapsed by `empty:hidden` — which
+    can never intersect) → `phase = "shown"` and stop (visible, no observer).
+  - Otherwise `observe()` the element. The IO callback runs **post-layout**, so its
+    intersection verdict is reliable even while images/fonts are still settling — a
+    synchronous mount-time `getBoundingClientRect` is NOT (it mis-hides content before
+    layout settles, which is the bug this design avoids):
+    - First report **off-screen** → `phase = "hidden"` (paints off-screen, no visible flash).
+    - **In view** (first report or later, on scroll-in) → `phase = "shown"`, then
+      `disconnect()` (once-only). Above-fold blocks stay visible the whole time — no flash.
+  - Cleanup disconnects the observer (also covers React StrictMode's double-mount).
 
-**Classes** (only once `mounted`, so the hidden state never reaches SSR):
+**Classes** (the transition + hidden state only exist once `phase !== "initial"`, so they
+never reach SSR):
 ```tsx
 className={cn(
-  mounted && "motion-safe:transition-[opacity,transform] motion-safe:duration-slow motion-safe:ease-brand",
-  mounted && !revealed ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0",
+  phase !== "initial" && "motion-safe:transition-[opacity,transform] motion-safe:duration-slow motion-safe:ease-brand",
+  phase === "hidden" ? "opacity-0 translate-y-3" : "opacity-100 translate-y-0",
   className,
 )}
 ```
 - `translate-y-3` = 12px rise. Duration `--motion-slow` (320ms) as a starting point —
-  fine-tuned live; bump toward `--motion-deliberate` if it wants more presence.
+  fine-tuned live; bump toward `--motion-deliberate` for more presence.
 - All motion is `motion-safe:`-gated and the hidden state is unreachable under reduced
-  motion (revealed is forced true there), so reduced-motion users get instant, static
-  content — and the global guard is a redundant backstop.
+  motion (`phase` is forced to `"shown"` there), so reduced-motion users get instant,
+  static content — the global guard is a redundant backstop.
 
 This component has one clear job (reveal a block on first view), a tiny interface
 (`children` + `className`), and depends only on the DOM + React.
@@ -100,13 +103,15 @@ no layout impact.
 ### 3. Testing
 
 1. **Unit (RTL, `tests/unit/reveal.test.tsx` — new):** stub `IntersectionObserver`
-   (capture the callback) and `window.matchMedia`.
-   - Renders its children.
-   - Reduced-motion (`matchMedia → matches:true`): content is visible (revealed) and
-     **no** observer is created.
-   - Below-fold + motion allowed: after mount the wrapper carries the hidden state; firing
-     an `isIntersecting:true` entry flips it to the revealed state and calls `unobserve`
-     (once-only — a second entry does nothing).
+   (capturing its callback) and `window.matchMedia`.
+   - Renders its children and forwards `className`.
+   - Reduced-motion (`matchMedia → matches:true`): visible (`opacity-100`), **no** observer.
+   - Before any callback (`phase = "initial"`): visible, no transition class (so SSR/first
+     paint never hides it).
+   - Motion allowed: a first **off-screen** report sets the hidden state; a later
+     `isIntersecting:true` entry flips it to shown and calls `disconnect` (once-only).
+   - A first **in-view** report reveals immediately without ever hiding.
+   - A `display:none` block (mocked) is revealed without creating an observer.
    - Assert on class presence (`opacity-0` vs `opacity-100`), not computed animation
      (jsdom doesn't run CSS).
 2. **e2e (Playwright, extend/add):**
@@ -128,9 +133,10 @@ No `globals.css` change — the reveal is built from existing tokens + Tailwind 
 
 ## Risks
 
-- **Above-fold flash** — mitigated by the synchronous `getBoundingClientRect` check at
-  mount (reveal immediately if in view) and by keeping the hidden state off SSR (`mounted`
-  gate).
+- **Above-fold flash** — mitigated by deciding via the **post-layout IO callback** (never a
+  synchronous mount-time measurement, which mis-fires before layout settles) and by keeping
+  the hidden state off SSR (`phase` starts `"initial"`/visible). Above-fold blocks are never
+  put into the hidden state.
 - **LCP regression** — mitigated by excluding the hero from reveal.
 - **jsdom lacks `IntersectionObserver`** — the unit test stubs it; the component guards
   `typeof IntersectionObserver === "undefined"` so it degrades gracefully where absent.
