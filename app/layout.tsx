@@ -3,7 +3,7 @@ import localFont from 'next/font/local';
 import { ThemeProvider } from '@/components/theme/theme-provider';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { ChatLauncher } from '@/components/chat/chat-launcher';
-import { SiteControls } from '@/components/layout/site-controls';
+import { ThemeSwitch } from '@/components/theme/theme-switch';
 import './globals.css';
 
 const openRunde = localFont({
@@ -68,7 +68,7 @@ export default function RootLayout({
           <main className="mx-auto max-w-4xl px-4 py-8">{children}</main>
           <SiteFooter />
           <ChatLauncher />
-          <SiteControls />
+          <ThemeSwitch className="fixed right-4 top-4 z-40 sm:right-6 sm:top-6" />
         </ThemeProvider>
       </body>
     </html>
