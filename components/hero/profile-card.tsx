@@ -2,16 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { profile } from "@/content/profile";
 import { Button } from "@/components/ui/button";
-import { ThemeSwitch } from "@/components/theme/theme-switch";
 import { Calendar, MapPin, BadgeCheck } from "lucide-react";
 import { FeaturedAward } from "./featured-award";
 
 export function ProfileCard() {
   return (
     <div className="relative px-6 pt-6 pb-4 sm:px-8 sm:pt-8 sm:pb-4">
-      {/* Theme switch top-right */}
-      <ThemeSwitch className="absolute right-4 top-4 sm:right-6 sm:top-6" />
-
       <div className="flex flex-col sm:flex-row gap-6">
         {/* Profile photo stack — 4 images layered with opacity transitions.
             Light/dark variants via dark: variant; hover variants via group-hover.
