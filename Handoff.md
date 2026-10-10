@@ -25,6 +25,12 @@ scripted one (no `/api/chat` call yet). Lint ignores `public/**` and `.noxa/**`.
 Tests: smoke and a11y cover `/`, `/automations`, `/gear` (plus fonts are local, redirects work); the old
 homepage's scroll-reveal and theme-toggle tests were removed, the reduced-motion and hydration tests run on `/resume`.
 
+Security (2026-10-11): `pnpm audit` started failing CI on new advisories (3 critical Next.js RCEs). Next.js and
+eslint-config-next went 16.2.6 → 16.3.8 (the patched line; 16.4.0 was 5 days old). Patched transitive versions are
+forced through `pnpm.overrides` (brace-expansion, js-yaml, nanoid, postcss, browserslist, source-map-js, undici).
+`braces` GHSA-vfj7-8cjw-p6xm has no fix yet and only sits in the lint plugin, so it's in `pnpm.auditConfig.ignoreGhsas`.
+Remove that entry once a patched `braces` exists.
+
 Still unconfirmed and now live as-is: Comfit is named as a client on the CS Live Inbox page; the Noxa testimonial
 has no employer label; MacBook size, memory and storage are not shown; the mouse is assumed to be the OP-620D.
 
