@@ -19,7 +19,8 @@ const config = [
     },
   },
   {
-    ignores: [".next/**", "out/**", "build/**", "next-env.d.ts"],
+    // public/ holds static browser scripts (the Atelier pages, vendored Embla). .noxa/ is local design previews.
+    ignores: [".next/**", "out/**", "build/**", "next-env.d.ts", "public/**", ".noxa/**"],
   },
 ];
 

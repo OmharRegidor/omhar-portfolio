@@ -1,4 +1,212 @@
-# Handoff — Omhar's Portfolio (updated 2026-06-17)
+# Handoff, Omhar's Portfolio (updated 2026-10-10)
+
+## ▶ LIVE (2026-10-10): the Atelier pages are the site now
+
+The owner said "make it live now" without waiting for the spec or the Next.js rebuild, so the approved previews
+ship as **static pages** inside the existing Next.js app. The React rebuild is still the long-term plan.
+
+| What | Where |
+|---|---|
+| Live pages (edit these now, not `.noxa/`) | `public/atelier/index.html`, `automations.html`, `gear.html`, `ask-omhar.js`, `site-menu.js` |
+| Photos, fonts, Embla | `public/atelier/hero/`, `projects/`, `gear/`, `fonts/` (self-hosted, latin + latin-ext), `vendor/` |
+| Clean URLs | `next.config.ts` `rewrites().beforeFiles`: `/`, `/gear`, `/automations` → the files above |
+| Redirects (307, temporary) | `/projects` → `/#work`, `/tech-stack` → `/#stack`, `/automations/{cs-live-inbox,daily-sales-pulse,sop-assistant}` → hash routes |
+| SEO | `public/robots.txt`, `public/sitemap.xml`, `public/llms.txt`; every canonical/JSON-LD uses `https://omharregidor.vercel.app` |
+| Rollback | tag `original-layout-v1` / branch `archive/original-layout` (both pushed). Removing the `rewrites`/`redirects` blocks alone brings the old homepage back |
+
+How the copy was made: a one-off script turned the previews into live files. Inlined images became real files
+(homepage 1.8 MB to 130 KB), Google Fonts became self-hosted (the site's CSP only allows `'self'`), links became
+clean URLs, and preview-only bits were removed: the chat's "Preview" note, the automation page's preview pill,
+the "Omhar to supply/confirm" Problem, Result and Result-row placeholders. `/automations` with no hash opens
+CS Live Inbox (the old in-page home view stays hidden, its inlined shots removed). The dark-mode night photos
+were dropped (light only). The hidden "Preview options" panel is still in the homepage markup (never shown).
+Still on the React app: `/resume`, `/certifications`, `/api/chat`, the 404 page. The Atelier chat is the
+scripted one (no `/api/chat` call yet). Lint ignores `public/**` and `.noxa/**`.
+Tests: smoke and a11y cover `/`, `/automations`, `/gear` (plus fonts are local, redirects work); the old
+homepage's scroll-reveal and theme-toggle tests were removed, the reduced-motion and hydration tests run on `/resume`.
+
+Still unconfirmed and now live as-is: Comfit is named as a client on the CS Live Inbox page; the Noxa testimonial
+has no employer label; MacBook size, memory and storage are not shown; the mouse is assumed to be the OP-620D.
+
+## Atelier redesign history (design approved in principle)
+
+Session of 2026-10-08/09. Brainstorming path = **architectural**. The owner iterated on the look in
+HTML previews; **no app code was changed**. Next step after the owner answers the 5 questions below:
+write the spec (`docs/superpowers/specs/2026-10-xx-atelier-redesign-design.md`), owner reviews it, then
+`superpowers:writing-plans`. Do not build before the spec is approved.
+
+### Where everything is
+
+| What | Where |
+|---|---|
+| Homepage preview (final look) | `.noxa/atelier-redesign/atelier-hero.html` (open in a browser) |
+| Automation pages preview | `.noxa/atelier-redesign/automation-preview.html` (`#auto-live-inbox`, `#auto-sales-pulse`, `#auto-sop`) |
+| The 3 original direction options | `.noxa/atelier-redesign/portfolio-directions.html` |
+| Homepage source + rebuild | edit `atelier-hero.src.html`, then `node build-hero.cjs` (inlines `hero/`, `projects/`, `vendor/`) |
+| SEO drafts for the real build | `.noxa/atelier-redesign/seo/` (`robots.txt`, `llms.txt`, homepage + automations JSON-LD) |
+| Team review screenshots | `.noxa/atelier-redesign/review/` |
+| Restore point of the ORIGINAL layout | branch `archive/original-layout` and tag `original-layout-v1` (= main @ `7ef7894`). Go back with `git checkout original-layout-v1` or `git switch -c restore archive/original-layout` |
+| Older experiments | `feat/v2-static` (v2 CRT/3D, then v3 B/W bento committed as `7a25f0e`, local only) |
+
+`.noxa/` is gitignored, so the previews are local only (not on GitHub).
+
+### Owner decisions (locked)
+
+- Direction **"The Atelier"**: quiet luxury, minimalist, **light mode only** (theme toggle removed).
+- Palette **black & white** (`mono`): paper `#F7F6F2`, ink `#121413`, hero dark `#0D0D0D`, band `#111111`.
+- Fonts: **Geist 300** headings (small, minimal), **Instrument Serif italic** for accent words, **Jost** body.
+- Hero: drfol.io style. Full-bleed photo on the right, dark fade from the left, white headline
+  **"Helping businesses reduce their *manual processes*."** (2026-10-10, owner's wording, LOCKED; earlier tries
+  "Software that helps small businesses *run lighter* and grow.", "Stop doing by hand what software can *do for
+  you*.", "Still running your business without *a system*?" and "Why is your business process still *done
+  manually*?"), sub "I build the automations, web systems and AI tools that take repetitive work off your team,
+  so you can focus on growing." (`.sub` has `text-wrap:pretty` so no word hangs alone), eyebrow, Book a 30-min
+  call (Ask Omhar AI is now the chat bubble).
+  The sub no longer names Batangas; location still shows in the quick answer block and footer.
+- Hero photo: **slideshow, 3 s per photo**, 5 photos (campus day, lobby, studio, graduation, night coding).
+  Capstone photo excluded. Campus is the day photo (the campus night photo was only for the removed dark mode).
+  Pauses on hover, still under reduced motion. Hover on campus shows the second pose (`profile-day-hover`).
+  **2026-10-10: owner removed the progress dashes and the visible pause button.** The pause button is kept
+  only for keyboard users (it appears when tabbed to) so WCAG 2.2.2 still passes.
+  The designer recommended 6 s and a bigger H1. **Owner kept 3 s and the small font.**
+- **Header is fixed (2026-10-10, owner request).** Clear over the hero at the top of the page, then a near-black
+  bar (`.top.solid`, set by a scroll listener) once the page scrolls. The nav sits outside the hero now, the hero
+  keeps a 102px (mobile 77px) first grid row so nothing moved, and `scroll-padding-top` keeps nav targets visible.
+  The automation pages use the same header (same links, incl. Stack), always in its solid bar state, with
+  "Automations" underlined as the current page. Build it once as a shared layout component in the real site.
+- **No accent color (2026-10-10, locked).** A 10% accent was explored (Vermilion, Brass, Iris) and the owner
+  chose to stay pure black and white. The variants and comparison page were removed. Do not re-propose a color.
+- Homepage order: hero → "What does Omhar Regidor do?" quick answer → **01 Websites & apps** (6 rows, real homepage
+  screenshots follow the cursor; on touch the screenshots show inline) → **02 Automations** (3 rows, mini animated
+  diagram on hover, links to automation pages) → **What clients say** (Embla carousel, 5 testimonials, autoplay 8 s,
+  pause button) → **03 Tools I build with** (33 logos, 2 Embla auto-scroll rows, pause button, brand colour on hover)
+  → **Questions, answered** (9 FAQs) → closing CTA → footer.
+- Testimonials and logo rows use **Embla** (already a dependency: `embla-carousel-react` 8.6 + autoplay,
+  auto-scroll, class-names plugins). No new library.
+- Automations: the two SOP workflows are **one page** with an "In Slack / Chat window" switch → 3 pages total
+  (CS Live Inbox, Daily Sales Pulse, SOP Assistant). Each page has a dark tilted "3D" node graph (CSS 3D + SVG,
+  **no WebGL**, since WebGL failed on the owner's machine in v2), animated data packets with sample-data chips,
+  hover/focus/tap cards (type, name, role, description, "How it behaves", step N of M), Pause/Step/2×,
+  scenario switch, "Every node explained" list, Book-a-call CTA, prev/next.
+  Nodes do NOT lift on hover (owner request); arrows end exactly at the port circles.
+  **2026-10-10: owner asked for a flat, straight flow.** The 3D tilt and mouse parallax are gone, every main
+  step sits on one horizontal line (IF "true" leaves from the right tip, "false" drops to Skip below), and the
+  extra text is removed (run counter, logos/draft disclaimer, "Tools" + "+" stubs, "Kept"/"POST" edge labels,
+  agent slot labels). Homepage mini diagrams were regenerated to match. "Simulated run · sample data" stays.
+- Labelled **"Simulated run · sample data"**, never "live". No internal URLs from the n8n screenshots anywhere.
+
+### Team review (Noxa: Gemini, Manny, Jazelei, Franco), fixes already applied in the previews
+
+- SEO/AEO/GEO: titles, meta descriptions, canonical, OG/Twitter, one JSON-LD `@graph`
+  (Person, ProfessionalService, WebSite, ProfilePage, BreadcrumbList, 2× ItemList, FAQPage; automation pages:
+  BreadcrumbList + CreativeWork with HowToStep parts). Quick-answer block with real numbers (6 projects, 3 automations,
+  coding since 2021, BS IT 2025), answer-ready section intros, 9 factual FAQs (schema text = visible text).
+- Copy: "Built for the browser" → "Websites and apps I've *built*"; "Workflows that run while you sleep" →
+  "Workflows that take over the *busywork*" (a person still reviews drafts).
+- Fixes: touch users can open projects; white focus ring on dark areas; pause controls (WCAG 2.2.2);
+  inactive testimonial slides `inert`; mini-diagram packets respect reduced motion; slideshow stops off-screen;
+  dead `#` nav links; empty tooltip; landmarks/heading order; 320 px overflow. **axe: 0 violations** on both pages.
+
+### Engagement audit (2026-10-10, Noxa: Manny, Gemini, Jazelei). Owner has not picked yet.
+
+Broken today: hero "Ask Omhar AI" only shows a toast (`atelier-hero.src.html`, `.ask` handler); live chat open state
+is private to `chat-launcher.tsx` so nothing else can open it; automation pages still show "Omhar to supply";
+project rows leave the site and phones get no preview; no analytics (`@vercel/analytics` not installed);
+the hero headline and first photo wait for JS (LCP risk, make first paint CSS only); the sim loop does not pause
+on a hidden tab; em-dash in `ERROR_REPLY` (`chat-panel.tsx`).
+Ranked hooks: (1) Ask Omhar AI as a live demo with 3 starter chips, a `openChat({source, topic})` window event,
+starters in `content/chat-starters.ts`, top chips answered from canned text (no API call), Book card after 6
+messages or a 429. (2) "Try it yourself" on automation pages, pick or type a customer email and watch it run to an
+Approve step (keyword matching, labelled simulated). (3) Project stories in `dialog.tsx`/`sheet.tsx` as an
+intercepting route `/projects/[slug]`. (4) "Your call agenda" checklist before the closing CTA, carried into
+Calendly. (5) Real results on every automation + one line per homepage row. (6) Dated availability line from
+`content/profile.ts`, build fails if older than 45 days. Later: hours-saved calculator, tools-to-projects
+highlight. Rejected as gimmicky: headline weight thinning on scroll.
+Tracking events: `cta_book_click`, `chat_open`, `chat_starter_click`, `chat_message_sent`, `chat_limit_hit`,
+`automation_view`, `sim_interact`, `project_open`, `contact_click` (custom events may need a paid Vercel plan).
+**Built in the preview (owner picked hook 1):** `.noxa/atelier-redesign/ask-omhar.js`, one shared chat panel loaded by
+both previews. Opens from any `[data-ask-open]` element (the hero "Ask Omhar AI" link was removed by the owner, so
+the hero has only "Book a 30-min call"; a round chat bubble fixed bottom-right on
+every page with a breathing grey ring and an "Ask Omhar AI" hover label, "Ask about this workflow" on each
+automation CTA) or `[data-ask="<id>"]`. The hero "Try asking" chips were removed at the owner's request
+(starter questions now live only inside the chat).
+Answers are prepared text from the FAQs, project rows and workflow data (`KB` in the file), typed questions are
+keyword-matched, price/availability always point to a call, a Book card shows after the 3rd question. Starters
+change per automation page. Full screen + `inert` page on phones, Esc closes, focus returns, axe 0 violations.
+Preview-only: the "Preview. On the live site, typed questions go to the real AI." note (must not ship). In the real
+build, port `KB` to `content/chat-starters.ts`, answer starters locally and send unmatched text to `/api/chat`.
+Needed from the owner: automation numbers; permission + real names/photos for 2 testimonials; 4 screens or a
+10 s recording + one result line per project; 3 real (scrubbed) customer emails and the AI drafts; reply time and
+availability; Calendly booking-question support; Vercel plan.
+
+### Phone menu + hero seam (2026-10-10, owner request)
+
+`.noxa/atelier-redesign/site-menu.js`, loaded by all three pages. Under 860px the header "Book a call" is hidden
+and a two-line menu button (morphs into a cross) opens a full-screen black sheet that wipes down (clip-path,
+620 ms) with the header links rising in one by one (numbered 01 to 06, current page in italic serif), then
+"Book a 30-min call", "Ask Omhar AI" (opens the chat) and the email. Built from the page's own header links.
+Esc, the button or any link closes it; same-page links scroll after the sheet closes; focus moves in and back;
+the rest of the page is `inert` and scroll-locked while open; reduced motion swaps instantly. axe 0 violations.
+Hero seam on phones fixed: `.hero-media` now `overflow:hidden` (the photo zoom pushed its edge 7px past the fade)
+and the bottom fade is a long eased gradient.
+
+### Phone polish (2026-10-10)
+
+- Project rows (01): on phones/touch the inline screenshot is now a link to the live site, same as the title
+  (built in the homepage script from each row's href). The ↗ next to each name always shows on phones. A
+  "Visit site" link was tried and removed by the owner, since the title and screenshot already open the site.
+- Automation rows (02) on phones: each row now shows its mini workflow diagram underneath (cloned from
+  `#auto-float`, ids made unique, viewBox trimmed to `0 25 330 150`), and the diagram opens the automation page
+  like the title. Same `.inline` reveal as the project screenshots; hidden on desktop.
+- Automation control bar on phones (under 600px): compact two-row bar (Pause, Step, 2x on top, scenarios below,
+  split by a hairline) instead of one row that ran off screen. Scenarios have short phone names via `short` on
+  each run ("Order question", "Delivery notice").
+
+### Gear page (2026-10-10, owner request)
+
+`.noxa/atelier-redesign/gear.html` + tiles in `gear/` (1200x900, product trimmed and centered on white, made with
+sharp from manufacturer photos: Apple store image, Lenovo via Icecat, AULA F75 Black Contour via an Aula-vendor
+Shopify listing, A4Tech official site). Cards show photos in grayscale, colour on hover (fine pointers only).
+"Gear" added to the nav on all pages, plus a link at the end of the homepage Tools intro (the only way in on
+phones, since the nav hides under 860px). Ask Omhar AI got a `gear` answer and gear starters on that page.
+Facts: ThinkPad read from this machine (T460, model 20FMS1VA16, i5-6300U, 2x8 GB DDR3-1600, SanDisk 512 GB SSD,
+14" 1920x1080, HD 520). Unconfirmed: MacBook size, memory and storage; mouse assumed OP-620D (could be OP-730D).
+Real build: `app/gear/page.tsx` from a zod `content/gear.ts`; prefer the owner's own photos over vendor images.
+Photo viewer (owner asked for tappable photos on phones): each photo is a button (built in the page script, label
+"View a larger photo of the …") that opens a native `<dialog class="gv">` with the photo large and in colour, plus
+its role and name. The photo grows out of the small one and shrinks back into it (Web Animations, skipped with
+reduced motion). Closes on the X, Esc, or a tap anywhere; focus goes back to the photo. Page scroll is locked with
+the scrollbar space kept (`scrollbar-gutter:stable`, that strip turns dark too). A small expand icon sits in each
+photo's corner on touch screens and appears on hover on desktop. The dark layer is on the dialog itself, not
+`::backdrop`, so axe reads the caption on a real dark surface. Real build: same pattern as a client component.
+
+### Open questions for the owner (answer at the start of next session)
+
+1. May **Comfit** be named on the site? (Otherwise "a US online store".)
+2. **Real results** per automation (time saved, reply speed, volume), or "no metric yet".
+3. The **Noxa Loyalty testimonial** comes from the owner's employer. Label it as such?
+4. Three FAQ facts: works with **clients outside the Philippines**? **pricing approach**? usual **reply time**?
+5. Buy a **custom domain** (e.g. omharregidor.com)? Needed before canonicals, sitemap and JSON-LD URLs are final
+   (previews use `https://omhar-portfolio.vercel.app`).
+
+### Must-do in the real build (from the review)
+
+- **P0** Automation pages must be server-rendered: `app/automations/[slug]/page.tsx` with `generateStaticParams`
+  from a zod `content/automations.ts`; only the animated stage is a client island. (The preview renders them with
+  JS, so crawlers see nothing.)
+- **P0** Placeholder text ("Omhar to supply/confirm", preview pill, tweaks panel) must never ship.
+  Make `scripts/validate-content.ts` fail on it.
+- Fonts via `next/font` (the CSP blocks Google Fonts). Hero: only slide 1 server-rendered with `next/image`
+  preload, the other slides mount after load; enable AVIF.
+- `app/sitemap.ts`, `app/robots.ts` (allow GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended;
+  disallow `/api/`), `app/opengraph-image`, `components/seo/json-ld.tsx`, `public/llms.txt`. Turn off Vercel's
+  AI-bot firewall rule. Submit the sitemap in Search Console.
+- Stage performance: single transform instead of `preserve-3d` layers, rAF-throttled pointermove, solid card surface.
+- Mobile automation stage: consider a vertical flow below 640 px (designer suggestion).
+
+### Previous handoff (before the Atelier redesign, kept for history)
+
+# Handoff, Omhar's Portfolio (updated 2026-06-17)
 
 Next.js 16 / React 19 / TS / Tailwind v4, deployed on Vercel. Repo:
 `OmharRegidor/omhar-portfolio`. Package manager: **pnpm**.

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gear | Omhar Regidor</title>
+<meta name="description" content="The hardware Omhar Regidor builds on every day: a MacBook Pro with M4 Pro, a Lenovo ThinkPad T460, an AULA F75 mechanical keyboard and an A4Tech 2X Click mouse.">
+<link rel="canonical" href="https://omharregidor.vercel.app/gear">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Gear | Omhar Regidor">
+<meta property="og:description" content="The hardware behind every website, app and automation Omhar Regidor ships.">
+<meta property="og:url" content="https://omharregidor.vercel.app/gear">
+<meta property="og:site_name" content="Omhar Regidor">
+<link rel="stylesheet" href="/atelier/fonts/fonts.css">
+<style>
+/* Layout: Atelier paper page. Fixed dark header, a short heading, then a 2-column grid of gear cards (photo on white, specs below). */
+:root{
+  --paper:#F7F6F2; --ink:#121413; --muted:#5B5D59; --line:#DCDBD5; --glow:#EDEDEA;
+  --display:"Geist", ui-sans-serif, system-ui, sans-serif; --serif:"Instrument Serif", Georgia, serif;
+  --sans:"Jost", "Futura", ui-sans-serif, system-ui, sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{ box-sizing:border-box }
+[hidden]{ display:none !important }
+html{ scroll-padding-top:88px }
+body{ margin:0; padding-top:78px; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased }
+a{ color:inherit }
+h1,h2,p,dl,dd,figure{ margin:0 }
+:focus-visible{ outline:2px solid var(--ink); outline-offset:3px }
+.wrap{ max-width:1180px; margin-inline:auto; padding-inline:clamp(20px, 6vw, 72px) }
+
+/* header, same as the other pages in its solid state */
+.top{ position:fixed; top:0; left:0; right:0; z-index:40; display:flex; align-items:center; gap:clamp(16px, 3vw, 40px); padding:14px clamp(20px, 7vw, 120px); background:color-mix(in srgb, #0D0D0D 96%, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); box-shadow:0 1px 0 rgb(255 255 255 / .08) }
+.top :focus-visible{ outline-color:#FFFFFF }
+.logo{ display:flex; align-items:baseline; gap:8px; text-decoration:none; color:#FFFFFF; margin-right:auto }
+.logo b{ font-family:var(--display); font-weight:500; font-size:24px; line-height:1; letter-spacing:-0.03em }
+.logo span{ font-family:var(--display); font-weight:300; font-size:17px; color:rgb(255 255 255 / .78) }
+.top-links{ display:flex; gap:clamp(18px, 2.4vw, 36px); font-size:16px }
+.top-links a{ text-decoration:none; color:rgb(255 255 255 / .86); padding-bottom:2px; background:linear-gradient(var(--glow), var(--glow)) left bottom / 0 1px no-repeat; transition:background-size 350ms var(--ease), color 200ms ease }
+.top-links a:hover, .top-links a:focus-visible, .top-links a[aria-current]{ color:#FFFFFF; background-size:100% 1px }
+.book{ white-space:nowrap; display:inline-flex; align-items:center; gap:10px; padding:14px 22px; background:#FFFFFF; color:#111111; text-decoration:none; font-size:14px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; transition:gap 350ms var(--ease); box-shadow:0 8px 24px rgb(0 0 0 / .18) }
+.book:hover, .book:focus-visible{ gap:16px }
+@media (max-width:860px){
+  .top-links{ display:none }
+  .top{ padding:10px 20px }
+  .book{ padding:11px 14px; font-size:12px }
+  body{ padding-top:61px }
+  html{ scroll-padding-top:68px }
+}
+
+/* heading */
+.g-head{ display:grid; gap:20px; padding-block:clamp(40px, 6vw, 72px) clamp(32px, 4vw, 48px) }
+.crumb{ font-size:14px; color:var(--muted); text-decoration:none; justify-self:start }
+.crumb:hover{ color:var(--ink) }
+.eyebrow{ display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:500; letter-spacing:.26em; text-transform:uppercase }
+.eyebrow::before{ content:"+"; font-size:17px; letter-spacing:0 }
+h1{ font-family:var(--display); font-weight:300; font-size:clamp(36px, 4.4vw, 64px); line-height:1.06; letter-spacing:-0.035em }
+h1 em{ font-family:var(--serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em }
+.lede{ max-width:52ch; font-size:clamp(18px, 1.6vw, 21px); color:var(--muted) }
+
+/* gear grid */
+.g-grid{ display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:clamp(20px, 3vw, 40px) clamp(20px, 3vw, 32px) }
+@media (max-width:760px){ .g-grid{ grid-template-columns:1fr } }
+.g-item{ display:grid; gap:20px; align-content:start }
+.g-shot{ position:relative; overflow:hidden; aspect-ratio:4 / 3; background:#FFFFFF; border:1px solid var(--line) }
+/* Photos sit in black and white like the rest of the site; on a mouse pointer the real colours come back. */
+.g-shot img{ display:block; width:100%; height:100%; object-fit:contain; filter:grayscale(1); transition:filter 600ms var(--ease), scale 900ms var(--ease), opacity 200ms ease }
+@media (hover:hover){ .g-item:hover .g-shot img{ filter:none; scale:1.03 } }
+/* Each photo is a button that opens it large and in colour; a small corner icon says so on touch screens. */
+.g-zoom{ all:unset; display:block; width:100%; height:100%; cursor:zoom-in; -webkit-tap-highlight-color:transparent }
+.g-zoom:focus-visible{ outline:2px solid var(--ink); outline-offset:-6px }
+.g-zoom:active img{ opacity:.82 }
+.g-zoom::after{ content:""; position:absolute; right:12px; bottom:12px; width:32px; height:32px; border-radius:50%; border:1px solid var(--line); background:rgb(255 255 255 / .94) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23121413' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9.5 2.5h4v4M6.5 13.5h-4v-4M13.5 2.5 9 7M2.5 13.5 7 9'/%3E%3C/svg%3E") center / 14px no-repeat; opacity:0; transition:opacity 300ms ease }
+@media (hover:none){ .g-zoom::after{ opacity:1 } }
+@media (hover:hover){ .g-item:hover .g-zoom::after{ opacity:1 } }
+
+/* photo viewer */
+/* The page stops scrolling but keeps its scrollbar space, so nothing jumps; that space turns dark with the viewer. */
+html{ background:var(--paper); transition:background-color 380ms ease }
+html.gv-lock{ overflow:hidden; scrollbar-gutter:stable }
+html.gv-dim{ background:#141414 }
+.gv{ position:fixed; inset:0; width:100%; height:100%; max-width:none; max-height:none; margin:0; padding:76px clamp(16px, 4vw, 48px) clamp(24px, 5vh, 48px); border:0; background:transparent; color:#FFFFFF; overflow:hidden; cursor:zoom-out }
+.gv[open]{ display:grid; place-items:center }
+/* The dark layer is the dialog itself, not ::backdrop, so the text always sits on a real dark surface. */
+.gv::backdrop{ background:transparent }
+.gv[open]{ background:rgb(13 13 13 / .97); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); animation:gv-dim-in 420ms var(--ease) both }
+.gv.out{ animation:gv-dim-out 380ms ease both }
+.gv-fig{ display:grid; gap:16px; width:min(1100px, 100%, (100dvh - 200px) * 4 / 3) }
+.gv-img{ display:block; width:100%; aspect-ratio:4 / 3; object-fit:contain; background:#FFFFFF; transform-origin:0 0 }
+.gv-fig figcaption{ display:grid; gap:2px }
+.gv-role{ font-size:12px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:rgb(255 255 255 / .6) }
+.gv-name{ font-family:var(--display); font-weight:300; font-size:clamp(22px, 2.4vw, 30px); line-height:1.15; letter-spacing:-0.03em }
+.gv-close{ position:absolute; top:16px; right:clamp(16px, 2.5vw, 28px); display:grid; place-items:center; width:44px; height:44px; padding:0; border:1px solid rgb(255 255 255 / .22); border-radius:50%; background:transparent; color:#FFFFFF; cursor:pointer; transition:background-color 200ms ease }
+.gv-close:hover{ background:rgb(255 255 255 / .08) }
+.gv-close:focus-visible{ outline:2px solid #FFFFFF; outline-offset:3px }
+.gv[open] .gv-close, .gv[open] figcaption{ animation:gv-in 400ms 160ms ease both }
+.gv.out .gv-close, .gv.out figcaption{ animation:gv-out 160ms ease both }
+@keyframes gv-in{ from{ opacity:0 } }
+@keyframes gv-out{ to{ opacity:0 } }
+@keyframes gv-dim-in{ from{ background-color:rgb(13 13 13 / 0); -webkit-backdrop-filter:blur(0); backdrop-filter:blur(0) } }
+@keyframes gv-dim-out{ to{ background-color:rgb(13 13 13 / 0); -webkit-backdrop-filter:blur(0); backdrop-filter:blur(0) } }
+.g-body{ display:grid; gap:6px }
+.g-role{ font-size:12px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted) }
+.g-body h2{ font-family:var(--display); font-weight:300; font-size:clamp(26px, 2.6vw, 34px); line-height:1.1; letter-spacing:-0.03em }
+.g-specs{ display:grid; margin-top:12px; border-top:1px solid var(--line) }
+.g-specs div{ display:grid; grid-template-columns:minmax(96px, 30%) 1fr; gap:16px; padding-block:10px; border-bottom:1px solid var(--line); font-size:15.5px }
+.g-specs dt{ color:var(--muted) }
+.g-credit{ margin-top:clamp(32px, 4vw, 48px); font-size:13px; color:var(--muted) }
+
+/* next steps */
+.pn{ display:grid; grid-template-columns:1fr 1fr; gap:24px; padding-block:clamp(56px, 7vw, 88px) 0 }
+.pn a{ display:grid; gap:6px; text-decoration:none; padding:26px 0; border-top:1px solid var(--ink); transition:opacity 300ms var(--ease) }
+.pn a:last-child{ text-align:right }
+.pn small{ font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted) }
+.pn b{ font-family:var(--display); font-weight:300; font-size:clamp(24px, 2.8vw, 36px); line-height:1.05; letter-spacing:-0.025em }
+.pn:hover a:not(:hover){ opacity:.35 }
+@media (max-width:600px){ .pn{ grid-template-columns:1fr } .pn a:last-child{ text-align:left } }
+.foot{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; margin-top:96px; padding-block:28px 40px; border-top:1px solid var(--line); font-size:15px; color:var(--muted) }
+@media (prefers-reduced-motion: reduce){ *, *::before, *::after{ transition-duration:.01ms !important; animation-duration:.01ms !important } }
+</style>
+</head>
+<body data-page="gear">
+
+<nav class="top" aria-label="Main">
+  <a class="logo" href="/"><b>Omhar</b><span>Regidor</span></a>
+  <div class="top-links"><a href="/#work">Work</a><a href="/#automations">Automations</a><a href="/#stack">Stack</a><a href="/gear" aria-current="page">Gear</a><a href="/#clients">Clients</a><a href="/#contact">Contact</a></div>
+  <a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a call</a>
+</nav>
+
+<main>
+  <section class="g-head wrap" aria-labelledby="g-title">
+    <a class="crumb" href="/">← Home</a>
+    <p class="eyebrow">Gear</p>
+    <h1 id="g-title">The gear I build <em>on</em></h1>
+    <p class="lede">The hardware behind every website, app and automation I ship.</p>
+  </section>
+
+  <section class="g-grid wrap" aria-label="My gear">
+    <article class="g-item">
+      <figure class="g-shot"><img src="/atelier/gear/macbook-pro-m4-pro.jpg" alt="MacBook Pro with the M4 Pro chip in Space Black, front view with the lid open" width="1200" height="900"></figure>
+      <div class="g-body">
+        <p class="g-role">Main machine</p>
+        <h2>MacBook Pro</h2>
+        <dl class="g-specs">
+          <div><dt>Chip</dt><dd>Apple M4 Pro</dd></div>
+          <div><dt>Finish</dt><dd>Space Black</dd></div>
+          <div><dt>Display</dt><dd>Liquid Retina XDR</dd></div>
+          <div><dt>Ports</dt><dd>Thunderbolt 5</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="g-item">
+      <figure class="g-shot"><img src="/atelier/gear/thinkpad-t460.jpg" alt="Lenovo ThinkPad T460, open at an angle, showing the keyboard and red TrackPoint" width="1200" height="900"></figure>
+      <div class="g-body">
+        <p class="g-role">Second laptop</p>
+        <h2>Lenovo ThinkPad T460</h2>
+        <dl class="g-specs">
+          <div><dt>Processor</dt><dd>Intel Core i5-6300U</dd></div>
+          <div><dt>Memory</dt><dd>16 GB DDR3</dd></div>
+          <div><dt>Storage</dt><dd>512 GB SSD</dd></div>
+          <div><dt>Display</dt><dd>14-inch Full HD</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="g-item">
+      <figure class="g-shot"><img src="/atelier/gear/aula-f75-black-contour.jpg" alt="AULA F75 mechanical keyboard in Black Contour, top view with contour-line keycaps and a volume knob" width="1200" height="900" loading="lazy"></figure>
+      <div class="g-body">
+        <p class="g-role">Keyboard</p>
+        <h2>AULA F75 Black Contour</h2>
+        <dl class="g-specs">
+          <div><dt>Layout</dt><dd>75%, 80 keys</dd></div>
+          <div><dt>Switches</dt><dd>LEOBOG Star Vector</dd></div>
+          <div><dt>Build</dt><dd>Gasket mount, hot-swappable</dd></div>
+          <div><dt>Connection</dt><dd>Bluetooth, 2.4 GHz or USB-C</dd></div>
+        </dl>
+      </div>
+    </article>
+
+    <article class="g-item">
+      <figure class="g-shot"><img src="/atelier/gear/a4tech-op-620d.jpg" alt="A4Tech OP-620D wired mouse in black, with the 2X Click button beside the scroll wheel" width="1200" height="900" loading="lazy"></figure>
+      <div class="g-body">
+        <p class="g-role">Mouse</p>
+        <h2>A4Tech OP-620D 2X Click</h2>
+        <dl class="g-specs">
+          <div><dt>Extra button</dt><dd>2X Click, a double-click in one press</dd></div>
+          <div><dt>Wheel</dt><dd>4-way scroll</dd></div>
+          <div><dt>Sensor</dt><dd>1200 DPI optical</dd></div>
+          <div><dt>Connection</dt><dd>Wired USB</dd></div>
+        </dl>
+      </div>
+    </article>
+  </section>
+
+  <div class="wrap">
+    <p class="g-credit">Product photos from Apple, Lenovo, AULA and A4Tech.</p>
+    <nav class="pn" aria-label="More from Omhar">
+      <a href="/#work"><small>Next</small><b>Websites I’ve built</b></a>
+      <a href="/automations#auto-live-inbox"><small>Or</small><b>Watch an automation run</b></a>
+    </nav>
+    <footer class="foot"><span>© 2026 Omhar Regidor</span><span>Batangas, Philippines</span></footer>
+  </div>
+</main>
+
+<dialog class="gv" aria-labelledby="gv-name">
+  <button class="gv-close" type="button" aria-label="Close photo"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg></button>
+  <figure class="gv-fig">
+    <img class="gv-img" alt="">
+    <figcaption><span class="gv-role"></span><span class="gv-name" id="gv-name"></span></figcaption>
+  </figure>
+</dialog>
+
+<script>
+// Tap or click a gear photo to see it large and in colour. It grows out of the small photo and shrinks back into it.
+(() => {
+  const view = document.querySelector('.gv');
+  const vImg = view.querySelector('.gv-img'), vRole = view.querySelector('.gv-role'), vName = view.querySelector('.gv-name');
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  const ease = 'cubic-bezier(.16,1,.3,1)';
+  let opener = null, thumb = null, anim = null;
+
+  // The small photo's spot, written as a move and a scale of the large one.
+  const thumbPose = () => {
+    const a = thumb.getBoundingClientRect(), b = vImg.getBoundingClientRect();
+    return { transform: `translate(${a.left - b.left}px, ${a.top - b.top}px) scale(${a.width / b.width})`, filter: getComputedStyle(thumb).filter };
+  };
+  const bigPose = { transform: 'none', filter: 'grayscale(0)' };
+
+  const open = btn => {
+    if (view.open) return;
+    const item = btn.closest('.g-item');
+    opener = btn; thumb = btn.querySelector('img');
+    vImg.src = thumb.currentSrc || thumb.src; vImg.alt = thumb.alt;
+    vRole.textContent = item.querySelector('.g-role').textContent;
+    vName.textContent = item.querySelector('h2').textContent;
+    document.documentElement.classList.add('gv-lock', 'gv-dim');
+    view.classList.remove('out');
+    view.showModal();
+    if (still.matches) return;
+    const from = thumbPose();
+    thumb.style.opacity = '0';
+    anim = vImg.animate([from, bigPose], { duration: 560, easing: ease });
+  };
+
+  const close = () => {
+    if (!view.open || view.classList.contains('out')) return;
+    if (still.matches) return view.close();
+    view.classList.add('out');
+    document.documentElement.classList.remove('gv-dim');
+    anim?.cancel();
+    anim = vImg.animate([bigPose, thumbPose()], { duration: 420, easing: ease, fill: 'forwards' });
+    anim.onfinish = () => view.close();
+  };
+
+  // Runs however the viewer closes, so the page is always put back.
+  view.addEventListener('close', () => {
+    anim?.cancel(); anim = null;
+    view.classList.remove('out');
+    document.documentElement.classList.remove('gv-lock', 'gv-dim');
+    if (thumb) thumb.style.opacity = '';
+    opener?.focus({ preventScroll: true });
+  });
+  view.addEventListener('cancel', e => { if (e.cancelable) { e.preventDefault(); close(); } });
+  view.addEventListener('click', close);
+
+  document.querySelectorAll('.g-shot img').forEach(img => {
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'g-zoom';
+    btn.setAttribute('aria-haspopup', 'dialog');
+    btn.setAttribute('aria-label', 'View a larger photo of the ' + img.closest('.g-item').querySelector('h2').textContent);
+    img.replaceWith(btn); btn.append(img);
+    btn.addEventListener('click', () => open(btn));
+  });
+})();
+</script>
+<script src="/atelier/site-menu.js"></script>
+<script src="/atelier/ask-omhar.js"></script>
+</body>
+</html>

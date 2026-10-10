@@ -1,0 +1,1099 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>n8n Automation Case Studies | Omhar Regidor</title>
+<meta name="description" content="See three n8n automations by Omhar Regidor run step by step: an AI inbox that drafts support replies, a daily Shopify sales summary in Slack, and an SOP assistant.">
+<link rel="canonical" href="https://omharregidor.vercel.app/automations">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:type" content="website">
+<meta property="og:title" content="n8n Automation Case Studies | Omhar Regidor">
+<meta property="og:description" content="Watch three real n8n workflows run step by step, built by Omhar Regidor in Batangas, Philippines.">
+<meta property="og:url" content="https://omharregidor.vercel.app/automations">
+<meta property="og:site_name" content="Omhar Regidor">
+<meta property="og:locale" content="en_PH">
+<meta property="og:image" content="https://omharregidor.vercel.app/omhar/me-pro-image-crop.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://omharregidor.vercel.app/automations#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://omharregidor.vercel.app/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Automations",
+          "item": "https://omharregidor.vercel.app/automations"
+        }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "@id": "https://omharregidor.vercel.app/automations/cs-live-inbox#work",
+      "url": "https://omharregidor.vercel.app/automations/cs-live-inbox",
+      "name": "CS Live Inbox, an n8n support-email automation",
+      "description": "An n8n workflow that triages new support emails with a low-cost OpenAI model and saves AI-drafted replies as Gmail drafts for a person to review.",
+      "author": {
+        "@id": "https://omharregidor.vercel.app/#person"
+      },
+      "creator": {
+        "@id": "https://omharregidor.vercel.app/#person"
+      },
+      "inLanguage": "en",
+      "dateModified": "2026-10-09",
+      "about": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "n8n",
+          "applicationCategory": "BusinessApplication"
+        }
+      ],
+      "hasPart": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Gmail Trigger"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Filter"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Triage (cheap) with OpenAI"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Needs CS reply? (IF)"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "HTTP Request, store lookup"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 6,
+          "name": "Message a model, writes the reply"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 7,
+          "name": "Gmail, create a draft"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 8,
+          "name": "HTTP Request, log the run"
+        }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "@id": "https://omharregidor.vercel.app/automations/daily-sales-pulse#work",
+      "url": "https://omharregidor.vercel.app/automations/daily-sales-pulse",
+      "name": "Daily Sales Pulse, an n8n Shopify to Slack automation",
+      "description": "A scheduled n8n workflow that pulls Shopify orders, calculates totals in JavaScript and posts an AI-written sales summary to Slack every day.",
+      "author": {
+        "@id": "https://omharregidor.vercel.app/#person"
+      },
+      "creator": {
+        "@id": "https://omharregidor.vercel.app/#person"
+      },
+      "inLanguage": "en",
+      "dateModified": "2026-10-09",
+      "about": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "n8n",
+          "applicationCategory": "BusinessApplication"
+        }
+      ],
+      "hasPart": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Schedule Trigger"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Shopify, get many orders"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Code in JavaScript"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Message a model, writes the summary"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Slack, send a message"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 6,
+          "name": "HTTP Request, log the run"
+        }
+      ]
+    },
+    {
+      "@type": "CreativeWork",
+      "@id": "https://omharregidor.vercel.app/automations/sop-assistant#work",
+      "url": "https://omharregidor.vercel.app/automations/sop-assistant",
+      "name": "SOP Assistant, an n8n AI agent for Slack and chat",
+      "description": "An n8n AI agent that answers staff questions about company procedures inside Slack or a chat window.",
+      "author": {
+        "@id": "https://omharregidor.vercel.app/#person"
+      },
+      "creator": {
+        "@id": "https://omharregidor.vercel.app/#person"
+      },
+      "inLanguage": "en",
+      "dateModified": "2026-10-09",
+      "about": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "n8n",
+          "applicationCategory": "BusinessApplication"
+        }
+      ],
+      "hasPart": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Webhook from Slack or chat message"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Respond to Webhook"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "AI Agent with an OpenAI chat model"
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "HTTP Request, posts the answer"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<link rel="stylesheet" href="/atelier/fonts/fonts.css">
+<style>
+/* Layout: Atelier paper page. Home shows two work sections (web, automation). Each automation page puts a dark tilted workflow stage between a paper header and paper story. */
+:root{
+  --paper:#F7F6F2; --ink:#121413; --muted:#5B5D59; --line:#DCDBD5;
+  --accent:#111111; --accent-ink:#111111; --glow:#EDEDEA; --clay:#A3A3A0;
+  --stage:#0E0E0E; --stage-deep:#060606; --glass-hi:rgb(255 255 255 / .12);
+  --display:"Geist", ui-sans-serif, system-ui, sans-serif; --serif:"Instrument Serif", Georgia, serif;
+  --sans:"Jost", "Futura", ui-sans-serif, system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{ box-sizing:border-box }
+[hidden]{ display:none !important }
+body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased }
+a{ color:inherit }
+h1,h2,h3,p{ margin:0 }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:3px }
+.wrap{ max-width:1180px; margin-inline:auto; padding-inline:clamp(20px, 6vw, 72px) }
+.eyebrow{ display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:500; letter-spacing:.26em; text-transform:uppercase; color:var(--accent-ink) }
+.eyebrow::before{ content:"+"; font-size:17px; letter-spacing:0 }
+.sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap }
+
+/* nav: the same fixed header as the homepage, shown as its solid dark bar on these pages */
+.top{ position:fixed; top:0; left:0; right:0; z-index:40; display:flex; align-items:center; gap:clamp(16px, 3vw, 40px); padding:14px clamp(20px, 7vw, 120px); background:color-mix(in srgb, #0D0D0D 96%, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); box-shadow:0 1px 0 rgb(255 255 255 / .08) }
+body{ padding-top:78px }
+html{ scroll-padding-top:88px }
+.logo{ display:flex; align-items:baseline; gap:8px; text-decoration:none; color:#FFFFFF; margin-right:auto }
+.logo b{ font-family:var(--display); font-weight:400; font-size:32px; line-height:1 }
+.logo span{ font-family:var(--display); font-size:19px; color:rgb(255 255 255 / .78) }
+.top-links{ display:flex; gap:clamp(18px, 2.4vw, 36px); font-size:16px }
+.top-links a{ text-decoration:none; color:rgb(255 255 255 / .86); padding-bottom:2px; background:linear-gradient(var(--glow), var(--glow)) left bottom / 0 1px no-repeat; transition:background-size 350ms var(--ease), color 200ms ease }
+.top-links a:hover, .top-links a:focus-visible, .top-links a[aria-current]{ color:#FFFFFF; background-size:100% 1px }
+.top :focus-visible{ outline-color:#FFFFFF }
+.book{ white-space:nowrap; display:inline-flex; align-items:center; gap:10px; padding:13px 20px; background:var(--accent); color:#FFFFFF; text-decoration:none; font-size:13.5px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; transition:gap 350ms var(--ease) }
+.book:hover, .book:focus-visible{ gap:16px }
+.top .book{ padding:14px 22px; font-size:14px; background:#FFFFFF; color:#111111; box-shadow:0 8px 24px rgb(0 0 0 / .18) }
+@media (max-width:860px){
+  .top-links{ display:none }
+  .top{ padding:10px 20px }
+  .top .book{ padding:11px 14px; font-size:12px }
+  body{ padding-top:61px }
+  html{ scroll-padding-top:68px }
+}
+
+/* ---------- home work sections ---------- */
+.sec{ position:relative; padding-block:clamp(64px, 9vw, 112px) 8px; overflow-x:clip }
+.sec-head{ position:relative; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:14px 24px; padding-bottom:20px }
+.sec-head h2{ grid-column:1; font-family:var(--display); font-weight:400; font-size:clamp(40px, 5.4vw, 72px); line-height:1; letter-spacing:-0.015em }
+.sec-head h2 em{ color:var(--accent-ink) }
+.sec-head .count{ grid-column:2; grid-row:2; font-size:13px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); padding-bottom:10px }
+.sec-head .eyebrow{ grid-column:1 / -1 }
+.hair{ position:absolute; left:0; right:0; bottom:0; height:1px; background:var(--line); overflow:visible }
+.auto .sec-head::before{ content:""; position:absolute; inset:-28px -40px 0; z-index:-1; background-image:radial-gradient(rgb(18 20 19 / .09) 1px, transparent 1.3px); background-size:24px 24px; -webkit-mask-image:linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); mask-image:linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent) }
+.auto .hair::after{ content:""; position:absolute; top:-3px; left:0; width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgb(17 17 17 / .1), 0 0 10px rgb(17 17 17 / .35); animation:wire 6s var(--ease) infinite }
+@keyframes wire{ 0%{ left:0; opacity:0 } 6%{ opacity:1 } 55%{ left:calc(100% - 7px); opacity:1 } 62%,100%{ left:calc(100% - 7px); opacity:0 } }
+.index{ list-style:none; margin:0; padding:0 }
+.index li{ border-bottom:1px solid var(--line) }
+.row{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 24px; align-items:baseline; padding-block:24px; text-decoration:none; color:inherit; transition:opacity 320ms var(--ease) }
+.row .name{ display:inline-flex; gap:14px; align-items:baseline; font-family:var(--display); font-size:clamp(30px, 4.2vw, 50px); line-height:1.05; transition:color 250ms ease }
+.row .arr{ font-family:var(--sans); font-size:.4em; color:var(--accent-ink); opacity:0; transform:translate(-6px, 6px); transition:opacity 250ms ease, transform 350ms var(--ease) }
+.row .kind{ grid-column:1; font-size:16px; color:var(--muted); max-width:56ch }
+.row .meta{ grid-column:2; grid-row:1 / span 2; align-self:center; font-size:14px; color:var(--muted); text-align:right }
+.row .tag{ display:inline-block; margin-right:10px; padding:2px 8px; border:1px solid var(--line); font-size:11px; letter-spacing:.16em; text-transform:uppercase; vertical-align:2px }
+.row.more .name{ font-style:italic; font-size:clamp(24px, 3vw, 34px); color:var(--muted) }
+.index.has-active .row:not(.on){ opacity:.32 }
+.row.on .name{ color:var(--accent-ink) }
+.row.on .arr{ opacity:1; transform:none }
+@media (max-width:640px){ .row .meta{ display:none } }
+.float{ position:absolute; left:0; top:0; width:clamp(240px, 26vw, 330px); pointer-events:none; opacity:0; scale:.94; transition:opacity 240ms ease, scale 360ms var(--ease); z-index:3 }
+.float.on{ opacity:1; scale:1 }
+.float.paper{ padding:7px; background:var(--paper); border:1px solid var(--line); box-shadow:0 22px 50px rgb(0 0 0 / .16) }
+.float.dark{ padding:0; background:var(--stage); border:1px solid #2A2A2A; box-shadow:0 22px 50px rgb(0 0 0 / .28); border-radius:10px; overflow:hidden }
+.float.dark svg{ display:block; width:100%; height:auto }
+.float.dark p{ position:absolute; left:12px; bottom:9px; font-family:var(--mono); font-size:10.5px; letter-spacing:.06em; color:rgb(255 255 255 / .55) }
+.shot{ --sa:#17414B; --sb:#EADFCB; position:relative; container-type:inline-size; aspect-ratio:16/10; background:var(--sa); color:var(--sb); overflow:hidden; display:grid; grid-template-rows:auto 1fr; font-family:system-ui, sans-serif }
+.shot-bar{ height:9cqi; display:flex; align-items:center; gap:3cqi; padding-inline:5cqi; border-bottom:1px solid color-mix(in srgb, currentColor 22%, transparent) }
+.shot-bar i{ height:1.1cqi; min-height:2px; width:8cqi; background:currentColor; opacity:.55 }
+.shot-bar i:first-child{ width:14cqi; opacity:.9; margin-right:auto }
+.shot-body{ position:relative; padding:7cqi 6cqi; display:grid; align-content:start; gap:3cqi }
+.shot-body b{ font-size:7.5cqi; line-height:1; font-weight:600; letter-spacing:-0.03em; max-width:58% }
+.shot-body i{ display:block; height:1.5cqi; min-height:2px; width:46%; background:currentColor; opacity:.3 }
+.shot-body::after{ content:""; position:absolute; right:6cqi; top:6cqi; width:30cqi; aspect-ratio:4/5; background:currentColor; opacity:.12 }
+.shot-tag{ position:absolute; left:6cqi; bottom:5cqi; font-family:var(--mono); font-size:max(9px, 2.4cqi); letter-spacing:.1em; text-transform:uppercase; opacity:.75 }
+.pshot{ display:block; width:100%; aspect-ratio:16/10; object-fit:cover; object-position:top center; background:#E4E3DE }
+.s0{ --sa:#17414B; --sb:#EADFCB } .s1{ --sa:#1E2154; --sb:#D3D6FA } .s2{ --sa:#EBCFCF; --sb:#5B2132 } .s3{ --sa:#1E1E21; --sb:#F2B54B }
+.foot{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; margin-top:96px; padding-block:28px 40px; border-top:1px solid var(--line); font-size:15px; color:var(--muted) }
+
+/* ---------- automation page ---------- */
+.a-head{ display:grid; gap:22px; padding-block:clamp(40px, 6vw, 72px) clamp(36px, 5vw, 56px) }
+#a-title:focus{ outline:none }
+.crumb{ font-size:14px; color:var(--muted); text-decoration:none; justify-self:start }
+.crumb:hover{ color:var(--ink) }
+.a-head h1{ font-family:var(--display); font-weight:400; font-size:clamp(46px, 6vw, 88px); line-height:1; letter-spacing:-0.015em; max-width:17ch; text-wrap:balance }
+.a-head h1 em{ color:var(--accent-ink) }
+.lede{ font-size:clamp(18px, 1.6vw, 21px); color:var(--muted); max-width:58ch }
+.meta-row{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:0; margin:8px 0 0; border-top:1px solid var(--line) }
+.meta-row div{ padding:16px 18px 0 0; display:grid; gap:4px }
+.meta-row dt{ font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted) }
+.meta-row dd{ margin:0; font-size:16px }
+.meta-row .todo{ color:var(--accent-ink); font-style:italic; font-family:var(--display); font-size:20px }
+@media (max-width:760px){ .meta-row{ grid-template-columns:1fr 1fr; row-gap:14px } }
+
+/* stage */
+.stage{ position:relative; isolation:isolate; height:clamp(540px, 78vh, 760px); color:#EEF1EF; overflow:hidden;
+  background:radial-gradient(55% 50% at 56% 46%, rgb(255 255 255 / .05), transparent 70%), radial-gradient(130% 95% at 50% 50%, transparent 52%, var(--stage-deep) 100%), var(--stage) }
+.stage-top{ position:absolute; z-index:5; top:18px; left:clamp(16px, 4vw, 40px); right:clamp(16px, 4vw, 40px); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:rgb(255 255 255 / .6); pointer-events:none }
+.sim{ display:inline-flex; align-items:center; gap:9px; padding:6px 11px; border:1px solid rgb(255 255 255 / .12); border-radius:999px; background:rgb(16 16 16 / .7) }
+.sim i{ width:7px; height:7px; border-radius:50%; background:var(--glow); animation:beat 2s ease-in-out infinite }
+@keyframes beat{ 0%,100%{ box-shadow:0 0 0 0 color-mix(in srgb, var(--glow) 50%, transparent) } 50%{ box-shadow:0 0 0 6px transparent } }
+.viewport{ position:absolute; inset:0 }
+.pan{ position:absolute; inset:0 }
+.plane{ position:absolute; left:50%; top:47%; transform-origin:50% 50%; transform:translate(-50%, -50%) scale(var(--fit, 1)) }
+.plane.spotting .node:not(.spot){ opacity:.3 }
+.grid{ position:absolute; inset:-420px -520px; background-image:radial-gradient(rgb(255 255 255 / .075) 1px, transparent 1.3px); background-size:24px 24px; -webkit-mask-image:radial-gradient(closest-side, #000 35%, transparent 100%); mask-image:radial-gradient(closest-side, #000 35%, transparent 100%) }
+.edges{ position:absolute; left:0; top:0; overflow:visible }
+.e{ fill:none; stroke:rgb(255 255 255 / .17); stroke-width:1.6; transition:stroke 1.4s ease }
+.e.lit{ stroke:color-mix(in srgb, var(--glow) 90%, transparent); transition:stroke 180ms ease }
+.e.sub{ stroke-dasharray:4 6 }
+.e.sub.pulse{ stroke:color-mix(in srgb, var(--glow) 85%, transparent); animation:march .7s linear infinite; transition:stroke 180ms ease }
+@keyframes march{ to{ stroke-dashoffset:-20 } }
+.slot rect{ fill:#0E0E0E; stroke:rgb(255 255 255 / .45) }
+.svg-t{ font-family:var(--sans); font-size:12px; fill:rgb(255 255 255 / .5) }
+.svg-t.t{ fill:var(--glow) } .svg-t.f{ fill:var(--clay) }
+.nodes{ position:absolute; left:0; top:0 }
+.node{ position:absolute; padding:0; margin:0; border:0; background:none; color:inherit; font:inherit; cursor:pointer; transition:opacity 320ms ease }
+.node.lift .skin, .node.spot .skin{ border-color:rgb(237 237 234 / .6) }
+.node:focus-visible{ outline:none }
+.node:focus-visible .skin{ outline:2px solid var(--glow); outline-offset:4px }
+.body{ position:absolute; inset:0; display:grid; place-items:center }
+.skin{ position:absolute; inset:0; border-radius:20px; background:linear-gradient(158deg, #262626 0%, #1A1A1A 55%, #141414 100%); border:1px solid rgb(255 255 255 / .09);
+  box-shadow:inset 0 1px 0 var(--glass-hi), 0 1px 0 #0B0B0B, 0 2px 0 #0A0A0A, 0 3px 0 #090909, 0 4px 0 #080808, 0 22px 30px -8px rgb(0 0 0 / .6);
+  transition:border-color 380ms ease, box-shadow 380ms ease }
+.t-trigger .skin, .t-trigger .ring{ border-radius:42px 18px 18px 42px }
+.t-model .skin, .t-memory .skin, .t-model .ring, .t-memory .ring{ border-radius:50% }
+.t-decision .skin{ inset:11px; border-radius:14px; transform:rotate(45deg) }
+.t-agent .skin{ box-shadow:inset 0 1px 0 var(--glass-hi), 0 0 0 4px var(--stage), 0 0 0 5px rgb(237 237 234 / .22), 0 2px 0 #0A0A0A, 0 4px 0 #080808, 0 24px 34px -8px rgb(0 0 0 / .65) }
+.ic{ position:relative; display:grid; place-items:center; filter:saturate(.8); opacity:.9; transition:filter 300ms ease, opacity 300ms ease }
+.ic svg{ width:36px; height:36px; display:block }
+.t-model .ic svg, .t-memory .ic svg{ width:28px; height:28px }
+.t-decision .ic svg{ width:30px; height:30px }
+.run .ic, .done .ic, .lift .ic, .spot .ic{ filter:none; opacity:1 }
+.wide .body{ grid-template-columns:auto 1fr; justify-items:start; gap:14px; padding:0 20px; text-align:left }
+.wt{ position:relative; display:grid; line-height:1.25 }
+.wt b{ font-weight:500; font-size:15.5px; color:#F1F4F2 }
+.wt small{ font-size:12px; color:rgb(255 255 255 / .66) }
+.t-agent .wt b{ font-family:var(--display); font-weight:400; font-size:24px; line-height:1 }
+.lbl{ position:absolute; top:calc(100% + 12px); left:50%; width:190px; margin-left:-95px; display:grid; text-align:center; line-height:1.3; pointer-events:none }
+.lbl b{ font-weight:500; font-size:14px; color:rgb(255 255 255 / .9) }
+.lbl small{ font-family:var(--mono); font-size:11.5px; color:rgb(255 255 255 / .68) }
+.t-decision .lbl{ top:calc(100% + 4px) }
+.bolt{ position:absolute; left:-26px; top:50%; margin-top:-9px; width:18px; height:18px; color:#DADAD6 }
+.port{ position:absolute; top:50%; width:11px; height:11px; margin-top:-5.5px; border-radius:50%; background:var(--stage); border:1.5px solid rgb(255 255 255 / .38) }
+.port.in{ left:-6px } .port.out{ right:-6px }
+/* true leaves from the right tip so the main line stays straight, false from the lower-right edge */
+.t-decision .port.out.t{ right:-9px } .t-decision .port.out.f{ top:55px; margin-top:0; left:55px; right:auto }
+.t-model .port, .t-memory .port{ display:none }
+.ring{ position:absolute; inset:-2px; border-radius:20px; border:1.5px solid var(--glow); opacity:0; pointer-events:none }
+.t-decision .ring{ inset:9px; transform:rotate(45deg); border-radius:14px }
+.ring.go{ animation:ring 720ms ease-out }
+@keyframes ring{ from{ opacity:.9; scale:1 } to{ opacity:0; scale:1.32 } }
+.t-trigger .skin::after{ content:""; position:absolute; inset:-1px; border-radius:inherit; border:1px solid rgb(237 237 234 / .5); animation:emit 4s ease-out infinite }
+@keyframes emit{ 0%{ opacity:.6; scale:1 } 70%,100%{ opacity:0; scale:1.28 } }
+.run .skin{ border-color:rgb(237 237 234 / .85); box-shadow:inset 0 1px 0 rgb(255 255 255 / .18), 0 0 0 4px rgb(237 237 234 / .1), 0 0 30px rgb(255 255 255 / .16), 0 2px 0 #0A0A0A, 0 4px 0 #080808, 0 22px 30px -8px rgb(0 0 0 / .6) }
+.done .skin{ border-color:rgb(237 237 234 / .42) }
+.t-ai.run .skin::before, .t-agent.run .skin::before{ content:""; position:absolute; inset:0; border-radius:inherit; background:linear-gradient(100deg, transparent 30%, rgb(237 237 234 / .16) 50%, transparent 70%) 0 0 / 260% 100%; animation:shimmer 1.1s linear infinite }
+@keyframes shimmer{ from{ background-position:130% 0 } to{ background-position:-130% 0 } }
+.packet-chip{ position:absolute; left:0; top:0; z-index:3; padding:5px 9px; border-radius:7px; background:rgb(16 16 16 / .92); border:1px solid rgb(237 237 234 / .38); color:#F2F2F0; font-family:var(--mono); font-size:11.5px; white-space:nowrap; box-shadow:0 10px 24px rgb(0 0 0 / .45); pointer-events:none; opacity:0; transition:opacity 220ms ease }
+.packet-chip.on{ opacity:1 }
+.controls{ position:absolute; z-index:6; left:50%; bottom:20px; translate:-50% 0; display:flex; align-items:center; gap:4px; padding:6px; border-radius:999px; background:rgb(22 22 22 / .8); border:1px solid rgb(255 255 255 / .1); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); box-shadow:0 18px 40px rgb(0 0 0 / .4); max-width:calc(100% - 24px); overflow-x:auto }
+.controls button{ font:inherit; font-size:14px; color:rgb(255 255 255 / .82); background:transparent; border:0; border-radius:999px; padding:9px 14px; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:8px }
+.controls button:hover{ background:rgb(255 255 255 / .06); color:#FFFFFF }
+.controls .play{ background:#F2F2F0; color:#111111; font-weight:500 }
+.controls .play:hover{ background:#FFFFFF }
+.controls .sep{ width:1px; height:22px; background:rgb(255 255 255 / .12); margin-inline:4px; flex:none }
+.controls [aria-pressed="true"]{ background:rgb(237 237 234 / .14); color:var(--glow) }
+/* Phones: a compact bar in two rows (play, step, speed on top, the scenario switch below) instead of one row that runs off screen. */
+.controls .c-sm{ display:none }
+@media (max-width:600px){
+  .controls{ left:12px; right:12px; bottom:12px; translate:none; max-width:none; flex-wrap:wrap; justify-content:center; gap:2px; padding:4px; border-radius:14px; overflow:visible }
+  .controls button{ font-size:12.5px; padding:6px 11px; gap:6px }
+  .controls .sep{ flex-basis:100%; width:auto; height:1px; margin:3px 8px }
+  .controls [data-run], .controls [data-var]{ flex:1 1 0; justify-content:center }
+  .controls .c-lg{ display:none } .controls .c-sm{ display:inline }
+}
+
+/* hover card */
+.card{ position:absolute; z-index:8; width:330px; max-width:calc(100% - 24px); padding:18px 18px 14px; border-radius:14px; background:#161616; border:1px solid rgb(255 255 255 / .09); box-shadow:inset 0 1px 0 rgb(237 237 234 / .35), 0 28px 60px rgb(0 0 0 / .55); color:#EEF1EF; opacity:0; transform:translateY(6px) scale(.97); transform-origin:top left; transition:opacity 120ms ease, transform 120ms ease; pointer-events:none }
+.card.on{ opacity:1; transform:none; transition:opacity 260ms var(--ease), transform 260ms var(--ease) }
+.card .c-type{ display:flex; align-items:center; gap:8px; font-size:11px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--glow) }
+.card .c-type i{ width:7px; height:7px; border-radius:50%; background:currentColor }
+.card .c-name{ font-family:var(--display); font-weight:400; font-size:28px; line-height:1.05; margin-top:8px }
+.card .c-role{ font-size:14px; color:rgb(255 255 255 / .55); margin-top:2px }
+.card .c-desc{ font-size:15px; line-height:1.5; margin-top:12px; color:rgb(255 255 255 / .86) }
+.card .c-h{ margin-top:14px; font-size:11px; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:rgb(255 255 255 / .45) }
+.card ul{ list-style:none; margin:8px 0 0; padding:0; display:grid; gap:7px; font-size:14.5px; line-height:1.45; color:rgb(255 255 255 / .82) }
+.card li{ position:relative; padding-left:16px }
+.card li::before{ content:""; position:absolute; left:0; top:.62em; width:5px; height:5px; border-radius:50%; background:var(--glow) }
+.card .c-foot{ display:flex; justify-content:space-between; gap:10px; margin-top:14px; padding-top:10px; border-top:1px solid rgb(255 255 255 / .08); font-family:var(--mono); font-size:11.5px; color:rgb(255 255 255 / .65) }
+.card .c-close{ display:none; position:absolute; right:10px; top:10px; width:34px; height:34px; border-radius:50%; border:1px solid rgb(255 255 255 / .15); background:transparent; color:#FFFFFF; font-size:18px; cursor:pointer }
+.card.sheet{ position:fixed; left:12px; right:12px; bottom:12px; top:auto !important; width:auto; max-width:none; pointer-events:auto }
+.card.sheet .c-close{ display:block }
+
+/* flat mode (small screens / touch) */
+.stage.flat .pan{ overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch }
+.stage.flat .plane{ left:0; top:0; transform:scale(var(--fit, 1)); transform-origin:0 0; transition:none }
+.stage.flat .sizer{ position:relative }
+
+/* story + explained */
+.story{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:clamp(18px, 3vw, 40px); padding-block:clamp(64px, 9vw, 112px) 24px }
+@media (max-width:860px){ .story{ grid-template-columns:1fr } }
+.beat{ display:grid; gap:12px; align-content:start }
+.beat h2{ font-size:12.5px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted) }
+.beat p{ font-family:var(--display); font-size:clamp(22px, 2.2vw, 28px); line-height:1.25 }
+.beat .todo{ border:1px dashed #BDBBB2; padding:16px 18px; font-family:var(--sans); font-size:15.5px; line-height:1.5; color:var(--muted) }
+.beat .todo b{ color:var(--accent-ink); font-weight:500 }
+.human{ display:flex; gap:16px; align-items:baseline; padding:22px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-top:24px }
+.human span{ font-size:12.5px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); white-space:nowrap }
+.human p{ font-family:var(--display); font-size:clamp(22px, 2.4vw, 30px); line-height:1.25 }
+.explain{ padding-block:clamp(56px, 8vw, 96px) 24px }
+.explain h2{ font-family:var(--display); font-weight:400; font-size:clamp(36px, 4.4vw, 56px); line-height:1; margin:12px 0 22px }
+.explain ol{ list-style:none; margin:0; padding:0; counter-reset:n }
+.explain ol > li{ counter-increment:n; display:grid; grid-template-columns:56px minmax(0,1fr) minmax(0,1fr); gap:6px 28px; padding:22px 0; border-top:1px solid var(--line); cursor:default; transition:background 200ms ease }
+.explain ol > li:last-child{ border-bottom:1px solid var(--line) }
+.explain ol > li::before{ content:counter(n, decimal-leading-zero); font-family:var(--mono); font-size:13px; color:var(--muted); padding-top:8px }
+.explain ol > li:hover, .explain ol > li:focus-within{ background:rgb(17 17 17 / .035) }
+.x-name{ display:grid; gap:2px }
+.x-name small{ font-size:11.5px; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:var(--accent-ink) }
+.x-name b{ font-family:var(--display); font-weight:400; font-size:30px; line-height:1.1 }
+.x-name span{ font-size:15px; color:var(--muted) }
+.x-body{ font-size:16px; line-height:1.55 }
+.x-body ul{ margin:8px 0 0; padding-left:1.1em; color:var(--muted); font-size:15px; display:grid; gap:4px }
+@media (max-width:760px){ .explain ol > li{ grid-template-columns:40px minmax(0,1fr) } .x-body{ grid-column:2 } }
+.pn{ display:grid; grid-template-columns:1fr 1fr; gap:24px; padding-block:72px 0 }
+.pn a{ display:grid; gap:6px; text-decoration:none; padding:26px 0; border-top:1px solid var(--ink); transition:opacity 300ms var(--ease) }
+.pn a:last-child{ text-align:right }
+.pn small{ font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted) }
+.pn b{ font-family:var(--display); font-weight:400; font-size:clamp(28px, 3.4vw, 44px); line-height:1.05 }
+.pn:hover a:not(:hover){ opacity:.35 }
+.preview-pill{ position:fixed; left:16px; bottom:16px; z-index:40; padding:9px 14px; border-radius:999px; background:#FFFFFF; color:#141414; font:13px/1.3 system-ui, -apple-system, "Segoe UI", sans-serif; box-shadow:0 10px 30px rgb(0 0 0 / .2), 0 0 0 1px rgb(0 0 0 / .06) }
+.preview-pill b{ font-weight:600 }
+
+body{ overflow-x:clip }
+.a-cta{ display:grid; gap:16px; justify-items:start; margin-top:72px; padding:clamp(28px, 4vw, 48px); border:1px solid var(--line); background:#FFFFFF }
+.a-cta h2{ font-family:var(--display); font-weight:300; font-size:clamp(28px, 3.2vw, 44px); letter-spacing:-0.035em; line-height:1.05 }
+.a-cta h2 em{ font-family:var(--serif); font-style:italic; font-weight:400; font-size:1.1em }
+.a-cta-row{ display:flex; flex-wrap:wrap; align-items:center; gap:14px 24px }
+.a-mail{ color:var(--ink); font-size:16px }
+.a-ask{ display:inline-flex; gap:10px; align-items:center; min-height:44px; padding:8px 0; border:0; border-bottom:1px solid var(--ink); background:none; color:var(--ink); font:inherit; font-size:16px; cursor:pointer }
+.a-ask i{ width:8px; height:8px; border-radius:50%; background:var(--ink) }
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important }
+}
+/* Geist headings, serif italic accents (matches the homepage) */
+.sec-head h2, .a-head h1, .explain h2{ font-weight:300; letter-spacing:-0.035em }
+.sec-head h2{ font-size:clamp(32px, 3.8vw, 52px) }
+.a-head h1{ font-size:clamp(36px, 4.4vw, 64px); line-height:1.06 }
+.explain h2{ font-size:clamp(30px, 3.4vw, 44px) }
+.sec-head h2 em, .a-head h1 em, .explain h2 em{ font-family:var(--serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em }
+.row .name{ font-weight:300; letter-spacing:-0.03em; font-size:clamp(24px, 3vw, 36px) }
+.row.more .name{ font-family:var(--serif); font-weight:400 }
+.logo b{ font-weight:500; font-size:24px; letter-spacing:-0.03em }
+.logo span{ font-weight:300; font-size:17px }
+.card .c-name, .x-name b, .pn b, .beat p, .human p{ font-weight:300; letter-spacing:-0.025em }
+.card .c-name{ font-size:24px; line-height:1.15 }
+.beat p{ font-size:clamp(19px, 1.8vw, 23px); line-height:1.4 }
+.human p{ font-size:clamp(19px, 2vw, 24px) }
+.x-name b{ font-size:24px }
+.pn b{ font-size:clamp(24px, 2.8vw, 36px) }
+.t-agent .wt b{ font-size:20px; font-weight:400; letter-spacing:-0.02em }
+.meta-row .todo{ font-family:var(--sans); font-style:normal; font-size:16px }
+</style>
+</head>
+<body>
+
+<nav class="top" aria-label="Main">
+  <a class="logo" href="/"><b>Omhar</b><span>Regidor</span></a>
+  <div class="top-links"><a href="/#work">Work</a><a href="/#automations" aria-current="true">Automations</a><a href="/#stack">Stack</a><a href="/gear">Gear</a><a href="/#clients">Clients</a><a href="/#contact">Contact</a></div>
+  <a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a call</a>
+</nav>
+
+<!-- ================= HOME ================= -->
+<main id="view-home">
+
+  <section class="sec web wrap" id="web" aria-labelledby="web-h">
+    <div class="sec-head">
+      <p class="eyebrow">01 Websites &amp; apps</p>
+      <h2 id="web-h">Built for the <em>browser</em></h2>
+      <p class="count">6 projects</p>
+      <span class="hair" aria-hidden="true"></span>
+    </div>
+    <ul class="index">
+      <li><a class="row" href="https://binukbok-viewpoint.vercel.app" target="_blank" rel="noopener" data-shot="0"><span class="name">BiNuKBoK View Point Resort <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Resort booking, admin dashboard and an AI assistant</span><span class="meta">binukbok-viewpoint.vercel.app</span></a></li>
+      <li><a class="row" href="https://www.noxaloyalty.com/" target="_blank" rel="noopener" data-shot="1"><span class="name">Noxa Loyalty <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Loyalty rewards web app and iOS app</span><span class="meta">noxaloyalty.com</span></a></li>
+      <li><a class="row" href="https://www.sweetblooms.ph/" target="_blank" rel="noopener" data-shot="2"><span class="name">SweetBlooms <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Florist e-commerce with sales, inventory and POS</span><span class="meta">sweetblooms.ph</span></a></li>
+      <li><a class="row" href="https://www.jazamedia.com/" target="_blank" rel="noopener" data-shot="3"><span class="name">JAZA Media <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Website for a media agency</span><span class="meta">jazamedia.com</span></a></li>
+      <li><a class="row" href="https://crisia-va-portfolio.vercel.app/" target="_blank" rel="noopener" data-shot="4"><span class="name">Crisia VA <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Portfolio site for a virtual assistant</span><span class="meta">crisia-va-portfolio.vercel.app</span></a></li>
+      <li><a class="row" href="https://pipeline-pal-17.vercel.app/" target="_blank" rel="noopener" data-shot="5"><span class="name">SalesPipe <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Sales pipeline and customer tracker</span><span class="meta">pipeline-pal-17.vercel.app</span></a></li>
+    </ul>
+    <div class="float paper" aria-hidden="true">
+      <img class="pshot" alt="">
+      <img class="pshot" alt="" hidden>
+      <img class="pshot" alt="" hidden>
+      <img class="pshot" alt="" hidden>
+      <img class="pshot" alt="" hidden>
+      <img class="pshot" alt="" hidden>
+    </div>
+  </section>
+
+  <section class="sec auto wrap" id="auto" aria-labelledby="auto-h">
+    <div class="sec-head">
+      <p class="eyebrow">02 Automations, built in n8n</p>
+      <h2 id="auto-h">Workflows that run <em>while you sleep</em></h2>
+      <p class="count">3 workflows</p>
+      <span class="hair" aria-hidden="true"></span>
+    </div>
+    <ul class="index" id="auto-index"></ul>
+    <div class="float dark" id="auto-float" aria-hidden="true"></div>
+  </section>
+
+  <footer class="foot wrap"><span>© 2026 Omhar Regidor</span><span>Batangas, Philippines</span></footer>
+</main>
+
+<!-- ================= AUTOMATION PAGE ================= -->
+<main id="view-auto" hidden>
+  <section class="a-head wrap">
+    <a class="crumb" href="/#automations">← All automations</a>
+    <p class="eyebrow">Automation · n8n</p>
+    <h1 id="a-title" tabindex="-1"></h1>
+    <p class="lede" id="a-lede"></p>
+    <dl class="meta-row" id="a-meta"></dl>
+  </section>
+
+  <section class="stage" id="stage" aria-label="Workflow simulation">
+    <div class="stage-top"><span class="sim"><i aria-hidden="true"></i>Simulated run · sample data</span></div>
+    <div class="viewport"><div class="pan" id="pan"><div class="sizer" id="sizer"><div class="plane" id="plane"></div></div></div></div>
+    <div class="controls" id="controls" role="toolbar" aria-label="Simulation controls"></div>
+    <div class="card" id="card" role="tooltip" hidden></div>
+  </section>
+
+  <div class="wrap">
+    <div class="story" id="story"></div>
+    <div class="human"><span>A person still</span><p id="a-human"></p></div>
+    <section class="explain" aria-labelledby="x-h">
+      <p class="eyebrow">Step by step</p>
+      <h2 id="x-h">Every node, <em>explained</em></h2>
+      <ol id="explain"></ol>
+    </section>
+    <section class="a-cta" aria-labelledby="a-cta-h">
+      <p class="eyebrow">Start a project</p>
+      <h2 id="a-cta-h">Want a workflow like this for your <em>team</em>?</h2>
+      <p class="lede">Tell me which task eats your team’s hours. In a 30-minute call we can look at whether n8n can take it over.</p>
+      <div class="a-cta-row"><a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a 30-min call <span aria-hidden="true">→</span></a><button class="a-ask" type="button" data-ask-open aria-haspopup="dialog"><i aria-hidden="true"></i>Ask about this workflow</button><a class="a-mail" href="mailto:omharregidor@gmail.com">omharregidor@gmail.com</a></div>
+    </section>
+    <nav class="pn" id="pn" aria-label="More automations"></nav>
+    <footer class="foot"><span>© 2026 Omhar Regidor</span><span>Batangas, Philippines</span></footer>
+  </div>
+</main>
+
+<p class="preview-pill" id="pill" hidden></p>
+
+<script>
+(() => {
+'use strict';
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fine = matchMedia('(hover: hover) and (pointer: fine)');
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+/* ---------- icons ---------- */
+const st = (c, d) => `<svg viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const ICON = {
+  gmail: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#EA4335" d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>',
+  openai: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#F1F4F2" d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>',
+  shopify: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#95BF47" d="M15.337 23.979l7.216-1.561s-2.604-17.613-2.625-17.73c-.018-.116-.114-.192-.211-.192s-1.929-.136-1.929-.136-1.275-1.274-1.439-1.411c-.045-.037-.075-.057-.121-.074l-.914 21.104h.023zM11.71 11.305s-.81-.424-1.774-.424c-1.447 0-1.504.906-1.504 1.141 0 1.232 3.24 1.715 3.24 4.629 0 2.295-1.44 3.76-3.406 3.76-2.354 0-3.54-1.465-3.54-1.465l.646-2.086s1.245 1.066 2.28 1.066c.675 0 .975-.545.975-.932 0-1.619-2.654-1.694-2.654-4.359-.034-2.237 1.571-4.416 4.827-4.416 1.257 0 1.875.361 1.875.361l-.945 2.715-.02.01zM11.17.83c.136 0 .271.038.405.135-.984.465-2.064 1.639-2.508 3.992-.656.213-1.293.405-1.889.578C7.697 3.75 8.951.84 11.17.84V.83zm1.235 2.949v.135c-.754.232-1.583.484-2.394.736.466-1.777 1.333-2.645 2.085-2.971.193.501.309 1.176.309 2.1zm.539-2.234c.694.074 1.141.867 1.429 1.755-.349.114-.735.231-1.158.366v-.252c0-.752-.096-1.371-.271-1.871v.002zm2.992 1.289c-.02 0-.06.021-.078.021s-.289.075-.714.21c-.423-1.233-1.176-2.37-2.508-2.37h-.115C12.135.209 11.669 0 11.265 0 8.159 0 6.675 3.877 6.21 5.846c-1.194.365-2.063.636-2.16.674-.675.213-.694.232-.772.87-.075.462-1.83 14.063-1.83 14.063L15.009 24l.927-21.166z"/></svg>',
+  slack: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/><path fill="#36C5F0" d="M8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312z"/><path fill="#2EB67D" d="M18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312z"/><path fill="#ECB22E" d="M15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>',
+  http: st('#EDEDEA', '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>'),
+  filter: st('#EDEDEA', '<path d="M4 6h16M7 12h10M10 18h4"/>'),
+  ifx: st('#EDEDEA', '<path d="M6 4v6c0 2 1.5 3 3.5 3H18M14.5 9.5 18 13l-3.5 3.5M6 20v-3"/>'),
+  code: st('#EDEDEA', '<path d="M9 4.5c-2 0-2.6 1-2.6 2.6v2.2c0 1-.8 2-2 2.7 1.2.6 2 1.6 2 2.6v2.3c0 1.6.6 2.6 2.6 2.6M15 4.5c2 0 2.6 1 2.6 2.6v2.2c0 1 .8 2 2 2.7-1.2.6-2 1.6-2 2.6v2.3c0 1.6-.6 2.6-2.6 2.6"/>'),
+  clock: st('#EEF1EF', '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>'),
+  webhook: st('#EDEDEA', '<circle cx="12" cy="6" r="3"/><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M10.5 8.7 7.6 14.4M9 17h6M13.5 8.7l2.9 5.7"/>'),
+  robot: st('#EEF1EF', '<rect x="5" y="8" width="14" height="10" rx="4"/><path d="M12 8V5M9.5 12.8h.01M14.5 12.8h.01M3 12.5v2.5M21 12.5v2.5"/>'),
+  memory: st('#EEF1EF', '<ellipse cx="12" cy="6" rx="7" ry="2.5"/><path d="M5 6v12c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V6M5 12c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5"/>'),
+  chat: st('#EEF1EF', '<path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-7l-4 3v-3H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/>'),
+  tag: st('#BDBDB8', '<path d="M3.5 12V4.5H11l9 9-7.5 7.5-9-9z"/><circle cx="7.6" cy="8.4" r="1.2"/>')
+};
+const BOLT = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>';
+const TYPE_LABEL = { trigger: 'Trigger', action: 'Action', logic: 'Logic', decision: 'Decision', ai: 'AI step', agent: 'AI agent', model: 'Chat model', memory: 'Memory' };
+const SIZE = { trigger: [84, 84], action: [84, 84], logic: [84, 84], decision: [80, 80], ai: [208, 84], agent: [248, 100], model: [64, 64], memory: [64, 64] };
+
+/* ---------- workflows (node chains from the owner's n8n screenshots; card copy is draft) ---------- */
+const WF = {
+  'live-inbox': {
+    name: 'CS Live Inbox', client: 'Comfit',
+    kind: 'Drafts customer-service replies so the team only reviews and sends',
+    meta: '9 nodes · Gmail · OpenAI',
+    title: 'Support replies, <em>drafted</em> before anyone opens the inbox.',
+    lede: 'Every new customer email gets a quick AI check. The ones that need an answer get a researched draft waiting in Gmail, ready for a person to review.',
+    facts: [['Client', 'Comfit'], ['Built with', 'n8n · Gmail · OpenAI'], ['Starts when', 'A new email arrives']],
+    approach: 'A cheap AI model reads every email first. Only the ones that truly need an answer reach the stronger model, which writes a reply with real order details.',
+    human: 'reviews each draft in Gmail and presses send.',
+    variants: { main: {
+      W: 1580, H: 400,
+      nodes: [
+        { id: 'gmail', type: 'trigger', icon: 'gmail', name: 'Gmail Trigger', sub: 'New email', x: 40, y: 90,
+          card: { role: 'Watches the support inbox', desc: 'Starts a run the moment a new email lands in the support inbox.', how: ['Checks the inbox for new mail on a short interval', 'Passes the sender, subject and message on'] } },
+        { id: 'filter', type: 'logic', icon: 'filter', name: 'Filter', sub: 'Keeps real emails', x: 214, y: 90,
+          card: { role: 'First quick sort', desc: 'Stops emails that should never reach the AI, so nothing is spent on them.', how: ['Only emails that pass its rules continue', 'Everything else ends here quietly'] } },
+        { id: 'triage', type: 'ai', icon: 'openai', name: 'Triage (cheap)', sub: 'Response text', x: 384, y: 90,
+          card: { role: 'A fast, low-cost read', desc: 'A small AI model reads the email and answers one question. Does someone on support need to reply?', how: ['Uses a cheaper model on purpose to keep costs low', 'Returns a simple yes or no'] } },
+        { id: 'needs', type: 'decision', icon: 'ifx', name: 'Needs CS reply?', sub: 'IF', x: 682, y: 92,
+          card: { role: 'Sorts the inbox', desc: 'Reads the triage answer and sends the email down one of two paths.', how: ['Yes goes on to research and a drafted reply', 'No gets a label and is left alone', 'Never sends anything to the customer by itself'] } },
+        { id: 'lookup', type: 'action', icon: 'http', name: 'HTTP Request', sub: 'Store lookup', x: 860, y: 90,
+          card: { role: 'Gathers context', desc: 'Calls the store to pull the details a good reply needs.', how: ['Runs only on the reply path', 'Feeds what it finds into the writing step'] } },
+        { id: 'writer', type: 'ai', icon: 'openai', name: 'Message a model', sub: 'Writes the reply', x: 1030, y: 90,
+          card: { role: 'Writes the reply', desc: 'A stronger AI model writes a reply using the email and the store details.', how: ['Writes in a helpful support tone', 'Hands its text to Gmail as a draft, never as a sent email'] } },
+        { id: 'draft', type: 'action', icon: 'gmail', name: 'Create a draft', sub: 'Gmail draft', x: 1316, y: 90,
+          card: { role: 'Parks the reply in Gmail', desc: 'Saves the AI reply as a draft on the same email thread.', how: ['A person reviews it and presses send', 'Nothing goes out without that review'] } },
+        { id: 'log', type: 'action', icon: 'http', name: 'HTTP Request', sub: 'Logs the run', x: 1478, y: 90,
+          card: { role: 'Keeps a record', desc: 'Sends a short record of the run to a database for tracking.', how: ['Runs after every drafted reply', 'Makes it easy to see what the assistant handled'] } },
+        { id: 'skip', type: 'action', icon: 'tag', name: 'Skip · cs-skipped', sub: 'Adds a Gmail label', x: 860, y: 250,
+          card: { role: 'Clears the noise', desc: 'Labels emails that need no reply so the team can ignore them at a glance.', how: ['Costs nothing extra, the cheap check already decided', 'Adds the cs-skipped label in Gmail'] } }
+      ],
+      edges: [
+        { from: 'gmail', to: 'filter' }, { from: 'filter', to: 'triage' }, { from: 'triage', to: 'needs' },
+        { from: 'needs', to: 'lookup', branch: 'true' }, { from: 'needs', to: 'skip', branch: 'false' },
+        { from: 'lookup', to: 'writer' }, { from: 'writer', to: 'draft' }, { from: 'draft', to: 'log' }
+      ],
+      runs: [
+        { label: 'A customer asks about an order', short: 'Order question', choice: 'true', payload: { gmail: 'New email · “Where is my order #1001?”', filter: 'Kept · real customer', triage: ['Reading…', 'needs_reply: yes'], needs: 'true → reply path', lookup: 'Order #1001 · shipped', writer: ['Writing…', 'Reply drafted'], draft: 'Draft saved in Gmail', log: 'Run logged' } },
+        { label: 'A delivery notice arrives', short: 'Delivery notice', choice: 'false', payload: { gmail: 'New email · “Your parcel was delivered”', filter: 'Kept', triage: ['Reading…', 'needs_reply: no'], needs: 'false → skip', skip: 'Labeled cs-skipped' } }
+      ]
+    } }
+  },
+  'sales-pulse': {
+    name: 'Daily Sales Pulse', client: 'Comfit',
+    kind: 'Posts an AI-written sales summary to Slack every day',
+    meta: '6 nodes · Shopify · Slack',
+    title: 'Yesterday’s sales, <em>summarized</em> in Slack every day.',
+    lede: 'A scheduled run pulls the store’s orders, works out the numbers, and has AI write a short summary the team reads in Slack.',
+    facts: [['Client', 'Comfit'], ['Built with', 'n8n · Shopify · OpenAI · Slack'], ['Starts when', 'On a daily schedule']],
+    approach: 'Code does the math first, so the AI only has to explain the numbers, not calculate them. That keeps the summary short and the figures exact.',
+    human: 'reads the summary and decides what to act on.',
+    variants: { main: {
+      W: 1230, H: 280,
+      nodes: [
+        { id: 'sched', type: 'trigger', icon: 'clock', name: 'Schedule Trigger', sub: 'Daily', x: 40, y: 100,
+          card: { role: 'The daily alarm clock', desc: 'Starts a run at the same time every day, with nobody pressing anything.', how: ['Runs on a fixed daily schedule', 'Needs no message or email to start'] } },
+        { id: 'orders', type: 'action', icon: 'shopify', name: 'Get many orders', sub: 'getAll: order', x: 232, y: 100,
+          card: { role: 'Pulls the orders', desc: 'Fetches the store’s recent orders from Shopify.', how: ['Reads orders only, never changes them', 'Passes the full list to the next step'] } },
+        { id: 'code', type: 'action', icon: 'code', name: 'Code in JavaScript', sub: 'Totals and trends', x: 424, y: 100,
+          card: { role: 'Does the math', desc: 'Adds up the orders and works out the numbers worth reporting.', how: ['Exact math in code, not guessed by AI', 'Hands a short, clean summary of numbers to the AI'] } },
+        { id: 'ai', type: 'ai', icon: 'openai', name: 'Message a model', sub: 'Writes the summary', x: 616, y: 100,
+          card: { role: 'Writes it up', desc: 'Turns the numbers into a short summary a person can read in seconds.', how: ['Explains the figures in plain words', 'Keeps it short enough for a Slack message'] } },
+        { id: 'slack', type: 'action', icon: 'slack', name: 'Send a message', sub: 'post: message', x: 932, y: 100,
+          card: { role: 'Delivers it', desc: 'Posts the summary into the team’s Slack.', how: ['Lands where the team already works', 'Arrives every day without anyone asking'] } },
+        { id: 'log', type: 'action', icon: 'http', name: 'HTTP Request', sub: 'Logs the run', x: 1124, y: 100,
+          card: { role: 'Keeps a record', desc: 'Sends a short record of the run to a database for tracking.', how: ['Runs after every summary', 'Makes missed days easy to spot'] } }
+      ],
+      edges: [{ from: 'sched', to: 'orders' }, { from: 'orders', to: 'code' }, { from: 'code', to: 'ai' }, { from: 'ai', to: 'slack' }, { from: 'slack', to: 'log' }],
+      runs: [{ label: 'The daily run', payload: { sched: 'Daily schedule fires', orders: 'Yesterday’s orders pulled', code: 'Totals and top products', ai: ['Writing…', 'Summary written'], slack: 'Posted to the team channel', log: 'Run logged' } }]
+    } }
+  },
+  'sop': {
+    name: 'SOP Assistant', client: 'Comfit',
+    kind: 'Answers staff questions about procedures, in Slack or in a chat window',
+    meta: 'AI agent · Slack · OpenAI',
+    title: 'Answers to “how do we do this?”, <em>right inside</em> Slack.',
+    lede: 'Staff ask a question about a procedure and an AI agent answers it. The same assistant works in Slack and in a chat window.',
+    facts: [['Client', 'Comfit'], ['Built with', 'n8n · Slack · OpenAI'], ['Starts when', 'Someone asks a question']],
+    approach: 'One AI agent sits in the middle. Slack and the chat window are just two doors into it, so the answers stay the same wherever staff ask.',
+    human: 'writes and updates the procedures the assistant answers from.',
+    variantLabels: { slack: 'In Slack', chat: 'Chat window' },
+    variants: {
+      slack: {
+        W: 1000, H: 380,
+        nodes: [
+          { id: 'hook', type: 'trigger', icon: 'webhook', name: 'Webhook', sub: 'POST from Slack', x: 40, y: 86,
+            card: { role: 'The Slack doorway', desc: 'Receives a question the moment someone asks it in Slack.', how: ['Listens for messages sent from Slack', 'Starts a run for each question'] } },
+          { id: 'ack', type: 'action', icon: 'webhook', name: 'Respond to Webhook', sub: 'Instant receipt', x: 234, y: 86,
+            card: { role: 'Says “got it” right away', desc: 'Answers Slack instantly so it does not time out while the AI thinks.', how: ['Replies within moments', 'The real answer follows a few seconds later'] } },
+          { id: 'agent', type: 'agent', icon: 'robot', name: 'AI Agent', sub: 'Answers the question', x: 430, y: 78, slots: ['model', 'memory', 'tool'],
+            card: { role: 'Answers team questions', desc: 'Reads the staff question and answers it from the company’s written procedures.', how: ['Uses the OpenAI chat model to write the answer', 'Sends the answer back to where the question came from'] } },
+          { id: 'model', type: 'model', icon: 'openai', name: 'OpenAI Chat Model', sub: 'Model', parent: 'agent', slot: 'model', x: 452, y: 264,
+            card: { role: 'The thinking part', desc: 'The language model the agent uses to understand the question and write the answer.', how: ['Only the agent talks to it', 'Swappable for another model later'] } },
+          { id: 'reply', type: 'action', icon: 'http', name: 'HTTP Request', sub: 'Posts the answer', x: 796, y: 86,
+            card: { role: 'Delivers the answer', desc: 'Posts the agent’s answer back into the Slack conversation.', how: ['Replies where the question was asked', 'Runs once per question'] } }
+        ],
+        edges: [{ from: 'hook', to: 'ack' }, { from: 'ack', to: 'agent' }, { from: 'agent', to: 'reply' }],
+        runs: [{ label: 'A question in Slack', payload: { hook: '“How do I process a return?”', ack: '200 OK · received', agent: ['Thinking…', 'Answer ready'], reply: 'Answer posted in Slack' } }]
+      },
+      chat: {
+        W: 700, H: 380,
+        nodes: [
+          { id: 'chat', type: 'trigger', icon: 'chat', name: 'When chat message received', sub: 'Chat window', x: 40, y: 86,
+            card: { role: 'The chat doorway', desc: 'Starts a run when someone types a question into the chat window.', how: ['One run per message', 'Keeps the conversation going back and forth'] } },
+          { id: 'agent', type: 'agent', icon: 'robot', name: 'AI Agent', sub: 'Answers the question', x: 250, y: 78, slots: ['model', 'memory', 'tool'],
+            card: { role: 'Answers team questions', desc: 'Reads the question and answers it from the company’s written procedures.', how: ['Uses the OpenAI chat model to write the answer', 'Remembers the recent messages, so follow-ups make sense'] } },
+          { id: 'model', type: 'model', icon: 'openai', name: 'OpenAI Chat Model', sub: 'Model', parent: 'agent', slot: 'model', x: 268, y: 264,
+            card: { role: 'The thinking part', desc: 'The language model the agent uses to understand the question and write the answer.', how: ['Only the agent talks to it', 'Swappable for another model later'] } },
+          { id: 'mem', type: 'memory', icon: 'memory', name: 'Simple Memory', sub: 'Memory', parent: 'agent', slot: 'memory', x: 404, y: 264,
+            card: { role: 'Short-term memory', desc: 'Holds the last few messages of the chat so the agent keeps context.', how: ['Lets someone ask “and what about refunds?” without repeating themselves', 'Only covers the current conversation'] } }
+        ],
+        edges: [{ from: 'chat', to: 'agent' }],
+        runs: [{ label: 'A question in the chat window', payload: { chat: '“How do I process a return?”', agent: ['Thinking…', 'Answer shown in chat'] } }]
+      }
+    }
+  }
+};
+const ORDER = ['live-inbox', 'sales-pulse', 'sop'];
+const firstVariant = wf => Object.keys(wf.variants)[0];
+const sizeOf = n => { const d = SIZE[n.type]; return { w: n.w || d[0], h: n.h || d[1] }; };
+const SLOT_FX = { model: .2, memory: .55, tool: .84 };
+
+/* geometry shared by stage + mini graphs */
+function geometry(v) {
+  const byId = Object.fromEntries(v.nodes.map(n => [n.id, n]));
+  const box = n => ({ ...sizeOf(n), x: n.x, y: n.y });
+  const outPt = (n, branch) => { const b = box(n); if (n.type === 'decision') return branch === 'false' ? { x: b.x + 66, y: b.y + 60.5 } : { x: b.x + b.w + 9, y: b.y + b.h / 2 }; return { x: b.x + b.w + 6, y: b.y + b.h / 2 }; };
+  const inPt = n => { const b = box(n); return { x: b.x - 6.5, y: b.y + b.h / 2 }; };
+  const curve = (a, b) => { const dx = Math.max(34, Math.abs(b.x - a.x) * .45); return `M${a.x} ${a.y} C${a.x + dx} ${a.y} ${b.x - dx} ${b.y} ${b.x} ${b.y}`; };
+  const edges = v.edges.map(e => { const a = outPt(byId[e.from], e.branch), b = inPt(byId[e.to]); return { ...e, key: e.from + '>' + e.to, a, b, d: curve(a, b) }; });
+  const subs = v.nodes.filter(n => n.parent).map(n => {
+    const p = byId[n.parent], pb = box(p), sb = box(n);
+    const a = { x: pb.x + pb.w * SLOT_FX[n.slot], y: pb.y + pb.h + 6 }, b = { x: sb.x + sb.w / 2, y: sb.y };
+    return { id: n.id, a, b, d: `M${a.x} ${a.y} C${a.x} ${a.y + 46} ${b.x} ${b.y - 46} ${b.x} ${b.y}` };
+  });
+  return { byId, box, edges, subs };
+}
+function route(v, run) {
+  const g = geometry(v);
+  const trig = v.nodes.find(n => n.type === 'trigger');
+  const steps = [];
+  let cur = trig, guard = 0;
+  while (cur && guard++ < 50) {
+    steps.push({ k: 'node', id: cur.id });
+    const outs = g.edges.filter(e => e.from === cur.id);
+    if (!outs.length) break;
+    const e = outs.length > 1 ? (outs.find(o => o.branch === run.choice) || outs[0]) : outs[0];
+    steps.push({ k: 'edge', key: e.key, from: e.from });
+    cur = g.byId[e.to];
+  }
+  return steps;
+}
+
+/* ---------- home: index rows with following previews ---------- */
+function miniGraph(v) {
+  const g = geometry(v);
+  const VW = 330, VH = 200, s = Math.min((VW - 40) / v.W, (VH - 56) / v.H);
+  const ox = (VW - v.W * s) / 2, oy = (VH - 28 - v.H * s) / 2;
+  const T = (x, y) => `${(ox + x * s).toFixed(1)} ${(oy + y * s).toFixed(1)}`;
+  const scalePath = d => d.replace(/([MC])\s*([\d.\s-]+)/g, (m, c, nums) => { const n = nums.trim().split(/\s+/).map(Number); const out = []; for (let i = 0; i < n.length; i += 2) out.push(T(n[i], n[i + 1])); return c + out.join(' ') + ' '; });
+  const edges = g.edges.map(e => `<path d="${scalePath(e.d)}" fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"/>`).join('') +
+    g.subs.map(e => `<path d="${scalePath(e.d)}" fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.1" stroke-dasharray="3 4"/>`).join('');
+  const nodes = v.nodes.map(n => { const b = g.box(n); const r = (n.type === 'model' || n.type === 'memory') ? b.w * s / 2 : 4; return `<rect x="${(ox + b.x * s).toFixed(1)}" y="${(oy + b.y * s).toFixed(1)}" width="${(b.w * s).toFixed(1)}" height="${(b.h * s).toFixed(1)}" rx="${r.toFixed(1)}" fill="#1E1E1E" stroke="${n.type === 'trigger' ? 'rgb(237 237 234 / .6)' : 'rgb(255 255 255 / .2)'}"/>`; }).join('');
+  const steps = route(v, v.runs[0]).filter(s2 => s2.k === 'edge').map(s2 => scalePath(g.edges.find(e => e.key === s2.key).d)).join(' ');
+  const motion = reduce ? '' : `<circle r="3.6" fill="#EDEDEA"><animateMotion dur="2.4s" repeatCount="indefinite" path="${steps}"/></circle><circle r="9" fill="rgb(237 237 234 / .18)"><animateMotion dur="2.4s" repeatCount="indefinite" path="${steps}"/></circle>`;
+  return `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="rgb(255 255 255 / .08)"/></pattern></defs><rect width="${VW}" height="${VH}" fill="url(#dots)"/>${edges}${nodes}${motion}</svg>`;
+}
+const autoIndex = $('#auto-index');
+autoIndex.innerHTML = ORDER.map(slug => { const w = WF[slug]; return `<li><a class="row" href="#auto-${slug}" data-wf="${slug}"><span class="name">${w.name} <span class="arr" aria-hidden="true">→</span></span><span class="kind">${w.kind}</span><span class="meta"><span class="tag">n8n</span>${w.meta}</span></a></li>`; }).join('') +
+  `<li><a class="row more" href="#" data-note="On the real site this opens the full automations list."><span class="name">All automations, 3 <span class="arr" aria-hidden="true">→</span></span><span class="kind">More workflows land here as they ship</span></a></li>`;
+$('#auto-float').innerHTML = ORDER.map((slug, i) => `<div data-i="${i}" ${i ? 'hidden' : ''}>${miniGraph(WF[slug].variants[firstVariant(WF[slug])])}<p>${WF[slug].meta}</p></div>`).join('');
+
+function followIndex(section, floatEl, previewOf) {
+  const index = $('.index', section);
+  const rows = $$('.row', index);
+  const items = [...floatEl.children];
+  let x = 0, y = 0, tx = 0, ty = 0, raf = 0, active = -1, fresh = false;
+  const put = () => { floatEl.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`; };
+  const step = () => { x += (tx - x) * .18; y += (ty - y) * .18; put(); raf = Math.abs(tx - x) + Math.abs(ty - y) > .3 ? requestAnimationFrame(step) : 0; };
+  const move = snap => { if (snap || reduce) { x = tx; y = ty; put(); return; } if (!raf) raf = requestAnimationFrame(step); };
+  const setActive = (i, r) => {
+    if (i >= 0 && active < 0) fresh = true;
+    active = i;
+    rows.forEach(rr => rr.classList.toggle('on', rr === r));
+    index.classList.toggle('has-active', i >= 0 || !!r);
+    floatEl.classList.toggle('on', i >= 0);
+    items.forEach((it, k) => { it.hidden = k !== i; });
+  };
+  rows.forEach(r => {
+    const i = previewOf(r);
+    r.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') setActive(i, r); });
+    r.addEventListener('focus', () => { if (r.matches(':focus-visible')) { setActive(i, r); const sr = section.getBoundingClientRect(), rr = r.getBoundingClientRect(); tx = Math.max(0, sr.width - floatEl.offsetWidth - 24); ty = rr.top - sr.top - 30; move(true); } });
+    r.addEventListener('blur', () => setActive(-1, null));
+  });
+  index.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') setActive(-1, null); });
+  section.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse' || active < 0) return;
+    const sr = section.getBoundingClientRect(), w = floatEl.offsetWidth, h = floatEl.offsetHeight;
+    let nx = e.clientX - sr.left + 28; if (nx + w > sr.width) nx = e.clientX - sr.left - 28 - w;
+    tx = clamp(nx, 0, Math.max(0, sr.width - w)); ty = e.clientY - sr.top - h / 2;
+    move(fresh); fresh = false;
+  });
+}
+followIndex($('#web'), $('#web .float'), r => r.dataset.shot === undefined ? -1 : Number(r.dataset.shot));
+followIndex($('#auto'), $('#auto-float'), r => r.dataset.wf ? ORDER.indexOf(r.dataset.wf) : -1);
+$$('[data-note]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); const p = $('#pill'); p.innerHTML = '<b>Preview.</b> ' + esc(a.dataset.note); }));
+
+/* ---------- stage engine ---------- */
+const stage = $('#stage'), plane = $('#plane'), pan = $('#pan'), sizer = $('#sizer'), card = $('#card'), controls = $('#controls');
+let G = null;
+
+function mountStage(slug, vkey) {
+  if (G) G.destroy();
+  const wf = WF[slug], v = wf.variants[vkey], g = geometry(v);
+  const NODE_MS = { trigger: 520, action: 460, logic: 380, decision: 420, ai: 1150, agent: 1700, model: 0, memory: 0 };
+  const HOP_MS = 720;
+
+  /* build svg */
+  let svg = `<svg class="edges" width="${v.W}" height="${v.H}" viewBox="0 0 ${v.W} ${v.H}" aria-hidden="true"><defs>
+    <radialGradient id="halo"><stop offset="0" style="stop-color:var(--glow)" stop-opacity=".55"/><stop offset=".45" stop-color="#9A9A96" stop-opacity=".22"/><stop offset="1" stop-color="#9A9A96" stop-opacity="0"/></radialGradient>
+    <marker id="arw" viewBox="0 0 8 8" refX="7.5" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0.5 7.5 4 0 7.5z" fill="rgb(255 255 255 / .38)"/></marker></defs>`;
+  g.edges.forEach(e => { svg += `<path class="e" data-k="${e.key}" d="${e.d}" marker-end="url(#arw)"/>`; });
+  g.subs.forEach(e => { svg += `<path class="e sub" data-s="${e.id}" d="${e.d}"/>`; });
+  // Only the slots that hold a sub-node get a connector.
+  v.nodes.filter(c => c.parent).forEach(c => {
+    const b = g.box(g.byId[c.parent]), sx = b.x + b.w * SLOT_FX[c.slot], sy = b.y + b.h;
+    svg += `<g class="slot"><rect x="${sx - 5}" y="${sy - 5}" width="10" height="10" transform="rotate(45 ${sx} ${sy})"/></g>`;
+  });
+  g.edges.forEach(e => {
+    // true sits just after the IF, above the line. false sits under the end of its curve, clear of the IF label.
+    if (e.branch === 'true') svg += `<text class="svg-t t" x="${e.a.x + 14}" y="${e.a.y - 8}">true</text>`;
+    if (e.branch === 'false') svg += `<text class="svg-t f" x="${e.b.x - 12}" y="${e.b.y + 20}" text-anchor="end">false</text>`;
+  });
+  svg += `<g id="trail"></g><g id="pk" opacity="0"><circle r="22" fill="url(#halo)"/><circle r="4.6" fill="#FFFFFF"/></g><g id="subpk"></g></svg>`;
+
+  /* build nodes */
+  const nodesHtml = v.nodes.map(n => {
+    const b = g.box(n), wide = n.type === 'ai' || n.type === 'agent';
+    const hasIn = !n.parent && n.type !== 'trigger', hasOut = !n.parent;
+    const outs = n.type === 'decision' ? '<span class="port out t"></span><span class="port out f"></span>' : (hasOut ? '<span class="port out"></span>' : '');
+    return `<button class="node t-${n.type}${wide ? ' wide' : ''}" type="button" data-id="${n.id}" style="left:${b.x}px;top:${b.y}px;width:${b.w}px;height:${b.h}px" aria-describedby="card">
+      <span class="body"><span class="skin"></span><span class="ring"></span><span class="ic">${ICON[n.icon]}</span>${wide ? `<span class="wt"><b>${esc(n.name)}</b><small>${esc(n.sub)}</small></span>` : ''}</span>
+      ${n.type === 'trigger' ? `<span class="bolt">${BOLT}</span>` : ''}${hasIn ? '<span class="port in"></span>' : ''}${outs}
+      ${wide ? '' : `<span class="lbl"><b>${esc(n.name)}</b><small>${esc(n.sub)}</small></span>`}
+      <span class="sr">${esc(TYPE_LABEL[n.type])}. ${esc(n.name)}. ${esc(n.card.role)}.</span></button>`;
+  }).join('');
+  plane.innerHTML = `<div class="grid"></div>${svg}<div class="nodes">${nodesHtml}</div><div class="packet-chip" id="chip"></div>`;
+  plane.style.width = v.W + 'px'; plane.style.height = v.H + 'px';
+
+  const nodeEl = Object.fromEntries($$('.node', plane).map(el => [el.dataset.id, el]));
+  const edgeEl = Object.fromEntries($$('path.e[data-k]', plane).map(el => [el.dataset.k, el]));
+  const subEl = Object.fromEntries($$('path.e[data-s]', plane).map(el => [el.dataset.s, el]));
+  const pk = $('#pk', plane), trailG = $('#trail', plane), subpkG = $('#subpk', plane), chip = $('#chip', plane);
+  trailG.innerHTML = Array.from({ length: 6 }, (_, i) => `<circle r="${(3.6 - i * .45).toFixed(2)}" style="fill:var(--glow)" opacity="0"/>`).join('');
+  const trail = [...trailG.children];
+  const subPk = {};
+  g.subs.forEach(s => { subpkG.insertAdjacentHTML('beforeend', `<circle data-s="${s.id}" r="3.4" fill="#F0F0F0" opacity="0"/>`); subPk[s.id] = subpkG.lastElementChild; });
+  const childrenOf = id => v.nodes.filter(n => n.parent === id).map(n => n.id);
+
+  /* state */
+  let runIdx = 0, steps = route(v, v.runs[0]), phase = 'run', i = 0, t = 0;
+  let playing = !reduce, visible = true, hoverSlow = false, speed = 1, raf = 0, last = performance.now();
+  const stepDur = s => s.k === 'edge' ? HOP_MS : (NODE_MS[g.byId[s.id].type] || 400);
+  const curDur = () => phase === 'run' ? stepDur(steps[i]) : phase === 'done' ? 1700 : 1100;
+  const payloadOf = (id, which) => { const p = v.runs[runIdx].payload[id]; if (p === undefined) return ''; return Array.isArray(p) ? p[which] : p; };
+  const routeNodes = () => steps.filter(s => s.k === 'node').map(s => s.id);
+
+  function clearMarks() {
+    Object.values(nodeEl).forEach(el => el.classList.remove('run', 'done'));
+    Object.values(edgeEl).forEach(el => el.classList.remove('lit'));
+    Object.values(subEl).forEach(el => el.classList.remove('pulse'));
+  }
+  function enter(k) {
+    const s = steps[k]; if (!s) return;
+    if (s.k === 'node') {
+      const el = nodeEl[s.id]; el.classList.add('run');
+      const ring = $('.ring', el); ring.classList.remove('go'); void ring.offsetWidth; ring.classList.add('go');
+      childrenOf(s.id).forEach(c => subEl[c] && subEl[c].classList.add('pulse'));
+    } else edgeEl[s.key].classList.add('lit');
+  }
+  function finish(k) {
+    const s = steps[k]; if (!s || s.k !== 'node') return;
+    const el = nodeEl[s.id]; el.classList.remove('run'); el.classList.add('done');
+    childrenOf(s.id).forEach(c => { subEl[c] && subEl[c].classList.remove('pulse'); nodeEl[c].classList.remove('run'); nodeEl[c].classList.add('done'); });
+  }
+  function startRun(k) {
+    runIdx = k; steps = route(v, v.runs[runIdx]); phase = 'run'; i = 0; t = 0;
+    clearMarks(); enter(0); syncScenario();
+  }
+  function advance(ms) {
+    t += ms;
+    let guard = 0;
+    while (t >= curDur() && guard++ < 40) {
+      t -= curDur();
+      if (phase === 'run') { finish(i); i++; if (i >= steps.length) { phase = 'done'; } else enter(i); }
+      else if (phase === 'done') { phase = 'rest'; clearMarks(); }
+      else startRun((runIdx + 1) % v.runs.length);
+    }
+    render();
+  }
+  function placeChip(x, y, text) {
+    chip.textContent = text;
+    chip.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`;
+    chip.classList.toggle('on', !!text);
+  }
+  function hidePacket() { pk.setAttribute('opacity', '0'); trail.forEach(c => c.setAttribute('opacity', '0')); }
+  function render() {
+    Object.values(subPk).forEach(c => c.setAttribute('opacity', '0'));
+    if (phase !== 'run') {
+      hidePacket();
+      if (phase === 'done') { const lastNode = g.box(g.byId[steps[steps.length - 1].id]); placeChip(lastNode.x + lastNode.w / 2, lastNode.y - 12, 'Run complete'); }
+      else placeChip(0, 0, '');
+      return;
+    }
+    const s = steps[i], p = clamp(t / curDur(), 0, 1);
+    if (s.k === 'node') {
+      hidePacket();
+      const n = g.byId[s.id], b = g.box(n);
+      const txt = Array.isArray(v.runs[runIdx].payload[s.id]) ? payloadOf(s.id, 0) : payloadOf(s.id, 0);
+      placeChip(b.x + b.w / 2, b.y - 12, txt);
+      childrenOf(s.id).forEach(c => {
+        const path = subEl[c], L = path.getTotalLength();
+        const tt = p < .38 ? ease(p / .38) : p > .62 ? ease((1 - p) / .38) : 1;
+        const pt = path.getPointAtLength(L * tt);
+        subPk[c].setAttribute('cx', pt.x); subPk[c].setAttribute('cy', pt.y); subPk[c].setAttribute('opacity', p > .02 && p < .98 ? '1' : '0');
+        nodeEl[c].classList.toggle('run', p > .3 && p < .7);
+      });
+    } else {
+      const path = edgeEl[s.key], L = path.getTotalLength(), e = ease(p);
+      const pt = path.getPointAtLength(L * e);
+      pk.setAttribute('transform', `translate(${pt.x} ${pt.y})`); pk.setAttribute('opacity', '1');
+      trail.forEach((c, k) => { const q = Math.max(0, e - (k + 1) * .03); const tp = path.getPointAtLength(L * q); c.setAttribute('cx', tp.x); c.setAttribute('cy', tp.y); c.setAttribute('opacity', q > 0 ? (0.5 - k * .07).toFixed(2) : '0'); });
+      const outTxt = payloadOf(s.from, 1);
+      placeChip(pt.x, pt.y - 16, outTxt);
+      if (G && G.flat && !userPanned()) followPan(pt.x);
+    }
+  }
+  function tick(now) {
+    raf = requestAnimationFrame(tick);
+    const dt = Math.min(64, now - last); last = now;
+    if (!playing || !visible) return;
+    advance(dt * speed * (hoverSlow ? .25 : 1));
+  }
+
+  /* static (reduced motion) */
+  function staticPath() {
+    clearMarks();
+    steps.forEach(s => { if (s.k === 'node') { nodeEl[s.id].classList.add('done'); childrenOf(s.id).forEach(c => nodeEl[c].classList.add('done')); } else edgeEl[s.key].classList.add('lit'); });
+    hidePacket(); placeChip(0, 0, '');
+  }
+
+  /* controls */
+  const scenName = r => { const long = esc(r.label.replace(/^A /, '').replace(/^a /, '')); return r.short ? `<span class="c-lg">${long}</span><span class="c-sm">${esc(r.short)}</span>` : long; };
+  const scen = v.runs.length > 1 ? v.runs.map((r, k) => `<button type="button" data-run="${k}" aria-pressed="${k === 0}">${scenName(r)}</button>`).join('') : '';
+  const vars = wf.variantLabels ? Object.entries(wf.variantLabels).map(([k, lab]) => `<button type="button" data-var="${k}" aria-pressed="${k === vkey}">${esc(lab)}</button>`).join('') : '';
+  controls.innerHTML = `<button type="button" class="play" id="play">${reduce ? 'Step through' : 'Pause'}</button><button type="button" id="stepb">Step</button><button type="button" id="speed" aria-pressed="false">2×</button>${scen || vars ? '<span class="sep" aria-hidden="true"></span>' : ''}${vars}${scen}`;
+  const playBtn = $('#play'), stepBtn = $('#stepb'), speedBtn = $('#speed');
+  function setPlaying(on) { playing = on && !reduce; playBtn.innerHTML = reduce ? 'Step through' : playing ? '❚❚&nbsp; Pause' : '▶&nbsp; Run workflow'; }
+  function syncScenario() { $$('[data-run]', controls).forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.run) === runIdx))); }
+  playBtn.addEventListener('click', () => { if (reduce) { stepOnce(); return; } if (phase !== 'run' && !playing) startRun(runIdx); setPlaying(!playing); });
+  function stepOnce() {
+    setPlaying(false);
+    if (reduce) {
+      const nodesInRoute = routeNodes();
+      const cur = nodesInRoute.findIndex(id => nodeEl[id].classList.contains('run'));
+      nodesInRoute.forEach(id => nodeEl[id].classList.remove('run'));
+      nodeEl[nodesInRoute[(cur + 1) % nodesInRoute.length]].classList.add('run');
+      return;
+    }
+    advance(curDur() - t + .01);
+  }
+  stepBtn.addEventListener('click', stepOnce);
+  speedBtn.addEventListener('click', () => { speed = speed === 1 ? 2 : 1; speedBtn.setAttribute('aria-pressed', String(speed === 2)); });
+  $$('[data-run]', controls).forEach(b => b.addEventListener('click', () => { startRun(Number(b.dataset.run)); if (reduce) staticPath(); else setPlaying(true); }));
+  $$('[data-var]', controls).forEach(b => b.addEventListener('click', () => { if (b.dataset.var !== vkey) openAuto(slug, b.dataset.var, true); }));
+
+  /* hover cards */
+  let cardFor = null;
+  function showCard(id, sheet) {
+    const n = g.byId[id], el = nodeEl[id];
+    const rn = routeNodes(), pos = rn.indexOf(id);
+    const where = n.parent ? 'Sub-node of the agent' : pos >= 0 ? `Step ${pos + 1} of ${rn.length}` : 'Other branch';
+    card.innerHTML = `<button class="c-close" type="button" aria-label="Close">×</button><p class="c-type"><i></i>${esc(TYPE_LABEL[n.type])}</p><p class="c-name">${esc(n.name)}</p><p class="c-role">${esc(n.card.role)}</p><p class="c-desc">${esc(n.card.desc)}</p><p class="c-h">How it behaves</p><ul>${n.card.how.map(h => `<li>${esc(h)}</li>`).join('')}</ul><p class="c-foot"><span>${esc(n.sub)}</span><span>${where}</span></p>`;
+    card.classList.toggle('sheet', !!sheet);
+    $('.c-close', card).addEventListener('click', hideCard);
+    Object.values(nodeEl).forEach(x => x.classList.toggle('lift', x === el));
+    cardFor = id;
+    if (!sheet) {
+      const sr = stage.getBoundingClientRect(), nr = $('.skin', el).getBoundingClientRect();
+      const cw = card.offsetWidth, ch = card.offsetHeight;
+      let left = nr.right - sr.left + 18; if (left + cw > sr.width - 12) left = nr.left - sr.left - 18 - cw;
+      left = clamp(left, 12, sr.width - cw - 12);
+      const top = clamp(nr.top - sr.top - 6, 12, sr.height - ch - 12);
+      card.style.left = left + 'px'; card.style.top = top + 'px';
+    }
+    card.hidden = false;
+    requestAnimationFrame(() => card.classList.add('on'));
+  }
+  function hideCard() { card.classList.remove('on'); card.hidden = true; cardFor = null; hoverSlow = false; Object.values(nodeEl).forEach(x => x.classList.remove('lift')); }
+  Object.entries(nodeEl).forEach(([id, el]) => {
+    el.addEventListener('pointerenter', e => { if (e.pointerType !== 'mouse') return; hoverSlow = true; showCard(id, false); });
+    el.addEventListener('pointerleave', e => { if (e.pointerType !== 'mouse') return; hideCard(); });
+    el.addEventListener('focus', () => { if (el.matches(':focus-visible')) showCard(id, !fine.matches); });
+    el.addEventListener('blur', () => { if (cardFor === id) hideCard(); });
+    el.addEventListener('click', e => { if (e.pointerType === 'mouse') return; if (cardFor === id) hideCard(); else showCard(id, true); });
+  });
+  const onKey = e => { if (e.key === 'Escape' && cardFor) hideCard(); };
+  document.addEventListener('keydown', onKey);
+
+  /* layout + parallax */
+  let lastPanTouch = 0;
+  const userPanned = () => performance.now() - lastPanTouch < 4000;
+  const onPanTouch = () => { lastPanTouch = performance.now(); };
+  pan.addEventListener('pointerdown', onPanTouch); pan.addEventListener('wheel', onPanTouch, { passive: true });
+  function followPan(x) { const target = x * fitNow - pan.clientWidth / 2; pan.scrollLeft += (target - pan.scrollLeft) * .08; }
+  let fitNow = 1;
+  function layout() {
+    const vw = stage.clientWidth, vh = stage.clientHeight;
+    const flat = vw < 760 || !fine.matches || (vw - 140) / v.W < .6;
+    stage.classList.toggle('flat', flat);
+    if (flat) {
+      fitNow = Math.max(Math.min((vw - 40) / v.W, (vh - 190) / (v.H + 40)), .6);
+      plane.style.setProperty('--fit', fitNow.toFixed(3));
+      sizer.style.width = (v.W * fitNow + 48) + 'px'; sizer.style.height = vh + 'px';
+      plane.style.left = '24px'; plane.style.top = Math.max(70, (vh - v.H * fitNow) / 2 - 20) + 'px';
+    } else {
+      fitNow = Math.min((vw - 140) / v.W, (vh - 200) / (v.H + 30), 1.12);
+      plane.style.setProperty('--fit', fitNow.toFixed(3));
+      sizer.style.width = ''; sizer.style.height = '';
+      plane.style.left = ''; plane.style.top = '';
+    }
+    if (G) G.flat = flat;
+  }
+  addEventListener('resize', layout);
+  const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; }, { threshold: .15 });
+  io.observe(stage);
+
+  G = {
+    flat: false,
+    destroy() { cancelAnimationFrame(raf); io.disconnect(); removeEventListener('resize', layout); document.removeEventListener('keydown', onKey); pan.removeEventListener('pointerdown', onPanTouch); hideCard(); },
+    spot(id) { plane.classList.toggle('spotting', !!id); Object.entries(nodeEl).forEach(([k, el]) => el.classList.toggle('spot', k === id)); },
+    order() { const rn = []; v.runs.forEach(r => route(v, r).forEach(s => { if (s.k === 'node' && !rn.includes(s.id)) { rn.push(s.id); childrenOf(s.id).forEach(c => rn.includes(c) || rn.push(c)); } })); v.nodes.forEach(n => rn.includes(n.id) || rn.push(n.id)); return rn.map(id => g.byId[id]); }
+  };
+  layout();
+  setPlaying(!reduce);
+  if (reduce) staticPath(); else { enter(0); render(); }
+  raf = requestAnimationFrame(tick);
+  return { v, g };
+}
+
+/* ---------- automation page ---------- */
+function openAuto(slug, vkey, keepScroll) {
+  const wf = WF[slug];
+  vkey = vkey || firstVariant(wf);
+  $('#view-home').hidden = true; $('#view-auto').hidden = false;
+  $('#a-title').innerHTML = wf.title;
+  $('#a-lede').textContent = wf.lede;
+  $('#a-meta').innerHTML = wf.facts.map(([k, val]) => `<div><dt>${k}</dt><dd>${esc(val)}</dd></div>`).join('');
+  $('#story').innerHTML = `<div class="beat"><h2>The approach</h2><p>${esc(wf.approach)}</p></div>`;
+  $('#a-human').textContent = wf.human;
+  const { v } = mountStage(slug, vkey);
+  const list = G.order();
+  $('#explain').innerHTML = list.map(n => `<li tabindex="0" data-id="${n.id}"><div class="x-name"><small>${esc(TYPE_LABEL[n.type])}</small><b>${esc(n.name)}</b><span>${esc(n.card.role)}</span></div><div class="x-body">${esc(n.card.desc)}<ul>${n.card.how.map(h => `<li>${esc(h)}</li>`).join('')}</ul></div></li>`).join('');
+  $$('#explain > li').forEach(li => {
+    li.addEventListener('pointerenter', () => G.spot(li.dataset.id));
+    li.addEventListener('pointerleave', () => G.spot(null));
+    li.addEventListener('focus', () => G.spot(li.dataset.id));
+    li.addEventListener('blur', () => G.spot(null));
+  });
+  const k = ORDER.indexOf(slug), prev = ORDER[(k + ORDER.length - 1) % ORDER.length], next = ORDER[(k + 1) % ORDER.length];
+  $('#pn').innerHTML = `<a href="#auto-${prev}"><small>← Previous</small><b>${WF[prev].name}</b></a><a href="#auto-${next}"><small>Next →</small><b>${WF[next].name}</b></a>`;
+  $('#pill').innerHTML = '<b>Preview.</b> Hover the nodes. Try Pause, Step and the run options.';
+  if (!keepScroll) { scrollTo(0, 0); $('#a-title').focus({ preventScroll: true }); }
+  else { const vb = $('[data-var="' + vkey + '"]'); if (vb) vb.focus({ preventScroll: true }); }
+  const md = document.querySelector('meta[name="description"]'); if (md) md.content = wf.lede;
+  document.title = wf.name + ' · Omhar Regidor';
+  return v;
+}
+function showHome(anchor) {
+  if (G) { G.destroy(); G = null; }
+  $('#view-auto').hidden = true; $('#view-home').hidden = false;
+  $('#pill').innerHTML = '<b>Preview.</b> Hover the automations, then click one.';
+  document.title = 'Atelier Work and Automations';
+  const t = anchor && document.getElementById(anchor);
+  if (t) t.scrollIntoView(); else scrollTo(0, 0);
+}
+function routeHash() {
+  const h = location.hash.slice(1);
+  if (h.startsWith('auto-') && WF[h.slice(5)]) openAuto(h.slice(5));
+  else { history.replaceState(null, '', '#auto-' + ORDER[0]); openAuto(ORDER[0]); }
+}
+addEventListener('hashchange', routeHash);
+routeHash();
+})();
+</script>
+<script src="/atelier/site-menu.js"></script>
+<script src="/atelier/ask-omhar.js"></script>
+</body>
+</html>

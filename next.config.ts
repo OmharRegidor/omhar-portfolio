@@ -17,10 +17,31 @@ const securityHeaders = [
   },
 ];
 
+// The Atelier redesign ships as static pages in public/atelier/ (edit them there). These rewrites serve them
+// at clean URLs ahead of the old React routes; the old homepage at the original-layout-v1 tag is the rollback.
+const atelierPages = [
+  { source: "/", destination: "/atelier/index.html" },
+  { source: "/gear", destination: "/atelier/gear.html" },
+  { source: "/automations", destination: "/atelier/automations.html" },
+];
+
 const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
+  },
+  async rewrites() {
+    return { beforeFiles: atelierPages, afterFiles: [], fallback: [] };
+  },
+  async redirects() {
+    // Temporary (307) so a rollback isn't stuck in browser caches.
+    return [
+      { source: "/projects", destination: "/#work", permanent: false },
+      { source: "/tech-stack", destination: "/#stack", permanent: false },
+      { source: "/automations/cs-live-inbox", destination: "/automations#auto-live-inbox", permanent: false },
+      { source: "/automations/daily-sales-pulse", destination: "/automations#auto-sales-pulse", permanent: false },
+      { source: "/automations/sop-assistant", destination: "/automations#auto-sop", permanent: false },
+    ];
   },
 };
 

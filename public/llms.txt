@@ -1,0 +1,26 @@
+# Omhar Regidor
+> AI engineer and software developer based in Batangas, Philippines. Builds web apps, n8n workflow automations and AI assistants for startups and small businesses.
+
+## About
+- Role: Software Developer / AI Engineer at Noxa (2026)
+- Education: BS Information Technology, Batangas State University, Malvar Campus (2025)
+- Location: Batangas, Philippines
+- Book a 30-minute call: https://calendly.com/omharregidor/30min
+- Email: omharregidor@gmail.com
+
+## Web projects
+- BiNuKBoK View Point Resort: resort booking site, admin dashboard and an AI assistant that answers live availability questions. https://binukbok-viewpoint.vercel.app
+- Noxa Loyalty: customer loyalty platform with a web app and an iOS app on the App Store. https://www.noxaloyalty.com/
+- SweetBlooms: florist e-commerce with an internal sales, inventory and POS system. https://www.sweetblooms.ph/
+- JAZA Media: website for a media agency. https://www.jazamedia.com/
+- Crisia VA: portfolio site for a virtual assistant. https://crisia-va-portfolio.vercel.app/
+- SalesPipe: sales pipeline and customer tracker. https://pipeline-pal-17.vercel.app/
+
+## n8n automations
+- CS Live Inbox: Gmail and OpenAI workflow that triages support emails and saves AI-drafted replies as Gmail drafts for a person to review. https://omharregidor.vercel.app/automations/cs-live-inbox
+- Daily Sales Pulse: scheduled workflow that pulls Shopify orders, calculates totals in code and posts an AI-written summary to Slack. https://omharregidor.vercel.app/automations/daily-sales-pulse
+- SOP Assistant: AI agent that answers staff questions about company procedures in Slack or a chat window. https://omharregidor.vercel.app/automations/sop-assistant
+
+## Profiles
+- GitHub: https://github.com/OmharRegidor
+- LinkedIn: https://www.linkedin.com/in/omhar-regidor-84827136a/

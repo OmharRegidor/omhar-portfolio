@@ -3,7 +3,8 @@ import { test, expect, type Locator, type Page } from "@playwright/test";
 /**
  * Behavioral contract for the Phase 2 reduced-motion guard.
  * The globally-mounted "Ask Omhar AI" launcher uses motion-safe:transition-colors,
- * so it's a good probe: motion when allowed, clamped to ~instant when reduced.
+ * so it's a good probe: motion when allowed, clamped to ~instant when reduced. It mounts on the React
+ * routes only, so this runs on /resume ("/" is now the static Atelier homepage).
  * See docs/superpowers/specs/2026-06-15-phase2-motion-design-system-design.md.
  */
 async function maxTransitionMs(el: Locator): Promise<number> {
@@ -19,7 +20,7 @@ test("guard clamps transitions to ~instant and disables smooth scroll under redu
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
+  await page.goto("/resume");
   const btn = launcher(page);
   await expect(btn).toBeVisible();
 
@@ -33,7 +34,7 @@ test("guard clamps transitions to ~instant and disables smooth scroll under redu
 
 test("motion-safe transitions stay active when motion is allowed", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.goto("/");
+  await page.goto("/resume");
   const btn = launcher(page);
   await expect(btn).toBeVisible();
 
