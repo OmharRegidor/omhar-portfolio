@@ -1072,6 +1072,8 @@ function openAuto(slug, vkey, keepScroll) {
   $('#pill').innerHTML = '<b>Preview.</b> Hover the nodes. Try Pause, Step and the run options.';
   if (!keepScroll) { scrollTo(0, 0); $('#a-title').focus({ preventScroll: true }); }
   else { const vb = $('[data-var="' + vkey + '"]'); if (vb) vb.focus({ preventScroll: true }); }
+  // A new workflow starts back at the top, so its blocks pop in again. A run switch only picks up the new rows.
+  if (window.atelierReveal) atelierReveal.refresh(keepScroll ? null : $('#view-auto'));
   const md = document.querySelector('meta[name="description"]'); if (md) md.content = wf.lede;
   document.title = wf.name + ' · Omhar Regidor';
   return v;
@@ -1093,6 +1095,7 @@ addEventListener('hashchange', routeHash);
 routeHash();
 })();
 </script>
+<script src="/atelier/reveal.js"></script>
 <script src="/atelier/site-menu.js"></script>
 <script src="/atelier/ask-omhar.js"></script>
 </body>

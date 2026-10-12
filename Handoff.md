@@ -31,6 +31,13 @@ forced through `pnpm.overrides` (brace-expansion, js-yaml, nanoid, postcss, brow
 `braces` GHSA-vfj7-8cjw-p6xm has no fix yet and only sits in the lint plugin, so it's in `pnpm.auditConfig.ignoreGhsas`.
 Remove that entry once a patched `braces` exists.
 
+Scroll pop-ins (2026-10-12, owner request): `public/atelier/reveal.js`, loaded on all three pages. Blocks below the
+fold are held invisible by a paused Web Animation and pop up (rise 40px, scale .94 → 1, back-ease overshoot, 80ms
+stagger) once a quarter of them shows. Blocks on screen at load are never touched, and nothing is held under reduced
+motion or when printing. The block list is the `TARGETS` selector array at the top of the file; never list a block
+with one of its own children. `openAuto()` in automations.html calls `atelierReveal.refresh()` after it redraws.
+Covered by `tests/e2e/scroll-reveals.spec.ts` (back again, now for the Atelier pages).
+
 Still unconfirmed and now live as-is: Comfit is named as a client on the CS Live Inbox page; the Noxa testimonial
 has no employer label; MacBook size, memory and storage are not shown; the mouse is assumed to be the OP-620D.
 
