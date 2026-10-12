@@ -31,9 +31,13 @@ forced through `pnpm.overrides` (brace-expansion, js-yaml, nanoid, postcss, brow
 `braces` GHSA-vfj7-8cjw-p6xm has no fix yet and only sits in the lint plugin, so it's in `pnpm.auditConfig.ignoreGhsas`.
 Remove that entry once a patched `braces` exists.
 
-Scroll pop-ins (2026-10-12, owner request): `public/atelier/reveal.js`, loaded on all three pages. Blocks below the
-fold are held invisible by a paused Web Animation and pop up (rise 40px, scale .94 → 1, back-ease overshoot, 80ms
-stagger) once a quarter of them shows. Blocks on screen at load are never touched, and nothing is held under reduced
+Scroll entrances (2026-10-12, owner request): `public/atelier/reveal.js`, loaded on all three pages. Blocks below the
+fold are held invisible by a paused opacity-only Web Animation, then play their page's entrance once a quarter of
+them shows. Each page picks a style with `data-reveal` on `<body>`: home `pop` (rise and grow with an overshoot),
+gear `lift` (3D tip-up from flat), automations `wipe` (clip-path wipe from the left). The hold must never move or
+clip a block, because the observer measures what is painted and a block clipped to nothing never counts as showing.
+The four homepage facts (`dd[data-count]`) count up from 0 as they come in, with the real value kept in a visually
+hidden span for screen readers. Blocks on screen at load are never touched, and nothing is held under reduced
 motion or when printing. The block list is the `TARGETS` selector array at the top of the file; never list a block
 with one of its own children. `openAuto()` in automations.html calls `atelierReveal.refresh()` after it redraws.
 Covered by `tests/e2e/scroll-reveals.spec.ts` (back again, now for the Atelier pages).

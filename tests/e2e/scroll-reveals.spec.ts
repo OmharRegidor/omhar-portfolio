@@ -30,6 +30,24 @@ test("the last lines of a page still pop in at the very bottom", async ({ page }
   await expect.poll(() => opacity(page, ".foot > :last-child"), { timeout: 3000 }).toBe(1);
 });
 
+test("the homepage numbers count up from 0 and land on their real values", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  const facts = page.locator(".qa-facts dd");
+  await facts.first().scrollIntoViewIfNeeded();
+  // Mid-count the visible digits differ, but the text a screen reader gets is still the real value.
+  await expect(page.locator(".qa-facts dd [aria-hidden]").first()).toBeAttached();
+  await expect(page.locator(".qa-facts")).toMatchAriaSnapshot(`
+    - definition: "6"
+    - definition: "3"
+    - definition: "2021"
+    - definition: "2025"
+  `);
+  await expect.poll(() => facts.allTextContents(), { timeout: 4000 }).toEqual(["6", "3", "2021", "2025"]);
+  await expect(page.locator(".qa-facts dd span")).toHaveCount(0);
+});
+
 test("under reduced motion, nothing is held back", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
