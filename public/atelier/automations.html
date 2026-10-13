@@ -220,9 +220,12 @@ body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--san
 a{ color:inherit }
 h1,h2,h3,p{ margin:0 }
 :focus-visible{ outline:2px solid var(--accent); outline-offset:3px }
+/* Icons are Phosphor Regular, drawn from /atelier/icons.svg. Each one sits beside a word and takes the text colour. */
+.icon{ width:1em; height:1em; flex-shrink:0; vertical-align:-.125em }
 .wrap{ max-width:1180px; margin-inline:auto; padding-inline:clamp(20px, 6vw, 72px) }
-.eyebrow{ display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:500; letter-spacing:.26em; text-transform:uppercase; color:var(--accent-ink) }
-.eyebrow::before{ content:"+"; font-size:17px; letter-spacing:0 }
+.eyebrow{ display:flex; align-items:flex-start; gap:10px; font-size:12.5px; font-weight:500; letter-spacing:.26em; text-transform:uppercase; color:var(--accent-ink) }
+/* Label icons sit beside the first line, centred on it (line-height 1.6), so a label that wraps keeps its icon at the top. */
+.eyebrow .icon{ width:16px; height:16px; margin-top:calc((1.6em - 16px) / 2) }
 .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap }
 
 /* nav: the same fixed header as the homepage, shown as its solid dark bar on these pages */
@@ -238,6 +241,7 @@ html{ scroll-padding-top:88px }
 .top :focus-visible{ outline-color:#FFFFFF }
 .book{ white-space:nowrap; display:inline-flex; align-items:center; gap:10px; padding:13px 20px; background:var(--accent); color:#FFFFFF; text-decoration:none; font-size:13.5px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; transition:gap 350ms var(--ease) }
 .book:hover, .book:focus-visible{ gap:16px }
+.book .icon{ width:1.15em; height:1.15em }
 .top .book{ padding:14px 22px; font-size:14px; background:#FFFFFF; color:#111111; box-shadow:0 8px 24px rgb(0 0 0 / .18) }
 @media (max-width:860px){
   .top-links{ display:none }
@@ -263,6 +267,8 @@ html{ scroll-padding-top:88px }
 .row{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 24px; align-items:baseline; padding-block:24px; text-decoration:none; color:inherit; transition:opacity 320ms var(--ease) }
 .row .name{ display:inline-flex; gap:14px; align-items:baseline; font-family:var(--display); font-size:clamp(30px, 4.2vw, 50px); line-height:1.05; transition:color 250ms ease }
 .row .arr{ font-family:var(--sans); font-size:.4em; color:var(--accent-ink); opacity:0; transform:translate(-6px, 6px); transition:opacity 250ms ease, transform 350ms var(--ease) }
+/* The row arrow sits on the middle of the lowercase letters of the name. */
+.row .arr .icon{ width:1.25em; height:1.25em; vertical-align:-.05em }
 .row .kind{ grid-column:1; font-size:16px; color:var(--muted); max-width:56ch }
 .row .meta{ grid-column:2; grid-row:1 / span 2; align-self:center; font-size:14px; color:var(--muted); text-align:right }
 .row .tag{ display:inline-block; margin-right:10px; padding:2px 8px; border:1px solid var(--line); font-size:11px; letter-spacing:.16em; text-transform:uppercase; vertical-align:2px }
@@ -293,7 +299,8 @@ html{ scroll-padding-top:88px }
 /* ---------- automation page ---------- */
 .a-head{ display:grid; gap:22px; padding-block:clamp(40px, 6vw, 72px) clamp(36px, 5vw, 56px) }
 #a-title:focus{ outline:none }
-.crumb{ font-size:14px; color:var(--muted); text-decoration:none; justify-self:start }
+.crumb{ display:inline-flex; align-items:flex-start; gap:8px; font-size:14px; color:var(--muted); text-decoration:none; justify-self:start }
+.crumb .icon{ width:16px; height:16px; margin-top:calc((1.6em - 16px) / 2) }
 .crumb:hover{ color:var(--ink) }
 .a-head h1{ font-family:var(--display); font-weight:400; font-size:clamp(46px, 6vw, 88px); line-height:1; letter-spacing:-0.015em; max-width:17ch; text-wrap:balance }
 .a-head h1 em{ color:var(--accent-ink) }
@@ -375,7 +382,7 @@ html{ scroll-padding-top:88px }
 .controls button{ font:inherit; font-size:14px; color:rgb(255 255 255 / .82); background:transparent; border:0; border-radius:999px; padding:9px 14px; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:8px }
 .controls button:hover{ background:rgb(255 255 255 / .06); color:#FFFFFF }
 .controls .play{ background:#F2F2F0; color:#111111; font-weight:500 }
-.controls .play:hover{ background:#FFFFFF }
+.controls .play:hover{ background:#FFFFFF; color:#111111 }
 .controls .sep{ width:1px; height:22px; background:rgb(255 255 255 / .12); margin-inline:4px; flex:none }
 .controls [aria-pressed="true"]{ background:rgb(237 237 234 / .14); color:var(--glow) }
 /* Phones: a compact bar in two rows (play, step, speed on top, the scenario switch below) instead of one row that runs off screen. */
@@ -403,7 +410,7 @@ html{ scroll-padding-top:88px }
 .card .c-foot{ display:flex; justify-content:space-between; gap:10px; margin-top:14px; padding-top:10px; border-top:1px solid rgb(255 255 255 / .08); font-family:var(--mono); font-size:11.5px; color:rgb(255 255 255 / .65) }
 .card .c-close{ display:none; position:absolute; right:10px; top:10px; width:34px; height:34px; border-radius:50%; border:1px solid rgb(255 255 255 / .15); background:transparent; color:#FFFFFF; font-size:18px; cursor:pointer }
 .card.sheet{ position:fixed; left:12px; right:12px; bottom:12px; top:auto !important; width:auto; max-width:none; pointer-events:auto }
-.card.sheet .c-close{ display:block }
+.card.sheet .c-close{ display:grid; place-items:center }
 
 /* flat mode (small screens / touch) */
 .stage.flat .pan{ overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch }
@@ -436,9 +443,11 @@ html{ scroll-padding-top:88px }
 .x-body ul{ margin:8px 0 0; padding-left:1.1em; color:var(--muted); font-size:15px; display:grid; gap:4px }
 @media (max-width:760px){ .explain ol > li{ grid-template-columns:40px minmax(0,1fr) } .x-body{ grid-column:2 } }
 .pn{ display:grid; grid-template-columns:1fr 1fr; gap:24px; padding-block:72px 0 }
-.pn a{ display:grid; gap:6px; text-decoration:none; padding:26px 0; border-top:1px solid var(--ink); transition:opacity 300ms var(--ease) }
+.pn a{ display:grid; align-content:start; gap:6px; text-decoration:none; padding:26px 0; border-top:1px solid var(--ink); transition:opacity 300ms var(--ease) }
 .pn a:last-child{ text-align:right }
-.pn small{ font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted) }
+.pn small{ display:flex; align-items:center; gap:8px; font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted) }
+.pn a:last-child small{ justify-content:flex-end }
+.pn small .icon{ width:15px; height:15px }
 .pn b{ font-family:var(--display); font-weight:400; font-size:clamp(28px, 3.4vw, 44px); line-height:1.05 }
 .pn:hover a:not(:hover){ opacity:.35 }
 .preview-pill{ position:fixed; left:16px; bottom:16px; z-index:40; padding:9px 14px; border-radius:999px; background:#FFFFFF; color:#141414; font:13px/1.3 system-ui, -apple-system, "Segoe UI", sans-serif; box-shadow:0 10px 30px rgb(0 0 0 / .2), 0 0 0 1px rgb(0 0 0 / .06) }
@@ -474,10 +483,11 @@ body{ overflow-x:clip }
 .t-agent .wt b{ font-size:20px; font-weight:400; letter-spacing:-0.02em }
 .meta-row .todo{ font-family:var(--sans); font-style:normal; font-size:16px }
 </style>
+<link rel="stylesheet" href="/atelier/glass.css">
 </head>
 <body data-reveal="wipe">
 
-<nav class="top" aria-label="Main">
+<nav class="top solid" aria-label="Main">
   <a class="logo" href="/"><b>Omhar</b><span>Regidor</span></a>
   <div class="top-links"><a href="/#work">Work</a><a href="/#automations" aria-current="true">Automations</a><a href="/#stack">Stack</a><a href="/gear">Gear</a><a href="/#clients">Clients</a><a href="/#contact">Contact</a></div>
   <a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a call</a>
@@ -488,18 +498,18 @@ body{ overflow-x:clip }
 
   <section class="sec web wrap" id="web" aria-labelledby="web-h">
     <div class="sec-head">
-      <p class="eyebrow">01 Websites &amp; apps</p>
+      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-browser"/></svg>01 Websites &amp; apps</p>
       <h2 id="web-h">Built for the <em>browser</em></h2>
       <p class="count">6 projects</p>
       <span class="hair" aria-hidden="true"></span>
     </div>
     <ul class="index">
-      <li><a class="row" href="https://binukbok-viewpoint.vercel.app" target="_blank" rel="noopener" data-shot="0"><span class="name">BiNuKBoK View Point Resort <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Resort booking, admin dashboard and an AI assistant</span><span class="meta">binukbok-viewpoint.vercel.app</span></a></li>
-      <li><a class="row" href="https://www.noxaloyalty.com/" target="_blank" rel="noopener" data-shot="1"><span class="name">Noxa Loyalty <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Loyalty rewards web app and iOS app</span><span class="meta">noxaloyalty.com</span></a></li>
-      <li><a class="row" href="https://www.sweetblooms.ph/" target="_blank" rel="noopener" data-shot="2"><span class="name">SweetBlooms <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Florist e-commerce with sales, inventory and POS</span><span class="meta">sweetblooms.ph</span></a></li>
-      <li><a class="row" href="https://www.jazamedia.com/" target="_blank" rel="noopener" data-shot="3"><span class="name">JAZA Media <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Website for a media agency</span><span class="meta">jazamedia.com</span></a></li>
-      <li><a class="row" href="https://crisia-va-portfolio.vercel.app/" target="_blank" rel="noopener" data-shot="4"><span class="name">Crisia VA <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Portfolio site for a virtual assistant</span><span class="meta">crisia-va-portfolio.vercel.app</span></a></li>
-      <li><a class="row" href="https://pipeline-pal-17.vercel.app/" target="_blank" rel="noopener" data-shot="5"><span class="name">SalesPipe <span class="arr" aria-hidden="true">↗</span></span><span class="kind">Sales pipeline and customer tracker</span><span class="meta">pipeline-pal-17.vercel.app</span></a></li>
+      <li><a class="row" href="https://binukbok-viewpoint.vercel.app" target="_blank" rel="noopener" data-shot="0"><span class="name">BiNuKBoK View Point Resort <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Resort booking, admin dashboard and an AI assistant</span><span class="meta">binukbok-viewpoint.vercel.app</span></a></li>
+      <li><a class="row" href="https://www.noxaloyalty.com/" target="_blank" rel="noopener" data-shot="1"><span class="name">Noxa Loyalty <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Loyalty rewards web app and iOS app</span><span class="meta">noxaloyalty.com</span></a></li>
+      <li><a class="row" href="https://www.sweetblooms.ph/" target="_blank" rel="noopener" data-shot="2"><span class="name">SweetBlooms <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Florist e-commerce with sales, inventory and POS</span><span class="meta">sweetblooms.ph</span></a></li>
+      <li><a class="row" href="https://www.jazamedia.com/" target="_blank" rel="noopener" data-shot="3"><span class="name">JAZA Media <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Website for a media agency</span><span class="meta">jazamedia.com</span></a></li>
+      <li><a class="row" href="https://crisia-va-portfolio.vercel.app/" target="_blank" rel="noopener" data-shot="4"><span class="name">Crisia VA <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Portfolio site for a virtual assistant</span><span class="meta">crisia-va-portfolio.vercel.app</span></a></li>
+      <li><a class="row" href="https://pipeline-pal-17.vercel.app/" target="_blank" rel="noopener" data-shot="5"><span class="name">SalesPipe <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Sales pipeline and customer tracker</span><span class="meta">pipeline-pal-17.vercel.app</span></a></li>
     </ul>
     <div class="float paper" aria-hidden="true">
       <img class="pshot" alt="">
@@ -513,7 +523,7 @@ body{ overflow-x:clip }
 
   <section class="sec auto wrap" id="auto" aria-labelledby="auto-h">
     <div class="sec-head">
-      <p class="eyebrow">02 Automations, built in n8n</p>
+      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-flow-arrow"/></svg>02 Automations, built in n8n</p>
       <h2 id="auto-h">Workflows that run <em>while you sleep</em></h2>
       <p class="count">3 workflows</p>
       <span class="hair" aria-hidden="true"></span>
@@ -528,8 +538,8 @@ body{ overflow-x:clip }
 <!-- ================= AUTOMATION PAGE ================= -->
 <main id="view-auto" hidden>
   <section class="a-head wrap">
-    <a class="crumb" href="/#automations">← All automations</a>
-    <p class="eyebrow">Automation · n8n</p>
+    <a class="crumb" href="/#automations"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-left"/></svg>All automations</a>
+    <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-flow-arrow"/></svg>Automation · n8n</p>
     <h1 id="a-title" tabindex="-1"></h1>
     <p class="lede" id="a-lede"></p>
     <dl class="meta-row" id="a-meta"></dl>
@@ -546,15 +556,15 @@ body{ overflow-x:clip }
     <div class="story" id="story"></div>
     <div class="human"><span>A person still</span><p id="a-human"></p></div>
     <section class="explain" aria-labelledby="x-h">
-      <p class="eyebrow">Step by step</p>
+      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-list-numbers"/></svg>Step by step</p>
       <h2 id="x-h">Every node, <em>explained</em></h2>
       <ol id="explain"></ol>
     </section>
     <section class="a-cta" aria-labelledby="a-cta-h">
-      <p class="eyebrow">Start a project</p>
+      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-chat-circle"/></svg>Start a project</p>
       <h2 id="a-cta-h">Want a workflow like this for your <em>team</em>?</h2>
       <p class="lede">Tell me which task eats your team’s hours. In a 30-minute call we can look at whether n8n can take it over.</p>
-      <div class="a-cta-row"><a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a 30-min call <span aria-hidden="true">→</span></a><button class="a-ask" type="button" data-ask-open aria-haspopup="dialog"><i aria-hidden="true"></i>Ask about this workflow</button><a class="a-mail" href="mailto:omharregidor@gmail.com">omharregidor@gmail.com</a></div>
+      <div class="a-cta-row"><a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a 30-min call <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a><button class="a-ask" type="button" data-ask-open aria-haspopup="dialog"><i aria-hidden="true"></i>Ask about this workflow</button><a class="a-mail" href="mailto:omharregidor@gmail.com">omharregidor@gmail.com</a></div>
     </section>
     <nav class="pn" id="pn" aria-label="More automations"></nav>
     <footer class="foot"><span>© 2026 Omhar Regidor</span><span>Batangas, Philippines</span></footer>
@@ -592,6 +602,8 @@ const ICON = {
   chat: st('#EEF1EF', '<path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-7l-4 3v-3H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/>'),
   tag: st('#BDBDB8', '<path d="M3.5 12V4.5H11l9 9-7.5 7.5-9-9z"/><circle cx="7.6" cy="8.4" r="1.2"/>')
 };
+// Interface icons (arrows, play, pause, close) from the shared Phosphor sprite.
+const UI = n => `<svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-${n}"/></svg>`;
 const BOLT = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>';
 const TYPE_LABEL = { trigger: 'Trigger', action: 'Action', logic: 'Logic', decision: 'Decision', ai: 'AI step', agent: 'AI agent', model: 'Chat model', memory: 'Memory' };
 const SIZE = { trigger: [84, 84], action: [84, 84], logic: [84, 84], decision: [80, 80], ai: [208, 84], agent: [248, 100], model: [64, 64], memory: [64, 64] };
@@ -766,8 +778,8 @@ function miniGraph(v) {
   return `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="rgb(255 255 255 / .08)"/></pattern></defs><rect width="${VW}" height="${VH}" fill="url(#dots)"/>${edges}${nodes}${motion}</svg>`;
 }
 const autoIndex = $('#auto-index');
-autoIndex.innerHTML = ORDER.map(slug => { const w = WF[slug]; return `<li><a class="row" href="#auto-${slug}" data-wf="${slug}"><span class="name">${w.name} <span class="arr" aria-hidden="true">→</span></span><span class="kind">${w.kind}</span><span class="meta"><span class="tag">n8n</span>${w.meta}</span></a></li>`; }).join('') +
-  `<li><a class="row more" href="#" data-note="On the real site this opens the full automations list."><span class="name">All automations, 3 <span class="arr" aria-hidden="true">→</span></span><span class="kind">More workflows land here as they ship</span></a></li>`;
+autoIndex.innerHTML = ORDER.map(slug => { const w = WF[slug]; return `<li><a class="row" href="#auto-${slug}" data-wf="${slug}"><span class="name">${w.name} <span class="arr" aria-hidden="true">${UI('arrow-right')}</span></span><span class="kind">${w.kind}</span><span class="meta"><span class="tag">n8n</span>${w.meta}</span></a></li>`; }).join('') +
+  `<li><a class="row more" href="#" data-note="On the real site this opens the full automations list."><span class="name">All automations, 3 <span class="arr" aria-hidden="true">${UI('arrow-right')}</span></span><span class="kind">More workflows land here as they ship</span></a></li>`;
 $('#auto-float').innerHTML = ORDER.map((slug, i) => `<div data-i="${i}" ${i ? 'hidden' : ''}>${miniGraph(WF[slug].variants[firstVariant(WF[slug])])}<p>${WF[slug].meta}</p></div>`).join('');
 
 function followIndex(section, floatEl, previewOf) {
@@ -899,7 +911,7 @@ function mountStage(slug, vkey) {
     render();
   }
   function placeChip(x, y, text) {
-    chip.textContent = text;
+    chip.innerHTML = esc(text).split('→').join(UI('arrow-right'));
     chip.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`;
     chip.classList.toggle('on', !!text);
   }
@@ -955,7 +967,7 @@ function mountStage(slug, vkey) {
   const vars = wf.variantLabels ? Object.entries(wf.variantLabels).map(([k, lab]) => `<button type="button" data-var="${k}" aria-pressed="${k === vkey}">${esc(lab)}</button>`).join('') : '';
   controls.innerHTML = `<button type="button" class="play" id="play">${reduce ? 'Step through' : 'Pause'}</button><button type="button" id="stepb">Step</button><button type="button" id="speed" aria-pressed="false">2×</button>${scen || vars ? '<span class="sep" aria-hidden="true"></span>' : ''}${vars}${scen}`;
   const playBtn = $('#play'), stepBtn = $('#stepb'), speedBtn = $('#speed');
-  function setPlaying(on) { playing = on && !reduce; playBtn.innerHTML = reduce ? 'Step through' : playing ? '❚❚&nbsp; Pause' : '▶&nbsp; Run workflow'; }
+  function setPlaying(on) { playing = on && !reduce; playBtn.innerHTML = reduce ? 'Step through' : playing ? UI('pause') + 'Pause' : UI('play') + 'Run workflow'; }
   function syncScenario() { $$('[data-run]', controls).forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.run) === runIdx))); }
   playBtn.addEventListener('click', () => { if (reduce) { stepOnce(); return; } if (phase !== 'run' && !playing) startRun(runIdx); setPlaying(!playing); });
   function stepOnce() {
@@ -980,7 +992,7 @@ function mountStage(slug, vkey) {
     const n = g.byId[id], el = nodeEl[id];
     const rn = routeNodes(), pos = rn.indexOf(id);
     const where = n.parent ? 'Sub-node of the agent' : pos >= 0 ? `Step ${pos + 1} of ${rn.length}` : 'Other branch';
-    card.innerHTML = `<button class="c-close" type="button" aria-label="Close">×</button><p class="c-type"><i></i>${esc(TYPE_LABEL[n.type])}</p><p class="c-name">${esc(n.name)}</p><p class="c-role">${esc(n.card.role)}</p><p class="c-desc">${esc(n.card.desc)}</p><p class="c-h">How it behaves</p><ul>${n.card.how.map(h => `<li>${esc(h)}</li>`).join('')}</ul><p class="c-foot"><span>${esc(n.sub)}</span><span>${where}</span></p>`;
+    card.innerHTML = `<button class="c-close" type="button" aria-label="Close">${UI('x')}</button><p class="c-type"><i></i>${esc(TYPE_LABEL[n.type])}</p><p class="c-name">${esc(n.name)}</p><p class="c-role">${esc(n.card.role)}</p><p class="c-desc">${esc(n.card.desc)}</p><p class="c-h">How it behaves</p><ul>${n.card.how.map(h => `<li>${esc(h)}</li>`).join('')}</ul><p class="c-foot"><span>${esc(n.sub)}</span><span>${where}</span></p>`;
     card.classList.toggle('sheet', !!sheet);
     $('.c-close', card).addEventListener('click', hideCard);
     Object.values(nodeEl).forEach(x => x.classList.toggle('lift', x === el));
@@ -1068,7 +1080,7 @@ function openAuto(slug, vkey, keepScroll) {
     li.addEventListener('blur', () => G.spot(null));
   });
   const k = ORDER.indexOf(slug), prev = ORDER[(k + ORDER.length - 1) % ORDER.length], next = ORDER[(k + 1) % ORDER.length];
-  $('#pn').innerHTML = `<a href="#auto-${prev}"><small>← Previous</small><b>${WF[prev].name}</b></a><a href="#auto-${next}"><small>Next →</small><b>${WF[next].name}</b></a>`;
+  $('#pn').innerHTML = `<a href="#auto-${prev}"><small>${UI('arrow-left')}Previous</small><b>${WF[prev].name}</b></a><a href="#auto-${next}"><small>Next${UI('arrow-right')}</small><b>${WF[next].name}</b></a>`;
   $('#pill').innerHTML = '<b>Preview.</b> Hover the nodes. Try Pause, Step and the run options.';
   if (!keepScroll) { scrollTo(0, 0); $('#a-title').focus({ preventScroll: true }); }
   else { const vb = $('[data-var="' + vkey + '"]'); if (vb) vb.focus({ preventScroll: true }); }
@@ -1098,5 +1110,7 @@ routeHash();
 <script src="/atelier/reveal.js"></script>
 <script src="/atelier/site-menu.js"></script>
 <script src="/atelier/ask-omhar.js"></script>
+<script src="/atelier/glass.js"></script>
+<script src="/atelier/cursor.js"></script>
 </body>
 </html>

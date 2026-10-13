@@ -28,6 +28,8 @@ body{ margin:0; padding-top:78px; background:var(--paper); color:var(--ink); fon
 a{ color:inherit }
 h1,h2,p,dl,dd,figure{ margin:0 }
 :focus-visible{ outline:2px solid var(--ink); outline-offset:3px }
+/* Icons are Phosphor Regular, drawn from /atelier/icons.svg. Each one sits beside a word and takes the text colour. */
+.icon{ width:1em; height:1em; flex-shrink:0; vertical-align:-.125em }
 .wrap{ max-width:1180px; margin-inline:auto; padding-inline:clamp(20px, 6vw, 72px) }
 
 /* header, same as the other pages in its solid state */
@@ -51,10 +53,12 @@ h1,h2,p,dl,dd,figure{ margin:0 }
 
 /* heading */
 .g-head{ display:grid; gap:20px; padding-block:clamp(40px, 6vw, 72px) clamp(32px, 4vw, 48px) }
-.crumb{ font-size:14px; color:var(--muted); text-decoration:none; justify-self:start }
+.crumb{ display:inline-flex; align-items:flex-start; gap:8px; font-size:14px; color:var(--muted); text-decoration:none; justify-self:start }
+.crumb .icon{ width:16px; height:16px; margin-top:calc((1.6em - 16px) / 2) }
 .crumb:hover{ color:var(--ink) }
-.eyebrow{ display:flex; align-items:center; gap:10px; font-size:12.5px; font-weight:500; letter-spacing:.26em; text-transform:uppercase }
-.eyebrow::before{ content:"+"; font-size:17px; letter-spacing:0 }
+.eyebrow{ display:flex; align-items:flex-start; gap:10px; font-size:12.5px; font-weight:500; letter-spacing:.26em; text-transform:uppercase }
+/* Label icons sit beside the first line, centred on it (line-height 1.6), so a label that wraps keeps its icon at the top. */
+.eyebrow .icon{ width:16px; height:16px; margin-top:calc((1.6em - 16px) / 2) }
 h1{ font-family:var(--display); font-weight:300; font-size:clamp(36px, 4.4vw, 64px); line-height:1.06; letter-spacing:-0.035em }
 h1 em{ font-family:var(--serif); font-style:italic; font-weight:400; font-size:1.1em; letter-spacing:-0.01em }
 .lede{ max-width:52ch; font-size:clamp(18px, 1.6vw, 21px); color:var(--muted) }
@@ -92,6 +96,7 @@ html.gv-dim{ background:#141414 }
 .gv-role{ font-size:12px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:rgb(255 255 255 / .6) }
 .gv-name{ font-family:var(--display); font-weight:300; font-size:clamp(22px, 2.4vw, 30px); line-height:1.15; letter-spacing:-0.03em }
 .gv-close{ position:absolute; top:16px; right:clamp(16px, 2.5vw, 28px); display:grid; place-items:center; width:44px; height:44px; padding:0; border:1px solid rgb(255 255 255 / .22); border-radius:50%; background:transparent; color:#FFFFFF; cursor:pointer; transition:background-color 200ms ease }
+.gv-close .icon{ width:18px; height:18px }
 .gv-close:hover{ background:rgb(255 255 255 / .08) }
 .gv-close:focus-visible{ outline:2px solid #FFFFFF; outline-offset:3px }
 .gv[open] .gv-close, .gv[open] figcaption{ animation:gv-in 400ms 160ms ease both }
@@ -102,7 +107,9 @@ html.gv-dim{ background:#141414 }
 @keyframes gv-dim-out{ to{ background-color:rgb(13 13 13 / 0); -webkit-backdrop-filter:blur(0); backdrop-filter:blur(0) } }
 .g-body{ display:grid; gap:6px }
 .g-role{ font-size:12px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted) }
-.g-body h2{ font-family:var(--display); font-weight:300; font-size:clamp(26px, 2.6vw, 34px); line-height:1.1; letter-spacing:-0.03em }
+.g-body h2{ display:flex; align-items:flex-start; gap:.4em; font-family:var(--display); font-weight:300; font-size:clamp(26px, 2.6vw, 34px); line-height:1.1; letter-spacing:-0.03em }
+/* The device icon lines up with the first line of the name, even when a long name wraps. */
+.g-body h2 .icon{ width:.9em; height:.9em; margin-top:.1em }
 .g-specs{ display:grid; margin-top:12px; border-top:1px solid var(--line) }
 .g-specs div{ display:grid; grid-template-columns:minmax(96px, 30%) 1fr; gap:16px; padding-block:10px; border-bottom:1px solid var(--line); font-size:15.5px }
 .g-specs dt{ color:var(--muted) }
@@ -119,10 +126,11 @@ html.gv-dim{ background:#141414 }
 .foot{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:16px; margin-top:96px; padding-block:28px 40px; border-top:1px solid var(--line); font-size:15px; color:var(--muted) }
 @media (prefers-reduced-motion: reduce){ *, *::before, *::after{ transition-duration:.01ms !important; animation-duration:.01ms !important } }
 </style>
+<link rel="stylesheet" href="/atelier/glass.css">
 </head>
 <body data-page="gear" data-reveal="lift">
 
-<nav class="top" aria-label="Main">
+<nav class="top solid" aria-label="Main">
   <a class="logo" href="/"><b>Omhar</b><span>Regidor</span></a>
   <div class="top-links"><a href="/#work">Work</a><a href="/#automations">Automations</a><a href="/#stack">Stack</a><a href="/gear" aria-current="page">Gear</a><a href="/#clients">Clients</a><a href="/#contact">Contact</a></div>
   <a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a call</a>
@@ -130,8 +138,8 @@ html.gv-dim{ background:#141414 }
 
 <main>
   <section class="g-head wrap" aria-labelledby="g-title">
-    <a class="crumb" href="/">← Home</a>
-    <p class="eyebrow">Gear</p>
+    <a class="crumb" href="/"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-left"/></svg>Home</a>
+    <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-devices"/></svg>Gear</p>
     <h1 id="g-title">The gear I build <em>on</em></h1>
     <p class="lede">The hardware behind every website, app and automation I ship.</p>
   </section>
@@ -141,7 +149,7 @@ html.gv-dim{ background:#141414 }
       <figure class="g-shot"><img src="/atelier/gear/macbook-pro-m4-pro.jpg" alt="MacBook Pro with the M4 Pro chip in Space Black, front view with the lid open" width="1200" height="900"></figure>
       <div class="g-body">
         <p class="g-role">Main machine</p>
-        <h2>MacBook Pro</h2>
+        <h2><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-laptop"/></svg>MacBook Pro</h2>
         <dl class="g-specs">
           <div><dt>Chip</dt><dd>Apple M4 Pro</dd></div>
           <div><dt>Finish</dt><dd>Space Black</dd></div>
@@ -155,7 +163,7 @@ html.gv-dim{ background:#141414 }
       <figure class="g-shot"><img src="/atelier/gear/thinkpad-t460.jpg" alt="Lenovo ThinkPad T460, open at an angle, showing the keyboard and red TrackPoint" width="1200" height="900"></figure>
       <div class="g-body">
         <p class="g-role">Second laptop</p>
-        <h2>Lenovo ThinkPad T460</h2>
+        <h2><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-laptop"/></svg>Lenovo ThinkPad T460</h2>
         <dl class="g-specs">
           <div><dt>Processor</dt><dd>Intel Core i5-6300U</dd></div>
           <div><dt>Memory</dt><dd>16 GB DDR3</dd></div>
@@ -169,7 +177,7 @@ html.gv-dim{ background:#141414 }
       <figure class="g-shot"><img src="/atelier/gear/aula-f75-black-contour.jpg" alt="AULA F75 mechanical keyboard in Black Contour, top view with contour-line keycaps and a volume knob" width="1200" height="900" loading="lazy"></figure>
       <div class="g-body">
         <p class="g-role">Keyboard</p>
-        <h2>AULA F75 Black Contour</h2>
+        <h2><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-keyboard"/></svg>AULA F75 Black Contour</h2>
         <dl class="g-specs">
           <div><dt>Layout</dt><dd>75%, 80 keys</dd></div>
           <div><dt>Switches</dt><dd>LEOBOG Star Vector</dd></div>
@@ -183,7 +191,7 @@ html.gv-dim{ background:#141414 }
       <figure class="g-shot"><img src="/atelier/gear/a4tech-op-620d.jpg" alt="A4Tech OP-620D wired mouse in black, with the 2X Click button beside the scroll wheel" width="1200" height="900" loading="lazy"></figure>
       <div class="g-body">
         <p class="g-role">Mouse</p>
-        <h2>A4Tech OP-620D 2X Click</h2>
+        <h2><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-mouse"/></svg>A4Tech OP-620D 2X Click</h2>
         <dl class="g-specs">
           <div><dt>Extra button</dt><dd>2X Click, a double-click in one press</dd></div>
           <div><dt>Wheel</dt><dd>4-way scroll</dd></div>
@@ -205,7 +213,7 @@ html.gv-dim{ background:#141414 }
 </main>
 
 <dialog class="gv" aria-labelledby="gv-name">
-  <button class="gv-close" type="button" aria-label="Close photo"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 3l10 10M13 3 3 13"/></svg></button>
+  <button class="gv-close" type="button" aria-label="Close photo"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-x"/></svg></button>
   <figure class="gv-fig">
     <img class="gv-img" alt="">
     <figcaption><span class="gv-role"></span><span class="gv-name" id="gv-name"></span></figcaption>
@@ -278,5 +286,7 @@ html.gv-dim{ background:#141414 }
 <script src="/atelier/reveal.js"></script>
 <script src="/atelier/site-menu.js"></script>
 <script src="/atelier/ask-omhar.js"></script>
+<script src="/atelier/glass.js"></script>
+<script src="/atelier/cursor.js"></script>
 </body>
 </html>

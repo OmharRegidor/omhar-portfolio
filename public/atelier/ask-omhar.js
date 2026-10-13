@@ -77,6 +77,8 @@
   };
   const reduce = matchMedia('(prefers-reduced-motion: reduce)');
   const full = matchMedia('(max-width: 600px)');
+  // Arrow and close icons from the shared Phosphor sprite, always beside a word or inside a labelled button.
+  const icon = n => `<svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-${n}"/></svg>`;
 
   /* styles */
   const css = `
@@ -95,8 +97,10 @@
 .ao-head{ display:grid; grid-template-columns:1fr auto; gap:2px 12px; align-items:start; padding:18px 18px 14px; border-bottom:1px solid var(--line, #DCDBD5) }
 .ao-head h2{ margin:0; font:300 24px/1.1 var(--display, system-ui, sans-serif); letter-spacing:-0.03em }
 .ao-head p{ grid-column:1; margin:0; font-size:13.5px; line-height:1.45; color:var(--muted, #5B5D59) }
-.ao-x{ grid-column:2; grid-row:1 / span 2; width:40px; height:40px; border-radius:50%; border:1px solid var(--line, #DCDBD5); background:transparent; color:inherit; font-size:20px; line-height:1; cursor:pointer }
+.ao-x{ grid-column:2; grid-row:1 / span 2; display:grid; place-items:center; width:40px; height:40px; padding:0; border-radius:50%; border:1px solid var(--line, #DCDBD5); background:transparent; color:inherit; font-size:20px; line-height:1; cursor:pointer }
 .ao-x:hover{ border-color:var(--ink, #121413) }
+.ao-panel .icon{ width:1.15em; height:1.15em; flex-shrink:0 }
+.ao-x .icon{ width:20px; height:20px }
 .ao-log{ overflow-y:auto; overscroll-behavior:contain; padding:18px; display:flex; flex-direction:column; gap:14px }
 .ao-msg{ max-width:88%; font-size:15px; line-height:1.55 }
 .ao-msg p{ margin:0 }
@@ -104,7 +108,7 @@
 .ao-bot{ align-self:flex-start; padding:12px 14px; background:var(--paper, #F7F6F2) }
 .ao-me{ align-self:flex-end; padding:10px 14px; background:var(--ink, #121413); color:#FFFFFF }
 .ao-acts{ display:flex; flex-wrap:wrap; gap:10px 16px; margin-top:12px }
-.ao-acts a{ font-size:14px; font-weight:500; color:var(--ink, #121413); text-underline-offset:3px }
+.ao-acts a{ display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:500; color:var(--ink, #121413); text-underline-offset:3px }
 .ao-book{ display:inline-flex; align-items:center; gap:8px; min-height:40px; padding:0 16px; background:var(--ink, #121413); color:#FFFFFF !important; text-decoration:none; font-size:12.5px !important; letter-spacing:.12em; text-transform:uppercase }
 .ao-chips{ display:flex; flex-wrap:wrap; gap:8px }
 .ao-chips button{ min-height:38px; padding:0 14px; border:1px solid var(--line, #DCDBD5); border-radius:999px; background:#FFFFFF; color:var(--ink, #121413); font:inherit; font-size:14px; text-align:left; cursor:pointer; transition:border-color 200ms ease }
@@ -134,7 +138,7 @@
   document.body.insertAdjacentHTML('beforeend', `
 <button class="ao-launch" type="button" data-ask-open aria-haspopup="dialog" aria-label="Ask Omhar AI"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.8 7.04L4 20l1.1-4.4A8 8 0 1 1 21 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01" stroke-width="2.4"/></svg><span class="ao-tip" aria-hidden="true">Ask Omhar AI</span></button>
 <section class="ao-panel" role="dialog" aria-modal="false" aria-labelledby="ao-title" aria-describedby="ao-sub" hidden>
-  <div class="ao-head"><h2 id="ao-title">Ask Omhar AI</h2><p id="ao-sub">Omhar built this assistant. He builds ones like it for businesses.</p><button class="ao-x" type="button" aria-label="Close chat">×</button></div>
+  <div class="ao-head"><h2 id="ao-title">Ask Omhar AI</h2><p id="ao-sub">Omhar built this assistant. He builds ones like it for businesses.</p><button class="ao-x" type="button" aria-label="Close chat">${icon('x')}</button></div>
   <div class="ao-log" role="log" aria-live="polite" aria-relevant="additions"></div>
   <form class="ao-form"><label class="ao-sr" for="ao-in">Ask a question about Omhar’s work</label><input id="ao-in" type="text" autocomplete="off" maxlength="300" placeholder="Ask about his work…"><button type="submit">Send</button></form>
 </section>`);
@@ -155,14 +159,14 @@
     ids.filter(id => KB[id] && KB[id].q).forEach(id => { const b = el('button', null, KB[id].q); b.type = 'button'; b.addEventListener('click', () => { wrap.remove(); ask(id); }); wrap.append(b); });
     return wrap;
   }
-  function bookLink() { const a = el('a', 'ao-book', 'Book a 30-min call'); a.href = CALENDLY; a.target = '_blank'; a.rel = 'noopener'; a.insertAdjacentHTML('beforeend', '<span aria-hidden="true">→</span>'); return a; }
+  function bookLink() { const a = el('a', 'ao-book', 'Book a 30-min call'); a.href = CALENDLY; a.target = '_blank'; a.rel = 'noopener'; a.insertAdjacentHTML('beforeend', icon('arrow-right')); return a; }
   function botSay(entry, followIds) {
     const m = el('div', 'ao-msg ao-bot');
     entry.a.forEach(t => m.append(el('p', null, t)));
     if (entry.link || entry.book) {
       const acts = el('div', 'ao-acts');
       if (entry.book) acts.append(bookLink());
-      if (entry.link) { const a = el('a', null, entry.link[0] + ' →'); a.href = entry.link[1]; a.addEventListener('click', () => { if (onAutoPage) close(); }); acts.append(a); }
+      if (entry.link) { const a = el('a', null, entry.link[0]); a.insertAdjacentHTML('beforeend', icon('arrow-right')); a.href = entry.link[1]; a.addEventListener('click', () => { if (onAutoPage) close(); }); acts.append(a); }
       m.append(acts);
     }
     log.append(m);

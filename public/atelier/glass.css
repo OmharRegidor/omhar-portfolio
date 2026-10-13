@@ -1,0 +1,33 @@
+/* Liquid glass panes, paired with glass.js. Every browser gets frosted glass. Chromium browsers also get the bending
+   rim, because glass.js adds .lg to <html> and builds the #lg-* filters these rules point at. */
+
+/* Once the page scrolls, the header lifts off the edges into a floating capsule. Pages with no hero start as one. */
+.top{ transition:padding 420ms var(--ease), top 420ms var(--ease), left 420ms var(--ease), right 420ms var(--ease), border-radius 420ms var(--ease), background-color 300ms ease, box-shadow 300ms ease }
+.top.solid{
+  top:12px; left:max(16px, 50% - 620px); right:max(16px, 50% - 620px);
+  padding:8px 8px 8px 30px; border-radius:40px;
+  background:color-mix(in srgb, var(--hero-bg, #0D0D0D) 70%, transparent);
+  -webkit-backdrop-filter:blur(18px) saturate(1.7); backdrop-filter:blur(18px) saturate(1.7);
+  /* A bright top lip, a faint lower one and a hairline all round, like light catching the edge of a lens. */
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .32), inset 0 -1px 0 rgb(255 255 255 / .08), inset 0 0 0 1px rgb(255 255 255 / .1), 0 12px 40px rgb(0 0 0 / .22);
+}
+html.lg .top.solid{ -webkit-backdrop-filter:url(#lg-top) saturate(1.7) brightness(1.04); backdrop-filter:url(#lg-top) saturate(1.7) brightness(1.04) }
+.top.solid .book{ border-radius:30px; padding:12px 20px }
+
+/* The chat bubble becomes a small lens over the page. ask-omhar.js adds its own styles later in the page, so these
+   rules lead with body to stay on top. */
+body .ao-launch{
+  background:color-mix(in srgb, #121413 62%, transparent);
+  -webkit-backdrop-filter:blur(10px) saturate(1.7); backdrop-filter:blur(10px) saturate(1.7);
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .35), inset 0 -1px 0 rgb(255 255 255 / .08), 0 14px 34px rgb(0 0 0 / .28);
+}
+html.lg body .ao-launch{ -webkit-backdrop-filter:url(#lg-ask) saturate(1.7); backdrop-filter:url(#lg-ask) saturate(1.7) }
+body .ao-launch:hover{ background:color-mix(in srgb, #000000 66%, transparent) }
+
+@media (max-width:860px){
+  .top.solid{ top:10px; left:12px; right:12px; padding:4px 14px 4px 22px }
+}
+/* People who ask for less see-through UI get the solid bar back. */
+@media (prefers-reduced-transparency: reduce){
+  .top.solid, body .ao-launch{ background:var(--hero-bg, #0D0D0D); -webkit-backdrop-filter:none; backdrop-filter:none }
+}

@@ -42,6 +42,22 @@ motion or when printing. The block list is the `TARGETS` selector array at the t
 with one of its own children. `openAuto()` in automations.html calls `atelierReveal.refresh()` after it redraws.
 Covered by `tests/e2e/scroll-reveals.spec.ts` (back again, now for the Atelier pages).
 
+Glass, cursor and icons (2026-10-13, owner request), on all three pages:
+- `glass.css` + `glass.js`: the header becomes a floating glass capsule once the homepage scrolls (gear and
+  automations start as one via `class="top solid"`), and the chat bubble becomes a small lens. Chromium gets the
+  bending rim from an SVG displacement filter used as `backdrop-filter:url(#lg-*)`; glass.js only adds `html.lg`
+  there, so Safari and Firefox keep a frosted blur. The panes and their rim widths are the `PANES` list. Math adapted
+  from liquid-glass.js (MIT); the library itself was 600 KB, so it is not vendored.
+- `cursor.js`: Cuberto mouse-follower 1.2.1 (MIT) on GSAP 3.15.0 (GreenSock no-charge licence), both in `vendor/`,
+  only downloaded with a fine pointer and motion allowed. Hover labels are the `LABELS` map. It hides over text
+  fields, where the native cursor comes back.
+- `icons.svg`: Phosphor Regular (MIT) sprite, used as `<svg class="icon"><use href="/atelier/icons.svg#i-..."/></svg>`.
+  Every eyebrow has a section icon in place of the old "+", and every text arrow and play/pause/close glyph is an
+  icon. The class is `.icon` because automations.html already uses `.ic` for workflow nodes. Project rows carry a
+  hidden "(opens in a new tab)".
+- Open: in dark mode the homepage slideshow asks for a night photo that does not exist (pre-existing; visitors can't
+  reach dark mode today). Add the photo or drop that slide.
+
 Still unconfirmed and now live as-is: Comfit is named as a client on the CS Live Inbox page; the Noxa testimonial
 has no employer label; MacBook size, memory and storage are not shown; the mouse is assumed to be the OP-620D.
 

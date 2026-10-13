@@ -31,6 +31,7 @@
 .mm-foot{ display:grid; gap:14px; opacity:0; translate:0 14px; transition:opacity 200ms ease, translate 200ms ease }
 .mm-open .mm-foot{ opacity:1; translate:0 0; transition:opacity 500ms ease 560ms, translate 700ms var(--ease, ease) 560ms }
 .mm-book{ display:flex; justify-content:center; align-items:center; gap:10px; min-height:52px; background:#FFFFFF; color:#111111; text-decoration:none; font-size:14px; font-weight:500; letter-spacing:.14em; text-transform:uppercase }
+.mm-book .icon{ width:1.15em; height:1.15em; flex-shrink:0 }
 .mm-ask{ display:flex; justify-content:center; align-items:center; gap:10px; min-height:52px; border:1px solid rgb(255 255 255 / .3); background:transparent; color:#FFFFFF; font:inherit; font-size:15px; cursor:pointer }
 .mm-ask i{ width:8px; height:8px; border-radius:50%; background:#FFFFFF }
 .mm-mail{ justify-self:center; padding:6px 0; color:rgb(255 255 255 / .7); font-size:14px; text-underline-offset:3px }
@@ -65,7 +66,7 @@
     li.append(l); list.append(li);
   });
   const foot = document.createElement('div'); foot.className = 'mm-foot';
-  if (book) foot.insertAdjacentHTML('beforeend', `<a class="mm-book" href="${book.getAttribute('href')}" target="_blank" rel="noopener">Book a 30-min call <span aria-hidden="true">→</span></a>`);
+  if (book) foot.insertAdjacentHTML('beforeend', `<a class="mm-book" href="${book.getAttribute('href')}" target="_blank" rel="noopener">Book a 30-min call <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a>`);
   foot.insertAdjacentHTML('beforeend', '<button class="mm-ask" type="button" data-ask-open aria-haspopup="dialog"><i aria-hidden="true"></i>Ask Omhar AI</button><a class="mm-mail" href="mailto:omharregidor@gmail.com">omharregidor@gmail.com</a>');
   panel.append(list, foot);
   document.body.append(panel);

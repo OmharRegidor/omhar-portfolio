@@ -435,11 +435,15 @@ body[data-mode="dark"]{ --paper:#0F1211; --ink:#ECEDEA; --muted:#A2A49F; --line:
 
 *,*::before,*::after{ box-sizing:border-box }
 [hidden]{ display:none !important }
+/* Read by screen readers, not shown. */
+.sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap }
 html{ -webkit-text-size-adjust:100% }
 body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased }
 a{ color:inherit }
 :focus-visible{ outline:2px solid var(--accent); outline-offset:3px }
 h1,h2,p{ margin:0 }
+/* Icons are Phosphor Regular, drawn from /atelier/icons.svg. Each one sits beside a word and takes the text colour. */
+.icon{ width:1em; height:1em; flex-shrink:0; vertical-align:-.125em }
 
 /* ---------- hero ---------- */
 /* Row 1 keeps the space the fixed header covers. */
@@ -466,7 +470,7 @@ body[data-photo="slideshow"] .ph.show{ animation:kb 3.6s ease-out both }
 .slides-ui{ position:absolute; right:clamp(20px, 7vw, 120px); bottom:clamp(28px, 6vh, 56px); z-index:2; display:flex; align-items:center; gap:14px }
 body:not([data-photo="slideshow"]) .slides-ui{ display:none }
 .s-pause{ width:34px; height:34px; border-radius:50%; border:1px solid rgb(255 255 255 / .3); background:rgb(255 255 255 / .06); color:#FFFFFF; display:grid; place-items:center; cursor:pointer; backdrop-filter:blur(6px) }
-.s-pause svg{ width:12px; height:12px }
+.s-pause .icon{ width:14px; height:14px }
 /* Pause stays for keyboard users (WCAG 2.2.2) but only shows while it has keyboard focus. */
 .s-pause:not(:focus-visible){ position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); border:0; padding:0 }
 @media (max-width:860px){ .slides-ui{ right:20px; bottom:auto; top:86px } }
@@ -491,9 +495,11 @@ html{ scroll-padding-top:88px }
 .mode svg{ width:17px; height:17px }
 .book{ white-space:nowrap; display:inline-flex; align-items:center; gap:10px; padding:14px 22px; background:var(--accent); color:var(--on-accent); text-decoration:none; font-size:14px; font-weight:500; letter-spacing:.14em; text-transform:uppercase; transition:gap 350ms var(--ease), filter 200ms ease; box-shadow:0 8px 24px rgb(0 0 0 / .18) }
 .book:hover, .book:focus-visible{ gap:16px; filter:brightness(1.06) }
+.book .icon{ width:1.15em; height:1.15em }
 .hero-copy{ grid-row:2; align-self:end; display:grid; gap:20px; max-width:min(860px, 60%); padding:0 clamp(20px, 7vw, 120px) clamp(56px, 10vh, 110px) }
-.eyebrow{ display:flex; align-items:center; gap:12px; font-size:13px; font-weight:500; letter-spacing:.3em; text-transform:uppercase; color:var(--glow) }
-.eyebrow::before{ content:"+"; font-size:18px; letter-spacing:0 }
+.eyebrow{ display:flex; align-items:flex-start; gap:12px; font-size:13px; font-weight:500; letter-spacing:.3em; text-transform:uppercase; color:var(--glow) }
+/* Label icons sit beside the first line, centred on it (line-height 1.6), so a label that wraps keeps its icon at the top. */
+.eyebrow .icon{ width:17px; height:17px; margin-top:calc((1.6em - 17px) / 2) }
 h1{ font-family:var(--display); font-weight:400; font-size:clamp(44px, 5vw, 84px); line-height:.98; letter-spacing:-0.02em; text-wrap:balance }
 body[data-head="instrument"] h1{ letter-spacing:-0.025em; font-size:clamp(52px, 6vw, 100px) }
 h1 em{ font-style:italic; color:var(--glow) }
@@ -538,6 +544,8 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .row{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 24px; align-items:baseline; padding-block:26px; text-decoration:none; color:inherit; transition:opacity 320ms var(--ease) }
 .row .name{ display:inline-flex; gap:14px; align-items:baseline; font-family:var(--display); font-size:clamp(30px, 4.6vw, 54px); line-height:1.04; letter-spacing:-0.01em; transition:color 250ms ease }
 .row .arr{ font-family:var(--sans); font-size:.42em; color:var(--accent-ink); opacity:0; transform:translate(-6px, 6px); transition:opacity 250ms ease, transform 350ms var(--ease) }
+/* The row arrow sits on the middle of the lowercase letters of the name. */
+.row .arr .icon{ width:1.25em; height:1.25em; vertical-align:-.05em }
 .row .kind{ grid-column:1; font-size:16px; color:var(--muted) }
 .row .dom{ grid-column:2; grid-row:1 / span 2; align-self:center; font-size:14px; color:var(--muted) }
 .index.has-active .row:not(.on){ opacity:.32 }
@@ -546,8 +554,8 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 @media (max-width:640px){ .row .dom{ display:none } }
 .float{ position:absolute; left:0; top:0; width:clamp(220px, 26vw, 320px); padding:7px; background:var(--paper); border:1px solid var(--line); box-shadow:0 22px 50px rgb(0 0 0 / .16); pointer-events:none; opacity:0; scale:.94; transition:opacity 240ms ease, scale 360ms var(--ease); z-index:3 }
 .float.on{ opacity:1; scale:1 }
-.eyebrow-s{ display:flex; align-items:center; gap:10px; margin:0 0 14px; font-size:12.5px; font-weight:500; letter-spacing:.26em; text-transform:uppercase; color:var(--accent-ink) }
-.eyebrow-s::before{ content:"+"; font-size:17px; letter-spacing:0 }
+.eyebrow-s{ display:flex; align-items:flex-start; gap:10px; margin:0 0 14px; font-size:12.5px; font-weight:500; letter-spacing:.26em; text-transform:uppercase; color:var(--accent-ink) }
+.eyebrow-s .icon{ width:16px; height:16px; margin-top:calc((1.6em - 16px) / 2) }
 .work-head{ position:relative }
 .auto{ padding-top:clamp(48px, 7vw, 96px); overflow-x:clip }
 .auto .work-head::before{ content:""; position:absolute; inset:-28px -40px 0; z-index:-1; pointer-events:none; background-image:radial-gradient(color-mix(in srgb, var(--ink) 11%, transparent) 1px, transparent 1.3px); background-size:24px 24px; -webkit-mask-image:linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); mask-image:linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent) }
@@ -578,6 +586,9 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .band{ background:var(--band); color:var(--band-fg); margin-top:clamp(56px, 8vw, 96px) }
 .band .wrap{ padding-block:clamp(72px, 11vw, 140px); display:grid; gap:28px }
 .band .label{ color:color-mix(in srgb, var(--band-fg) 70%, transparent) }
+.qa h2 .icon, .band-head .label .icon, .close .label .icon{ width:16px; height:16px; margin-top:calc((1.6em - 16px) / 2) }
+.band-head .label, .close .label{ display:flex; align-items:flex-start; gap:10px }
+.close .label .icon{ color:var(--accent-ink) }
 .band blockquote{ margin:0; display:grid; gap:26px }
 .band blockquote p{ max-width:26ch; font-family:var(--display); font-style:italic; font-size:clamp(28px, 3.6vw, 48px); line-height:1.12; letter-spacing:-0.01em }
 .band blockquote p em{ font-style:normal; color:var(--glow) }
@@ -589,7 +600,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .t-nav{ display:flex; align-items:center; gap:10px }
 .t-count{ white-space:nowrap; margin-right:8px; font-size:13px; letter-spacing:.2em; font-variant-numeric:tabular-nums; color:color-mix(in srgb, var(--band-fg) 70%, transparent) }
 .t-count b{ font-weight:500; color:var(--band-fg) }
-.t-btn{ width:48px; height:48px; border-radius:50%; border:1px solid color-mix(in srgb, var(--band-fg) 30%, transparent); background:transparent; color:var(--band-fg); font-size:18px; cursor:pointer; transition:background 200ms ease, border-color 200ms ease }
+.t-btn{ display:grid; place-items:center; width:48px; height:48px; border-radius:50%; border:1px solid color-mix(in srgb, var(--band-fg) 30%, transparent); background:transparent; color:var(--band-fg); font-size:18px; cursor:pointer; transition:background 200ms ease, border-color 200ms ease }
 .t-btn:hover, .t-btn:focus-visible{ background:color-mix(in srgb, var(--band-fg) 10%, transparent); border-color:var(--band-fg) }
 .t-viewport{ overflow:hidden }
 .t-track{ display:flex; touch-action:pan-y pinch-zoom }
@@ -628,7 +639,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .hero :focus-visible, .top :focus-visible, .band :focus-visible, .float.dark :focus-visible{ outline-color:#FFFFFF }
 .assure{ margin-top:2px; font-size:14px; letter-spacing:.04em; color:rgb(255 255 255 / .72) }
 .qa{ padding-block:clamp(64px, 9vw, 112px) 0 }
-.qa h2{ margin:0 0 18px; font-family:var(--sans); font-size:13px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted) }
+.qa h2{ display:flex; align-items:flex-start; gap:10px; margin:0 0 18px; font-family:var(--sans); font-size:13px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted) }
 .qa-answer{ max-width:920px; font-family:var(--display); font-weight:300; font-size:clamp(21px, 2.3vw, 29px); line-height:1.42; letter-spacing:-0.015em }
 .qa-answer a{ color:inherit; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.18em; text-decoration-color:color-mix(in srgb, var(--ink) 35%, transparent); transition:text-decoration-color 200ms ease }
 .qa-answer a:hover, .qa-answer a:focus-visible{ text-decoration-color:var(--ink) }
@@ -670,7 +681,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 @media (max-width:640px){ .foot{ grid-template-columns:1fr } }
 @media (max-width:420px){ .band .band-head{ flex-wrap:wrap; row-gap:14px } }
 @media (hover: none), (max-width:760px){ .inline{ grid-template-rows:1fr } }
-/* Phones: the screenshot opens the live site like the title, and the ↗ beside each name always shows. */
+/* Phones: the screenshot opens the live site like the title, and the arrow beside each name always shows. */
 .shot-link{ display:block; -webkit-tap-highlight-color:transparent }
 .shot-link .pshot{ transition:opacity 200ms ease }
 .shot-link:active .pshot{ opacity:.82 }
@@ -713,6 +724,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   *, *::before, *::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important }
 }
 </style>
+<link rel="stylesheet" href="/atelier/glass.css">
 </head>
 <body data-reveal="pop" data-photo="slideshow" data-accent="mono" data-head="geist" data-mode="light"><a class="skip" href="#main">Skip to content</a>
 
@@ -740,7 +752,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   </div>
   <div class="hero-shade" aria-hidden="true"></div>
   <div class="hero-copy">
-    <p class="eyebrow fade-in" style="--d:80ms">AI Engineer &amp; Software Developer</p>
+    <p class="eyebrow fade-in" style="--d:80ms"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-code"/></svg>AI Engineer &amp; Software Developer</p>
     <h1>
       <span class="ln" style="--i:0"><span>Helping businesses</span></span>
       <span class="ln" style="--i:1"><span>reduce their</span></span>
@@ -748,14 +760,14 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
     </h1>
     <p class="sub fade-in" style="--d:520ms">I build the automations, web systems and AI tools that take repetitive work off your team, so you can focus on growing.</p>
     <div class="ctas fade-in" style="--d:680ms">
-      <a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a 30-min call <span aria-hidden="true">→</span></a>    </div>    <p class="assure fade-in" style="--d:820ms">6 live web projects <span aria-hidden="true">·</span> 3 n8n automations <span aria-hidden="true">·</span> Writing code since 2021</p>
+      <a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a 30-min call <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a>    </div>    <p class="assure fade-in" style="--d:820ms">6 live web projects <span aria-hidden="true">·</span> 3 n8n automations <span aria-hidden="true">·</span> Writing code since 2021</p>
   </div>
   <div class="slides-ui" role="group" aria-label="Hero photos"><button class="s-pause" id="s-pause" type="button" aria-label="Pause slideshow"></button></div>
 </header>
 
 <main id="main">
   <section class="qa wrap" id="about" aria-labelledby="qa-h">
-    <h2 id="qa-h">What does Omhar Regidor do?</h2>
+    <h2 id="qa-h"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-identification-card"/></svg>What does Omhar Regidor do?</h2>
     <p class="qa-answer">Omhar Regidor is an AI engineer and software developer based in Batangas, Philippines. He builds <a href="#work">websites and web apps</a>, <a href="#automations">n8n workflow automations</a> and <a href="#faq">AI assistants</a> for startups and small businesses, and works at Noxa as a Software Developer and AI Engineer. His portfolio includes 6 live web projects, such as a resort booking system with an AI assistant and a loyalty platform with an iOS app on the App Store.</p>
     <dl class="qa-facts">
       <div><dt>Live web projects</dt><dd data-count>6</dd></div>
@@ -766,14 +778,14 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   </section>
   <section class="work wrap" id="work" aria-labelledby="work-h">
     <div class="work-head">
-      <div><p class="eyebrow-s">01 Websites &amp; apps</p><h2 id="work-h">Websites and apps I’ve <em>built</em></h2></div>
+      <div><p class="eyebrow-s"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-browser"/></svg>01 Websites &amp; apps</p><h2 id="work-h">Websites and apps I’ve <em>built</em></h2></div>
       <p class="label">Six live projects</p>
     </div>
     <p class="sec-lead">Six live projects for small businesses, from a resort booking system with an AI assistant that answers availability questions to a loyalty platform with an iOS app on the App Store. Each one is live, so you can open it and try it.</p>
     <ul class="index" id="index">
       <li>
         <a class="row" href="https://binukbok-viewpoint.vercel.app" target="_blank" rel="noopener">
-          <span class="name">BiNuKBoK View Point Resort <span class="arr" aria-hidden="true">↗</span></span>
+          <span class="name">BiNuKBoK View Point Resort <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
           <span class="kind">Resort booking, admin dashboard and an AI assistant</span>
           <span class="dom">binukbok-viewpoint.vercel.app</span>
         </a>
@@ -781,7 +793,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
       </li>
       <li>
         <a class="row" href="https://www.noxaloyalty.com/" target="_blank" rel="noopener">
-          <span class="name">Noxa Loyalty <span class="arr" aria-hidden="true">↗</span></span>
+          <span class="name">Noxa Loyalty <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
           <span class="kind">Loyalty rewards web app and iOS app</span>
           <span class="dom">noxaloyalty.com</span>
         </a>
@@ -789,7 +801,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
       </li>
       <li>
         <a class="row" href="https://www.sweetblooms.ph/" target="_blank" rel="noopener">
-          <span class="name">SweetBlooms <span class="arr" aria-hidden="true">↗</span></span>
+          <span class="name">SweetBlooms <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
           <span class="kind">Florist e-commerce with sales, inventory and POS</span>
           <span class="dom">sweetblooms.ph</span>
         </a>
@@ -797,7 +809,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
       </li>
       <li>
         <a class="row" href="https://www.jazamedia.com/" target="_blank" rel="noopener">
-          <span class="name">JAZA Media <span class="arr" aria-hidden="true">↗</span></span>
+          <span class="name">JAZA Media <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
           <span class="kind">Website for a media agency</span>
           <span class="dom">jazamedia.com</span>
         </a>
@@ -805,7 +817,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
       </li>
       <li>
         <a class="row" href="https://crisia-va-portfolio.vercel.app/" target="_blank" rel="noopener">
-          <span class="name">Crisia VA <span class="arr" aria-hidden="true">↗</span></span>
+          <span class="name">Crisia VA <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
           <span class="kind">Portfolio site for a virtual assistant</span>
           <span class="dom">crisia-va-portfolio.vercel.app</span>
         </a>
@@ -813,7 +825,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
       </li>
       <li>
         <a class="row" href="https://pipeline-pal-17.vercel.app/" target="_blank" rel="noopener">
-          <span class="name">SalesPipe <span class="arr" aria-hidden="true">↗</span></span>
+          <span class="name">SalesPipe <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
           <span class="kind">Sales pipeline and customer tracker</span>
           <span class="dom">pipeline-pal-17.vercel.app</span>
         </a>
@@ -832,15 +844,15 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 
   <section class="work auto wrap" id="automations" aria-labelledby="auto-h">
     <div class="work-head">
-      <div><p class="eyebrow-s">02 Automations, built in n8n</p><h2 id="auto-h">Workflows that take over the <em>busywork</em></h2></div>
+      <div><p class="eyebrow-s"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-flow-arrow"/></svg>02 Automations, built in n8n</p><h2 id="auto-h">Workflows that take over the <em>busywork</em></h2></div>
       <p class="label">Three workflows</p>
       <span class="hair" aria-hidden="true"></span>
     </div>
     <p class="sec-lead">Three n8n automations built for an online store, connecting Gmail, Shopify, Slack and OpenAI. One drafts customer-service replies for a person to review, one posts a daily sales summary to Slack, and one answers staff questions about company procedures.</p>
     <ul class="index" id="auto-index">
-      <li><a class="row" href="/automations#auto-live-inbox"><span class="name">CS Live Inbox <span class="arr" aria-hidden="true">→</span></span><span class="kind">Drafts customer-service replies so the team only reviews and sends</span><span class="dom"><span class="tag">n8n</span>9 nodes · Gmail · OpenAI</span></a></li>
-      <li><a class="row" href="/automations#auto-sales-pulse"><span class="name">Daily Sales Pulse <span class="arr" aria-hidden="true">→</span></span><span class="kind">Posts an AI-written sales summary to Slack every day</span><span class="dom"><span class="tag">n8n</span>6 nodes · Shopify · Slack</span></a></li>
-      <li><a class="row" href="/automations#auto-sop"><span class="name">SOP Assistant <span class="arr" aria-hidden="true">→</span></span><span class="kind">Answers staff questions about procedures, in Slack or in a chat window</span><span class="dom"><span class="tag">n8n</span>AI agent · Slack · OpenAI</span></a></li>
+      <li><a class="row" href="/automations#auto-live-inbox"><span class="name">CS Live Inbox <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></span></span><span class="kind">Drafts customer-service replies so the team only reviews and sends</span><span class="dom"><span class="tag">n8n</span>9 nodes · Gmail · OpenAI</span></a></li>
+      <li><a class="row" href="/automations#auto-sales-pulse"><span class="name">Daily Sales Pulse <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></span></span><span class="kind">Posts an AI-written sales summary to Slack every day</span><span class="dom"><span class="tag">n8n</span>6 nodes · Shopify · Slack</span></a></li>
+      <li><a class="row" href="/automations#auto-sop"><span class="name">SOP Assistant <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></span></span><span class="kind">Answers staff questions about procedures, in Slack or in a chat window</span><span class="dom"><span class="tag">n8n</span>AI agent · Slack · OpenAI</span></a></li>
     </ul>
     <div class="float dark" id="auto-float" aria-hidden="true">
 <div><svg viewBox="0 0 330 200" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="rgb(255 255 255 / .08)"></circle></pattern></defs><rect width="330" height="200" fill="url(#dots)"></rect><path d="M43.9 73.5 C50.3 73.5 51.7 73.5 58.1 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M75.8 73.5 C82.0 73.5 83.0 73.5 89.3 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M129.8 73.5 C136.2 73.5 137.6 73.5 144.0 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M161.5 73.5 C168.3 73.5 169.8 73.5 176.7 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M157.3 77.3 C166.0 77.3 167.9 102.9 176.7 102.9 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M194.4 73.5 C200.6 73.5 201.6 73.5 207.9 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M248.3 73.5 C254.6 73.5 254.1 73.5 260.4 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M278.1 73.5 C284.3 73.5 283.8 73.5 290.1 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><rect x="27.3" y="65.8" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" style="stroke:var(--glow)"></rect><rect x="59.3" y="65.8" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="90.5" y="65.8" width="38.2" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="145.2" y="66.2" width="14.7" height="14.7" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="177.8" y="65.8" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="209.1" y="65.8" width="38.2" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="261.5" y="65.8" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="291.3" y="65.8" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="177.8" y="95.2" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><circle r="3.6" style="fill:var(--glow)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M43.9 73.5 C50.3 73.5 51.7 73.5 58.1 73.5  M75.8 73.5 C82.0 73.5 83.0 73.5 89.3 73.5  M129.8 73.5 C136.2 73.5 137.6 73.5 144.0 73.5  M161.5 73.5 C168.3 73.5 169.8 73.5 176.7 73.5  M194.4 73.5 C200.6 73.5 201.6 73.5 207.9 73.5  M248.3 73.5 C254.6 73.5 254.1 73.5 260.4 73.5  M278.1 73.5 C284.3 73.5 283.8 73.5 290.1 73.5 "></animateMotion></circle><circle r="9" style="fill:color-mix(in srgb, var(--glow) 22%, transparent)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M43.9 73.5 C50.3 73.5 51.7 73.5 58.1 73.5  M75.8 73.5 C82.0 73.5 83.0 73.5 89.3 73.5  M129.8 73.5 C136.2 73.5 137.6 73.5 144.0 73.5  M161.5 73.5 C168.3 73.5 169.8 73.5 176.7 73.5  M194.4 73.5 C200.6 73.5 201.6 73.5 207.9 73.5  M248.3 73.5 C254.6 73.5 254.1 73.5 260.4 73.5  M278.1 73.5 C284.3 73.5 283.8 73.5 290.1 73.5 "></animateMotion></circle></svg><p>9 nodes · Gmail · OpenAI</p></div>
@@ -851,12 +863,12 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 
   <section class="band" id="clients" aria-labelledby="t-h">
     <div class="wrap band-head">
-      <h2 class="label" id="t-h">What clients say</h2>
+      <h2 class="label" id="t-h"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-quotes"/></svg>What clients say</h2>
       <div class="t-nav">
         <span class="t-count" aria-live="polite"><b id="t-cur">01</b> / 05</span>
         <button class="t-btn" id="t-pause" type="button" aria-label="Pause testimonials"></button>
-        <button class="t-btn" id="t-prev" type="button" aria-label="Previous testimonial">←</button>
-        <button class="t-btn" id="t-next" type="button" aria-label="Next testimonial">→</button>
+        <button class="t-btn" id="t-prev" type="button" aria-label="Previous testimonial"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-left"/></svg></button>
+        <button class="t-btn" id="t-next" type="button" aria-label="Next testimonial"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></button>
       </div>
     </div>
     <div class="wrap">
@@ -890,7 +902,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 
   <section class="stack wrap" id="stack" aria-labelledby="stack-h">
     <div class="work-head">
-      <div><p class="eyebrow-s">03 Tools &amp; stack</p><h2 id="stack-h">Tools I build <em>with</em></h2></div>
+      <div><p class="eyebrow-s"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-stack"/></svg>03 Tools &amp; stack</p><h2 id="stack-h">Tools I build <em>with</em></h2></div>
       <div class="st-head-r"><p class="label">33 tools</p><button class="st-pause" id="st-pause" type="button" aria-pressed="false">Pause</button></div>
     </div>
     <p class="sec-lead">Omhar Regidor works with 33 tools across the full stack, including Next.js, React and TypeScript on the front end, Node.js, Supabase and PostgreSQL on the back end, React Native for mobile, and n8n for automation. <a href="/gear">See the gear he builds on</a>.</p>
@@ -941,7 +953,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 
   <section class="faq wrap" id="faq" aria-labelledby="faq-h">
     <div class="faq-side">
-      <p class="eyebrow-s">Questions</p>
+      <p class="eyebrow-s"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-question"/></svg>Questions</p>
       <h2 id="faq-h">Questions, <em>answered</em></h2>
       <p class="sec-lead">Straight answers about hiring Omhar Regidor for web, automation and AI work.</p>
     </div>
@@ -986,10 +998,10 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   </section>
 
   <section class="close wrap" id="contact" aria-labelledby="close-h">
-    <p class="label"><b>+</b> Start a project</p>
+    <p class="label"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-chat-circle"/></svg>Start a project</p>
     <h2 id="close-h">Have a system your business <em>needs</em>?</h2>
     <p class="close-sub">Tell me what is slowing your business down. Book a 30-minute call, or email <a href="mailto:omharregidor@gmail.com">omharregidor@gmail.com</a>.</p>
-    <a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a 30-min call <span aria-hidden="true">→</span></a>
+    <a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Book a 30-min call <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a>
   </section>
 </main>
 <footer class="foot wrap">
@@ -1124,8 +1136,8 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   /* ---------- hero slideshow ---------- */
   const SLIDES = ['campus', 'lobby', 'studio', 'grad', 'nightcode'];
   const sPause = document.getElementById('s-pause');
-  const PAUSE_I = '<svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><rect x="2" y="1.5" width="2.6" height="9" rx="1"/><rect x="7.4" y="1.5" width="2.6" height="9" rx="1"/></svg>';
-  const PLAY_I = '<svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg>';
+  const PAUSE_I = '<svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-pause"/></svg>';
+  const PLAY_I = '<svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-play"/></svg>';
   let si = 0, sTimer = 0, sPaused = reduce.matches, hold = false;
   const imgFor = (key, pose) => {
     const dark = body.dataset.mode === 'dark';
@@ -1183,8 +1195,8 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   const tAuto = () => embla.plugins().autoplay;
   const tPause = document.getElementById('t-pause');
   let tPaused = reduce.matches;
-  const T_PAUSE_I = '<svg viewBox="0 0 12 12" width="12" height="12" fill="currentColor" aria-hidden="true"><rect x="2" y="1.5" width="2.6" height="9" rx="1"/><rect x="7.4" y="1.5" width="2.6" height="9" rx="1"/></svg>';
-  const T_PLAY_I = '<svg viewBox="0 0 12 12" width="12" height="12" fill="currentColor" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg>';
+  const T_PAUSE_I = '<svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-pause"/></svg>';
+  const T_PLAY_I = '<svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-play"/></svg>';
   const tUi = () => { tPause.innerHTML = tPaused ? T_PLAY_I : T_PAUSE_I; tPause.setAttribute('aria-label', tPaused ? 'Play testimonials' : 'Pause testimonials'); };
   tPause.addEventListener('click', () => { tPaused = !tPaused; tUi(); if (tAuto()) { if (tPaused) tAuto().stop(); else tAuto().play(); } });
   const band = document.getElementById('clients');
@@ -1266,5 +1278,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 <script src="/atelier/reveal.js"></script>
 <script src="/atelier/site-menu.js"></script>
 <script src="/atelier/ask-omhar.js"></script>
+<script src="/atelier/glass.js"></script>
+<script src="/atelier/cursor.js"></script>
 </body>
 </html>
