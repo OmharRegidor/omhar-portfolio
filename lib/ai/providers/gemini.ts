@@ -7,9 +7,11 @@ interface GeminiChunk {
 }
 
 /**
- * Google Gemini (free tier) — fallback provider. Note: the free tier may use
- * submitted prompts to improve Google's models, so this sits BEHIND Groq and is
- * only reached on Groq failure. Disclose this in the UI.
+ * Google Gemini (free tier), second in the default chain. The free tier costs
+ * nothing while the Google project has no billing account linked, and a spent
+ * quota returns 429, which falls through to the next provider. It may use
+ * prompts to improve Google's models, so the chat panel tells visitors not to
+ * share private details and the inbox demo asks for made-up emails.
  */
 export const geminiProvider: ChatProvider = {
   id: "google",

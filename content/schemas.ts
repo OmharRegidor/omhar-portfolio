@@ -25,8 +25,10 @@ export const ProfileSchema = z.object({
 });
 export type Profile = z.infer<typeof ProfileSchema>;
 
+const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "lowercase letters/digits, hyphens only between segments");
+
 export const ProjectSchema = z.object({
-  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "lowercase letters/digits, hyphens only between segments"),
+  slug,
   name: z.string().min(1),
   blurb: z.string().min(1).max(220),
   url: z.string().url(),
@@ -37,6 +39,41 @@ export const ProjectsSchema = z.array(ProjectSchema).min(1).refine(
   { message: "Project slugs must be unique" }
 );
 export type Project = z.infer<typeof ProjectSchema>;
+
+// The n8n workflows shown on /automations. Only facts already on the site go
+// here: the chat repeats them, so anything added becomes something it says.
+export const AutomationSchema = z.object({
+  slug,
+  name: z.string().min(1),
+  /** Apps and services the workflow connects. */
+  tools: z.array(z.string().min(1)).min(1),
+  /** Plain sentences on how it works. */
+  howItWorks: z.array(z.string().min(1)).min(1),
+  /** Where a person stays in charge. */
+  humanInTheLoop: z.string().min(1),
+  /** Site path of its section on the automations page. */
+  page: z.string().regex(/^\/automations#auto-[a-z0-9-]+$/, "an /automations#auto-... path"),
+});
+export const AutomationsSchema = z.object({
+  /** What n8n is, in plain words. */
+  platform: z.object({ name: z.string().min(1), about: z.string().min(1) }),
+  workflows: z.array(AutomationSchema).min(1).refine(
+    (arr) => new Set(arr.map((a) => a.slug)).size === arr.length,
+    { message: "Automation slugs must be unique" }
+  ),
+});
+export type Automations = z.infer<typeof AutomationsSchema>;
+
+export const GearItemSchema = z.object({
+  /** What it is for him, e.g. "Main machine". */
+  role: z.string().min(1),
+  name: z.string().min(1),
+});
+export const GearSchema = z.object({
+  page: z.string().regex(/^\/[a-z0-9-]*$/, "a site path like /gear"),
+  items: z.array(GearItemSchema).min(1),
+});
+export type Gear = z.infer<typeof GearSchema>;
 
 export const ExperienceItemSchema = z.object({
   title: z.string().min(1),
@@ -99,3 +136,10 @@ export const ChatRequestSchemaV2 = z.object({
   messages: z.array(ChatMessageSchema).min(1).max(8),
 }).strict();
 export type ChatRequestV2 = z.infer<typeof ChatRequestSchemaV2>;
+
+// Live demo on the CS Live Inbox page. The email is untrusted and only ever
+// reaches a model wrapped in delimiters (lib/demo/inbox.ts).
+export const InboxDemoRequestSchema = z.object({
+  email: z.string().trim().min(1).max(1500),
+}).strict();
+export type InboxDemoRequest = z.infer<typeof InboxDemoRequestSchema>;

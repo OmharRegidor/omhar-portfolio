@@ -30,10 +30,10 @@ function staticReply() {
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "anonymous";
 
-  // 1. Per-IP rate limit (burst protection). Fails OPEN — a limiter outage must
-  //    not take the chat down (mirrors allowDailyUsage in lib/chat/usage.ts).
-  //    The kill-switch + daily cap + free-tier providers still bound abuse.
-  //    Logged so a real outage is diagnosable instead of silently degrading.
+  // 1. Per-IP rate limit (burst protection). When Upstash is down or slow the
+  //    limiter switches to its in-memory window by itself (lib/rate-limit.ts),
+  //    so this catch is only a last resort: it fails OPEN, because a limiter
+  //    bug must not take the chat down. Logged so it is diagnosable.
   let limit;
   try {
     limit = await getRateLimit().limit(ip);

@@ -35,6 +35,7 @@ beforeEach(() => {
 afterEach(() => {
   vi.unstubAllGlobals();
   delete process.env.GROQ_API_KEY;
+  delete process.env.GROQ_MODEL;
 });
 
 describe("groqProvider.streamChat", () => {
@@ -64,15 +65,30 @@ describe("groqProvider.streamChat", () => {
   });
 
   it("sends max_completion_tokens (not deprecated max_tokens) + a system message", async () => {
+    process.env.GROQ_MODEL = "some-plain-model";
     const fetchMock = vi.fn().mockResolvedValue(sseResponse(["data: [DONE]\n\n"]));
     vi.stubGlobal("fetch", fetchMock);
     await collect(groqProvider.streamChat(opts));
+    delete process.env.GROQ_MODEL;
     const init = fetchMock.mock.calls[0]![1] as RequestInit;
     const body = JSON.parse(init.body as string);
+    expect(body.model).toBe("some-plain-model");
     expect(body.max_completion_tokens).toBe(350);
     expect(body.max_tokens).toBeUndefined();
+    expect(body.reasoning_effort).toBeUndefined();
     expect(body.messages[0]).toEqual({ role: "system", content: "SYSTEM_PROMPT" });
     expect(body.stream).toBe(true);
+  });
+
+  it("defaults to gpt-oss-20b with low reasoning, hidden reasoning and room for it", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(sseResponse(["data: [DONE]\n\n"]));
+    vi.stubGlobal("fetch", fetchMock);
+    await collect(groqProvider.streamChat(opts));
+    const body = JSON.parse((fetchMock.mock.calls[0]![1] as RequestInit).body as string);
+    expect(body.model).toBe("openai/gpt-oss-20b");
+    expect(body.reasoning_effort).toBe("low");
+    expect(body.include_reasoning).toBe(false);
+    expect(body.max_completion_tokens).toBeGreaterThan(350);
   });
 
   it("throws before the first chunk on a non-OK response, surfacing the error body", async () => {

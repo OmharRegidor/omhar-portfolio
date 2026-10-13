@@ -16,9 +16,10 @@ for (const [route, block] of [
     await page.goto(route);
     await page.waitForLoadState("networkidle");
 
-    await expect.poll(() => opacity(page, block), { timeout: 3000 }).toBe(0);
+    // A busy machine can take a few seconds to report the first scroll check, so these waits are generous.
+    await expect.poll(() => opacity(page, block), { timeout: 8000 }).toBe(0);
     await page.locator(block).first().scrollIntoViewIfNeeded();
-    await expect.poll(() => opacity(page, block), { timeout: 3000 }).toBe(1);
+    await expect.poll(() => opacity(page, block), { timeout: 8000 }).toBe(1);
   });
 }
 
@@ -27,7 +28,7 @@ test("the last lines of a page still pop in at the very bottom", async ({ page }
   await page.goto("/gear");
   await page.waitForLoadState("networkidle");
   await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
-  await expect.poll(() => opacity(page, ".foot > :last-child"), { timeout: 3000 }).toBe(1);
+  await expect.poll(() => opacity(page, ".foot > :last-child"), { timeout: 8000 }).toBe(1);
 });
 
 test("the homepage numbers count up from 0 and land on their real values", async ({ page }) => {

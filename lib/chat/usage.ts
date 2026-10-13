@@ -1,36 +1,53 @@
-import { Redis } from "@upstash/redis";
-import { getEnv } from "@/lib/env";
 import { getChatConfig } from "@/lib/ai/config";
+import {
+  getUpstash,
+  markUpstashDown,
+  noteMemoryFallback,
+  upstashUsable,
+  withDeadline,
+} from "@/lib/upstash";
 
 /**
- * Global daily request ceiling — a cost circuit-breaker on top of the per-IP
- * rate limit. Counts all chat requests per UTC day in Upstash; once CHAT_DAILY_CAP
- * is hit, callers degrade to the static reply. FAILS OPEN: a counter outage must
- * never take the chat down (the per-IP limiter still bounds abuse).
+ * Global daily request ceiling, a cost circuit-breaker on top of the per-IP
+ * rate limit. Counts all AI requests (chat and inbox demo) per UTC day in
+ * Upstash; once CHAT_DAILY_CAP is hit, callers stop calling the AI. When Upstash
+ * is missing, slow (over the deadline) or failing, a per-instance counter with
+ * the same cap takes over, so an outage is fast and spend stays capped.
  */
-let redis: Redis | null = null;
+const TTL_SECONDS = 60 * 60 * 26; // ~26h, the key is dated so it only needs to outlive its day
 
-function getRedis(): Redis {
-  if (redis) return redis;
-  const env = getEnv();
-  redis = new Redis({
-    url: env.UPSTASH_REDIS_REST_URL,
-    token: env.UPSTASH_REDIS_REST_TOKEN,
-  });
-  return redis;
+let memory = { day: "", count: 0 };
+
+/** Per-instance count for `day`, starting from 0 again when the UTC day changes. */
+function countInMemory(day: string): number {
+  if (memory.day !== day) memory = { day, count: 0 };
+  memory.count += 1;
+  return memory.count;
 }
 
+/** Spend one unit of today's budget. True while today's count is within the cap. */
 export async function allowDailyUsage(): Promise<boolean> {
   const cap = getChatConfig().dailyCap;
-  if (!Number.isFinite(cap) || cap <= 0) return true;
+  if (!Number.isFinite(cap) || cap <= 0) return true; // 0 means no cap
 
-  try {
-    const day = new Date().toISOString().slice(0, 10);
-    const key = `@portfolio/chat:day:${day}`;
-    const count = await getRedis().incr(key);
-    if (count === 1) await getRedis().expire(key, 60 * 60 * 26); // ~26h TTL
-    return count <= cap;
-  } catch {
-    return true; // fail-open
+  const day = new Date().toISOString().slice(0, 10);
+  const redis = getUpstash();
+  if (!redis) {
+    noteMemoryFallback("not configured");
+  } else if (upstashUsable()) {
+    try {
+      const key = `@portfolio/chat:day:${day}`;
+      const count = await withDeadline(
+        (async () => {
+          const n = await redis.incr(key);
+          if (n === 1) await redis.expire(key, TTL_SECONDS);
+          return n;
+        })(),
+      );
+      return count <= cap;
+    } catch (e) {
+      markUpstashDown(e);
+    }
   }
+  return countInMemory(day) <= cap;
 }

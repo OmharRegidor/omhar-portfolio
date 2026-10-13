@@ -31,6 +31,45 @@ describe("buildKnowledgeBlock", () => {
     expect(kb).toContain("Noxa");
   });
 
+  it("explains what n8n is", () => {
+    expect(kb).toContain("<automations>");
+    expect(kb).toContain("n8n is a workflow automation tool");
+    expect(kb).toContain("chain of steps called nodes");
+  });
+
+  it("includes all three automations with their tools, human step and page", () => {
+    for (const [name, page] of [
+      ["CS Live Inbox", "/automations#auto-live-inbox"],
+      ["Daily Sales Pulse", "/automations#auto-sales-pulse"],
+      ["SOP Assistant", "/automations#auto-sop"],
+    ]) {
+      expect(kb).toContain(name);
+      expect(kb).toContain(page);
+    }
+    expect(kb).toContain("Gmail");
+    expect(kb).toContain("Shopify");
+    expect(kb).toContain("It never sends by itself.");
+    expect(kb).toContain("so figures stay exact");
+    expect(kb).toContain("the chat version remembers recent messages");
+  });
+
+  it("includes the gear and its page", () => {
+    expect(kb).toContain("<gear>");
+    expect(kb).toContain("/gear");
+    expect(kb).toContain("MacBook Pro with the M4 Pro chip, in Space Black");
+    expect(kb).toContain("Lenovo ThinkPad T460");
+    expect(kb).toContain("AULA F75");
+    expect(kb).toContain("A4Tech 2X Click");
+  });
+
+  it("adds no prices, dates or availability for the automations and gear", () => {
+    const added = kb.slice(kb.indexOf("<automations>"), kb.indexOf("</automations>"));
+    const gear = kb.slice(kb.indexOf("<gear>"), kb.indexOf("</gear>"));
+    for (const section of [added, gear]) {
+      expect(section).not.toMatch(/[$₱€£]|\b(19|20)\d{2}\b|available|availability/i);
+    }
+  });
+
   it("stays within a safe token budget for context-stuffing", () => {
     expect(estimateTokens(kb)).toBeLessThan(3500);
   });

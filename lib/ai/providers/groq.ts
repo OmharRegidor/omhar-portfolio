@@ -8,6 +8,28 @@ interface GroqChunk {
   choices?: Array<{ delta?: { content?: string } }>;
 }
 
+/** Extra output room for models that reason before answering. */
+const REASONING_ROOM = 400;
+
+/**
+ * Model-specific request fields. The gpt-oss models always reason before they
+ * answer and Groq has no switch to turn that off, so they get the lowest effort,
+ * the reasoning is left out of the stream (only delta.content is read anyway),
+ * and the token limit grows by REASONING_ROOM so a small budget like the inbox
+ * triage's is not spent before any answer text. The prompt still keeps the
+ * answer itself short.
+ */
+function modelFields(model: string, maxOutputTokens: number): Record<string, unknown> {
+  if (model.startsWith("openai/gpt-oss")) {
+    return {
+      max_completion_tokens: maxOutputTokens + REASONING_ROOM,
+      reasoning_effort: "low",
+      include_reasoning: false,
+    };
+  }
+  return { max_completion_tokens: maxOutputTokens };
+}
+
 /**
  * Groq (OpenAI-compatible) — primary provider. Fast, free, no training on data.
  * Throws before the first yield on auth/quota/network errors so the runner can
@@ -30,7 +52,7 @@ export const groqProvider: ChatProvider = {
         model: cfg.groqModel,
         stream: true,
         temperature: opts.temperature,
-        max_completion_tokens: opts.maxOutputTokens,
+        ...modelFields(cfg.groqModel, opts.maxOutputTokens),
         messages: [
           { role: "system", content: opts.system },
           ...opts.messages.map((m) => ({ role: m.role, content: m.content })),

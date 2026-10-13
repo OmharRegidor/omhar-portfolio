@@ -58,6 +58,42 @@ Glass, cursor and icons (2026-10-13, owner request), on all three pages:
 - Open: in dark mode the homepage slideshow asks for a night photo that does not exist (pre-existing; visitors can't
   reach dark mode today). Add the photo or drop that slide.
 
+Chat backend and inbox demo (2026-10-13): the chat and demo run on free tiers only, by owner request. The default
+`AI_PROVIDERS` is `groq,google`, static stays last. Groq uses the `GROQ_API_KEY` already in Vercel; its old model
+`llama-3.1-8b-instant` was shut down on 2026-08-16 (that is why the live chat only gave the static reply), so
+`GROQ_MODEL` now defaults to `openai/gpt-oss-20b`, sent with `reasoning_effort: low`, `include_reasoning: false` and
+400 extra output tokens because its reasoning cannot be switched off (`lib/ai/providers/groq.ts`). Gemini is an
+optional free backup: set `GOOGLE_AI_API_KEY` from AI Studio and keep that Google project with NO billing account
+linked, which is what keeps it free (`GEMINI_MODEL` defaults to `gemini-2.5-flash`, thinking off; its free tier may use
+prompts to improve Google's models). A spent free quota returns 429 and visitors get prepared answers or marked
+samples instead. The chat panel asks visitors not to share private details. Claude is wired but paid, so it only runs when `AI_PROVIDERS` names `anthropic` and `ANTHROPIC_API_KEY` is set
+(`ANTHROPIC_MODEL` defaults to `claude-haiku-5-5`; `lib/ai/providers/anthropic.ts`, plain fetch; it sends no
+`temperature` because current Claude models reject non-default values, and Haiku runs with thinking off). Every
+Upstash check now gets one attempt and a 1500 ms deadline, then Upstash is skipped for 30 s (`lib/upstash.ts`). When
+Upstash is missing, slow or failing, an in-memory fallback takes over instead of failing open: 10 requests per minute
+per IP and a per-instance daily counter capped at `CHAT_DAILY_CAP` (0 = no cap), logged once per instance as
+`[limits] Upstash unavailable`. These are per instance, so point the Upstash env vars at a live database to get shared
+limits back. The chat also knows the three n8n workflows and the gear (`content/automations.ts`, `content/gear.ts`).
+`POST /api/demo/inbox` (logic in `lib/demo/inbox.ts`) takes `{ "email": string }` (trimmed, 1 to 1500 chars, body at
+most 4096 bytes, no other fields), uses the chat's per-IP limit and one daily-cap unit, and runs triage then, only on
+REPLY, a draft through the live providers (never static). It answers 200 `{ needsReply, reason, draft | null, provider }`,
+400 `BAD_REQUEST` or `PAYLOAD_TOO_LARGE`, 429 with `Retry-After: 60`, or 503 `{ error: { code: "DEMO_OFFLINE", message } }`
+when no key is set, every provider fails, `CHAT_ENABLED=0` or the daily cap is spent; other methods get 405. All `no-store`.
+
+Client wow features, page side (2026-10-13), covered by `tests/e2e/live-features.spec.ts`:
+- `ask-omhar.js`: starter chips stay prepared answers; typed questions stream from `/api/chat` with the last 7 turns.
+  A `static` provider header, an error or an empty stream falls back to the nearest prepared answer. The Calendly
+  link, the email and `/gear` / `/automations...` paths in an answer become links.
+- `try-inbox.js` + `#try` in automations.html (shown only on `#auto-live-inbox`): three made-up sample emails. When
+  the demo answers 503 or fails, a sample shows its result written in advance, tagged as such.
+- `calc.js` + `#calc` under the homepage automations: hours a month = hours a week x people x share x 4.33, worth =
+  rounded hours x the visitor's hourly cost, and the working line always shows the sum.
+- Each page has `@view-transition{ navigation:auto }` with `.top{ view-transition-name:top }`, off under reduced motion.
+- Project hover previews load `projects/<slug>-full.jpg` (full-length captures of the live sites, 640px wide, max
+  3200px tall) on the first mouse visit to the list and pan through them with `object-position`. Recapture them when
+  a client site changes.
+- `cursor.js` also makes every `.book` button lean up to 8px toward the pointer, mouse users only.
+
 Still unconfirmed and now live as-is: Comfit is named as a client on the CS Live Inbox page; the Noxa testimonial
 has no employer label; MacBook size, memory and storage are not shown; the mouse is assumed to be the OP-620D.
 

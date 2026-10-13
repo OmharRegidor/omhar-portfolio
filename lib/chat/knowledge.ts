@@ -4,6 +4,8 @@ import { experience } from "@/content/experience";
 import { techStack } from "@/content/tech-stack";
 import { certifications } from "@/content/certifications";
 import { recommendations } from "@/content/recommendations";
+import { automations } from "@/content/automations";
+import { gear } from "@/content/gear";
 
 /** Rough token estimate (~4 chars/token) — good enough for budget guards. */
 export function estimateTokens(text: string): number {
@@ -45,6 +47,16 @@ export function buildKnowledgeBlock(): string {
   }
   lines.push("</projects>");
 
+  lines.push("<automations>");
+  lines.push(`About ${automations.platform.name}: ${automations.platform.about}`);
+  lines.push(`Workflows Omhar built in ${automations.platform.name}:`);
+  for (const a of automations.workflows) {
+    lines.push(
+      `- ${a.name} [${a.tools.join(", ")}]: ${a.howItWorks.join(" ")} Human step: ${a.humanInTheLoop} Page: ${a.page}`,
+    );
+  }
+  lines.push("</automations>");
+
   lines.push("<experience>");
   for (const e of experience) lines.push(`- ${e.year}: ${e.title} @ ${e.org}`);
   lines.push("</experience>");
@@ -54,6 +66,11 @@ export function buildKnowledgeBlock(): string {
     lines.push(`${category}: ${items.join(", ")}`);
   }
   lines.push("</tech_stack>");
+
+  lines.push("<gear>");
+  lines.push(`What Omhar works with (page: ${gear.page}):`);
+  for (const g of gear.items) lines.push(`- ${g.role}: ${g.name}`);
+  lines.push("</gear>");
 
   if (certifications.length > 0) {
     lines.push("<certifications>");

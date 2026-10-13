@@ -428,6 +428,36 @@ html{ scroll-padding-top:88px }
 .human{ display:flex; gap:16px; align-items:baseline; padding:22px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-top:24px }
 .human span{ font-size:12.5px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted); white-space:nowrap }
 .human p{ font-family:var(--display); font-size:clamp(22px, 2.4vw, 30px); line-height:1.25 }
+/* Try it yourself, on the CS Live Inbox page only. The two result cards mirror the workflow's two steps. */
+.try{ padding-block:clamp(56px, 8vw, 96px) 0 }
+.try h2{ font-family:var(--display); font-weight:400; font-size:clamp(36px, 4.4vw, 56px); line-height:1; margin:12px 0 14px }
+.try .lede{ margin:0 0 32px }
+.try-grid{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:clamp(20px, 3vw, 40px); align-items:start }
+.try-form{ display:grid; gap:12px; min-width:0 }
+.try-form label{ font-size:12.5px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted) }
+.try-form textarea{ width:100%; min-height:190px; padding:14px 16px; border:1px solid var(--line); border-radius:0; background:#FFFFFF; color:var(--ink); font:inherit; font-size:16px; line-height:1.55; resize:vertical }
+.try-form textarea:focus-visible{ outline:2px solid var(--ink); outline-offset:0; border-color:var(--ink) }
+.try-form textarea[aria-invalid="true"]{ border-color:#B3261E }
+.try-row{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap }
+.try-samples{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:14px; color:var(--muted) }
+.try-samples button{ min-height:40px; padding:0 14px; border:1px solid var(--line); border-radius:999px; background:transparent; color:var(--ink); font:inherit; font-size:14px; cursor:pointer; transition:border-color 200ms ease }
+.try-samples button:hover, .try-samples button:focus-visible, .try-samples button[aria-pressed="true"]{ border-color:var(--ink) }
+.try-count{ font-family:var(--mono); font-size:12px; color:var(--muted) }
+.try-go{ justify-self:start; border:0; font:inherit; font-size:13.5px; cursor:pointer }
+.try-go[disabled]{ opacity:.55; cursor:progress }
+.try-out{ display:grid; gap:14px; min-width:0 }
+.try-empty{ margin:0; padding:22px; border:1px dashed #BDBBB2; color:var(--muted); font-size:15.5px }
+.try-step{ padding:18px 20px; border:1px solid var(--line); background:#FFFFFF }
+.try-step small{ display:block; margin-bottom:6px; font-size:11.5px; font-weight:500; letter-spacing:.22em; text-transform:uppercase; color:var(--muted) }
+.try-step b{ display:block; font-family:var(--display); font-weight:400; font-size:26px; line-height:1.15 }
+.try-step p{ margin:6px 0 0; font-size:15.5px; color:var(--muted) }
+.try-step .try-draft{ margin-top:12px; color:var(--ink); font-size:16px; line-height:1.6; white-space:pre-line; overflow-wrap:anywhere }
+.try-step.wait b::after{ content:""; display:inline-block; width:8px; height:8px; margin-left:10px; border-radius:50%; background:var(--muted); vertical-align:middle; animation:try-pulse 1s ease-in-out infinite }
+@keyframes try-pulse{ 0%,100%{ opacity:.25 } 50%{ opacity:1 } }
+.try-note{ margin:0; font-size:14px; color:var(--muted) }
+.try-tag{ display:inline-block; margin-bottom:10px; padding:2px 8px; border:1px solid var(--line); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--muted) }
+@media (max-width:760px){ .try-grid{ grid-template-columns:1fr } }
+@media (prefers-reduced-motion: reduce){ .try-step.wait b::after{ animation:none; opacity:.6 } }
 .explain{ padding-block:clamp(56px, 8vw, 96px) 24px }
 .explain h2{ font-family:var(--display); font-weight:400; font-size:clamp(36px, 4.4vw, 56px); line-height:1; margin:12px 0 22px }
 .explain ol{ list-style:none; margin:0; padding:0; counter-reset:n }
@@ -482,6 +512,11 @@ body{ overflow-x:clip }
 .pn b{ font-size:clamp(24px, 2.8vw, 36px) }
 .t-agent .wt b{ font-size:20px; font-weight:400; letter-spacing:-0.02em }
 .meta-row .todo{ font-family:var(--sans); font-style:normal; font-size:16px }
+/* Moving between the three pages cross-fades instead of blinking, and the header stays in place. */
+@media (prefers-reduced-motion: no-preference){
+  @view-transition{ navigation:auto }
+  .top{ view-transition-name:top }
+}
 </style>
 <link rel="stylesheet" href="/atelier/glass.css">
 </head>
@@ -555,6 +590,25 @@ body{ overflow-x:clip }
   <div class="wrap">
     <div class="story" id="story"></div>
     <div class="human"><span>A person still</span><p id="a-human"></p></div>
+    <section class="try" id="try" aria-labelledby="try-h" hidden>
+      <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-envelope-simple"/></svg>Try it yourself</p>
+      <h2 id="try-h">Paste an email and watch it get a <em>reply</em></h2>
+      <p class="lede">This runs the same two steps live. First it checks whether the email needs an answer, then it writes a draft for a person to review. Nothing gets sent, so use a made-up email, not a real customer’s.</p>
+      <div class="try-grid">
+        <form class="try-form" id="try-form" novalidate>
+          <label for="try-in">Customer email</label>
+          <textarea id="try-in" name="email" rows="7" maxlength="1500" placeholder="Hi, my order still hasn’t arrived…" aria-describedby="try-count"></textarea>
+          <div class="try-row">
+            <div class="try-samples" role="group" aria-label="Sample emails"><span>Samples</span></div>
+            <span class="try-count" id="try-count">0 / 1500</span>
+          </div>
+          <button class="book try-go" type="submit">Draft a reply <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></button>
+        </form>
+        <div class="try-out" id="try-out" aria-live="polite">
+          <p class="try-empty">Paste an email or pick a sample, then press Draft a reply. The result shows here.</p>
+        </div>
+      </div>
+    </section>
     <section class="explain" aria-labelledby="x-h">
       <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-list-numbers"/></svg>Step by step</p>
       <h2 id="x-h">Every node, <em>explained</em></h2>
@@ -1070,6 +1124,7 @@ function openAuto(slug, vkey, keepScroll) {
   $('#a-meta').innerHTML = wf.facts.map(([k, val]) => `<div><dt>${k}</dt><dd>${esc(val)}</dd></div>`).join('');
   $('#story').innerHTML = `<div class="beat"><h2>The approach</h2><p>${esc(wf.approach)}</p></div>`;
   $('#a-human').textContent = wf.human;
+  $('#try').hidden = slug !== 'live-inbox';
   const { v } = mountStage(slug, vkey);
   const list = G.order();
   $('#explain').innerHTML = list.map(n => `<li tabindex="0" data-id="${n.id}"><div class="x-name"><small>${esc(TYPE_LABEL[n.type])}</small><b>${esc(n.name)}</b><span>${esc(n.card.role)}</span></div><div class="x-body">${esc(n.card.desc)}<ul>${n.card.how.map(h => `<li>${esc(h)}</li>`).join('')}</ul></div></li>`).join('');
@@ -1107,6 +1162,7 @@ addEventListener('hashchange', routeHash);
 routeHash();
 })();
 </script>
+<script src="/atelier/try-inbox.js"></script>
 <script src="/atelier/reveal.js"></script>
 <script src="/atelier/site-menu.js"></script>
 <script src="/atelier/ask-omhar.js"></script>

@@ -6,12 +6,14 @@
  * getEnv() would break that path. All keys are server-only — never NEXT_PUBLIC_.
  */
 export interface ChatConfig {
+  anthropicApiKey: string;
   groqApiKey: string;
   googleApiKey: string;
   providers: string[];
   enabled: boolean;
   dailyCap: number;
   timeoutMs: number;
+  anthropicModel: string;
   groqModel: string;
   geminiModel: string;
 }
@@ -30,8 +32,12 @@ function nonNegInt(value: string | undefined, fallback: number): number {
 
 export function getChatConfig(): ChatConfig {
   return {
+    anthropicApiKey: process.env.ANTHROPIC_API_KEY?.trim() ?? "",
     groqApiKey: process.env.GROQ_API_KEY?.trim() ?? "",
     googleApiKey: process.env.GOOGLE_AI_API_KEY?.trim() ?? "",
+    // Free providers only by default: Groq first (fast, and its free tier does not train on prompts), then Gemini's
+    // free tier. Claude costs money, so it never runs unless AI_PROVIDERS names "anthropic" explicitly, even when
+    // ANTHROPIC_API_KEY happens to be set.
     providers: (process.env.AI_PROVIDERS ?? "groq,google")
       .split(",")
       .map((s) => s.trim())
@@ -39,7 +45,9 @@ export function getChatConfig(): ChatConfig {
     enabled: (process.env.CHAT_ENABLED ?? "1") !== "0",
     dailyCap: nonNegInt(process.env.CHAT_DAILY_CAP, 500),
     timeoutMs: num(process.env.CHAT_PROVIDER_TIMEOUT_MS, 8000),
-    groqModel: process.env.GROQ_MODEL?.trim() || "llama-3.1-8b-instant",
+    anthropicModel: process.env.ANTHROPIC_MODEL?.trim() || "claude-haiku-5-5",
+    // llama-3.1-8b-instant was shut down on 2026-08-16; Groq names openai/gpt-oss-20b as its replacement.
+    groqModel: process.env.GROQ_MODEL?.trim() || "openai/gpt-oss-20b",
     geminiModel: process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash",
   };
 }

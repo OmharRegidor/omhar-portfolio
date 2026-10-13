@@ -3,6 +3,7 @@ import { boundMessages } from "@/lib/chat/history";
 import { buildSystemPrompt, wrapUserMessage } from "@/lib/chat/system-prompt";
 import { getProviderChain } from "@/lib/ai/registry";
 import { getChatConfig } from "@/lib/ai/config";
+import { firstChunkDeadline } from "@/lib/ai/complete";
 import { STATIC_FALLBACK_REPLY } from "@/lib/ai/providers/static";
 import type { ChatProvider, ProviderMessage } from "@/lib/ai/types";
 
@@ -28,22 +29,6 @@ export function toProviderMessages(messages: ChatMessage[]): ProviderMessage[] {
   // to [] and degrades to the static reply, which is acceptable.
   while (mapped[0]?.role === "assistant") mapped.shift();
   return mapped;
-}
-
-/**
- * Build a per-attempt signal whose timeout bounds ONLY time-to-first-chunk. Call
- * `clear()` the moment the first chunk arrives so a slow-but-valid stream is not
- * truncated mid-response — after that the stream is bound only to the inbound
- * (client-disconnect) signal.
- */
-function firstChunkDeadline(timeoutMs: number, inbound?: AbortSignal) {
-  const controller = new AbortController();
-  const timer = setTimeout(
-    () => controller.abort(new DOMException("first-chunk timeout", "TimeoutError")),
-    timeoutMs,
-  );
-  const signal = inbound ? AbortSignal.any([inbound, controller.signal]) : controller.signal;
-  return { signal, clear: () => clearTimeout(timer) };
 }
 
 function streamResponse(

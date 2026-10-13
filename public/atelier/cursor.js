@@ -1,6 +1,6 @@
 /* A quiet custom cursor for mouse users. A small dot trails the pointer and inverts whatever it passes over, swells
-   over links so their text flips colour under it, and turns into a labelled disc over the project rows. It hides
-   over text fields, where the normal text cursor comes back. Built on Cuberto's mouse-follower (MIT) and GSAP (free
+   over links so their text flips colour under it, and turns into a labelled disc over the project rows. Booking
+   buttons lean toward it. It hides over text fields, where the normal text cursor comes back. Built on Cuberto's mouse-follower (MIT) and GSAP (free
    under GreenSock's no-charge licence), both kept in /atelier/vendor and only downloaded when a mouse is present
    and motion is allowed, so phones, tablets and reduced motion never load them. */
 (() => {
@@ -25,7 +25,9 @@ html.has-cursor :is(input, textarea, select, [contenteditable]){ cursor:auto !im
 .mf-cursor.-text.-active::before{ scale:1.3 }
 .mf-cursor-text{ position:absolute; top:-18px; left:-18px; width:36px; height:36px; display:flex; align-items:center; justify-content:center; color:var(--on-accent, #FFFFFF); font:500 12px/1 var(--sans, system-ui, sans-serif); letter-spacing:.14em; text-transform:uppercase; opacity:0; scale:0; rotate:10deg; transition:opacity 300ms ease, scale 300ms ease, rotate 300ms ease }
 .mf-cursor.-text .mf-cursor-text{ opacity:1; scale:1; rotate:0deg }
-.mf-cursor-media{ display:none }`;
+.mf-cursor-media{ display:none }
+/* Booking buttons lean a few pixels toward the pointer while it is over them. */
+html.has-cursor .book{ transition:gap 350ms var(--ease, ease), filter 200ms ease, translate 450ms cubic-bezier(.22, 1, .36, 1) }`;
 
   const load = src => new Promise((done, fail) => {
     const s = document.createElement('script');
@@ -51,8 +53,19 @@ html.has-cursor :is(input, textarea, select, [contenteditable]){ cursor:auto !im
       });
       const root = document.documentElement;
       root.classList.add('has-cursor');
+      // The dot settles on a booking button while the button itself leans toward the pointer, at most a few pixels.
+      const clamp = (v, m) => Math.max(-m, Math.min(m, v));
+      const magnets = [...document.querySelectorAll('.book')];
+      magnets.forEach(b => {
+        b.dataset.cursorStick = '';
+        b.addEventListener('pointermove', e => {
+          const r = b.getBoundingClientRect();
+          b.style.translate = clamp((e.clientX - r.left - r.width / 2) * 0.2, 8) + 'px ' + clamp((e.clientY - r.top - r.height / 2) * 0.3, 6) + 'px';
+        });
+        b.addEventListener('pointerleave', () => { b.style.translate = ''; });
+      });
       // Switched to reduced motion mid-visit, or unplugged the mouse. Give the normal cursor back.
-      const off = () => { cursor.destroy(); root.classList.remove('has-cursor'); };
+      const off = () => { cursor.destroy(); root.classList.remove('has-cursor'); magnets.forEach(b => { b.style.translate = ''; delete b.dataset.cursorStick; }); };
       reduce.addEventListener('change', () => { if (reduce.matches) off(); }, { once: true });
       mouse.addEventListener('change', () => { if (!mouse.matches) off(); }, { once: true });
     })

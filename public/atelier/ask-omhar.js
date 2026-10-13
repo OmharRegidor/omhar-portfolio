@@ -1,7 +1,9 @@
 /* Ask Omhar AI. One chat panel shared by the homepage and the automation pages.
    Open it with any element that has data-ask-open, or ask a question straight away with data-ask="<id>".
    Starter answers are prepared text taken from the site's FAQs and workflow pages, so they are instant and
-   cost nothing. Typed questions that match nothing get a short note on what it can answer. */
+   cost nothing. Typed questions go to the live assistant at /api/chat, which streams its answer. When that is
+   switched off or out of reach, the nearest prepared answer is shown instead, or a short note on what it can
+   answer. */
 (() => {
   const CALENDLY = 'https://calendly.com/omharregidor/30min';
   const EMAIL = 'omharregidor@gmail.com';
@@ -105,6 +107,10 @@
 .ao-msg{ max-width:88%; font-size:15px; line-height:1.55 }
 .ao-msg p{ margin:0 }
 .ao-msg p + p{ margin-top:8px }
+.ao-msg a{ color:inherit; text-underline-offset:3px; overflow-wrap:anywhere }
+.ao-msg ul{ display:grid; gap:6px; margin:8px 0 0; padding-left:1.1em }
+.ao-msg ul:first-child{ margin-top:0 }
+.ao-msg ul + p{ margin-top:8px }
 .ao-bot{ align-self:flex-start; padding:12px 14px; background:var(--paper, #F7F6F2) }
 .ao-me{ align-self:flex-end; padding:10px 14px; background:var(--ink, #121413); color:#FFFFFF }
 .ao-acts{ display:flex; flex-wrap:wrap; gap:10px 16px; margin-top:12px }
@@ -140,7 +146,7 @@
 <section class="ao-panel" role="dialog" aria-modal="false" aria-labelledby="ao-title" aria-describedby="ao-sub" hidden>
   <div class="ao-head"><h2 id="ao-title">Ask Omhar AI</h2><p id="ao-sub">Omhar built this assistant. He builds ones like it for businesses.</p><button class="ao-x" type="button" aria-label="Close chat">${icon('x')}</button></div>
   <div class="ao-log" role="log" aria-live="polite" aria-relevant="additions"></div>
-  <form class="ao-form"><label class="ao-sr" for="ao-in">Ask a question about Omhar’s work</label><input id="ao-in" type="text" autocomplete="off" maxlength="300" placeholder="Ask about his work…"><button type="submit">Send</button></form>
+  <form class="ao-form"><label class="ao-sr" for="ao-in">Ask a question about Omhar’s work</label><input id="ao-in" type="text" autocomplete="off" maxlength="300" placeholder="Ask about his work…"><button type="submit">Send</button><p class="ao-note">Typed questions are answered by AI, which can make mistakes. Please don’t share private details.</p></form>
 </section>`);
   const panel = document.querySelector('.ao-panel'), log = panel.querySelector('.ao-log'), form = panel.querySelector('.ao-form'), input = panel.querySelector('#ao-in');
   const launch = document.querySelector('.ao-launch');
@@ -160,9 +166,10 @@
     return wrap;
   }
   function bookLink() { const a = el('a', 'ao-book', 'Book a 30-min call'); a.href = CALENDLY; a.target = '_blank'; a.rel = 'noopener'; a.insertAdjacentHTML('beforeend', icon('arrow-right')); return a; }
-  function botSay(entry, followIds) {
+  // A prepared answer is entry.a. A live answer arrives already split into paragraphs as body.
+  function botSay(entry, followIds, body) {
     const m = el('div', 'ao-msg ao-bot');
-    entry.a.forEach(t => m.append(el('p', null, t)));
+    if (body) m.append(...body); else entry.a.forEach(t => m.append(el('p', null, t)));
     if (entry.link || entry.book) {
       const acts = el('div', 'ao-acts');
       if (entry.book) acts.append(bookLink());
@@ -177,20 +184,93 @@
     }
     scrollDown();
   }
-  function reply(entry, followIds) {
-    busy = true;
+  function typing() {
     const t = el('div', 'ao-typing'); t.setAttribute('aria-label', 'Omhar AI is typing'); t.innerHTML = '<i></i><i></i><i></i>';
     log.append(t); scrollDown();
-    setTimeout(() => { t.remove(); botSay(entry, followIds); busy = false; }, reduce.matches ? 0 : 650 + Math.min(entry.a.join(' ').length, 400));
+    return t;
   }
-  function ask(id, typed) {
-    if (busy) return;
-    const entry = KB[id] || KB.scope;
-    sent++;
+  const follows = id => (id === 'scope' || !KB[id] ? STARTERS[ctx()] : (KB[id].follow || []));
+  // The thread as the live assistant sees it, newest last. /api/chat takes at most 8 messages of 1000 characters.
+  const history = [];
+  const remember = (role, content) => { history.push({ role, content: content.slice(0, 1000) }); if (history.length > 7) history.shift(); };
+  function startTurn(text) {
+    busy = true; sent++;
     log.querySelectorAll('.ao-chips').forEach(c => c.remove());
-    log.append(el('div', 'ao-msg ao-me', typed || entry.q)); scrollDown();
-    const follow = id === 'scope' || !KB[id] ? STARTERS[ctx()] : (entry.follow || []);
-    reply(entry, follow);
+    log.append(el('div', 'ao-msg ao-me', text)); scrollDown();
+    remember('user', text);
+  }
+  function prepared(id, t, wait) {
+    const entry = KB[id] || KB.scope;
+    remember('assistant', entry.a.join(' '));
+    setTimeout(() => { t.remove(); botSay(entry, follows(id)); busy = false; }, wait);
+  }
+  function ask(id) {
+    if (busy) return;
+    startTurn((KB[id] || KB.scope).q);
+    prepared(id, typing(), reduce.matches ? 0 : 650 + Math.min((KB[id] || KB.scope).a.join(' ').length, 400));
+  }
+
+  // Live answers are plain text. Blank lines start a new paragraph, and the booking link, the email and the site's
+  // own pages become links.
+  const LINKS = /(https:\/\/calendly\.com\/omharregidor\/30min|omharregidor@gmail\.com|\/automations#auto-(?:live-inbox|sales-pulse|sop)\b|\/automations\b|\/gear\b)/;
+  function inline(node, text) {
+    text.split(LINKS).forEach((part, i) => {
+      if (!(i % 2)) { node.append(part.replace(/\s*\n\s*/g, ' ')); return; }
+      const a = el('a', null, part.replace('https://', ''));
+      a.href = part.includes('@') ? 'mailto:' + part : part;
+      if (part.startsWith('https://')) { a.target = '_blank'; a.rel = 'noopener'; }
+      node.append(a);
+    });
+    return node;
+  }
+  // The assistant is asked for plain sentences, but a list it sends anyway still shows as a list.
+  const BULLET = /^\s*(?:[-*•]|\d+[.)])\s+/;
+  function paragraphs(text) {
+    const out = [];
+    text.trim().split(/\n{2,}/).forEach(block => {
+      let lines = [], list = null;
+      const flush = () => { if (lines.length) out.push(inline(el('p'), lines.join('\n'))); lines = []; };
+      block.split('\n').forEach(line => {
+        if (BULLET.test(line)) { flush(); if (!list) out.push(list = el('ul')); list.append(inline(el('li'), line.replace(BULLET, ''))); }
+        else { list = null; lines.push(line); }
+      });
+      flush();
+    });
+    return out;
+  }
+  async function askLive(text) {
+    if (busy) return;
+    startTurn(text);
+    const t = typing();
+    const fallback = () => prepared(match(text), t, 0);
+    let res;
+    try {
+      res = await fetch('/api/chat', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages: history }), signal: AbortSignal.timeout(25000) });
+    } catch { return fallback(); }
+    // The static provider means no live model answered, so a prepared answer beats its generic "book a call".
+    if (!res.ok || !res.body || res.headers.get('x-chat-provider') === 'static') return fallback();
+    // The answer shows as it streams in. Screen readers hear it once, complete, when the finished message lands.
+    const draft = el('div', 'ao-msg ao-bot'); draft.setAttribute('aria-hidden', 'true');
+    const line = el('p'); draft.append(line);
+    const reader = res.body.getReader(), dec = new TextDecoder();
+    let full = '';
+    try {
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        full += dec.decode(value, { stream: true });
+        if (!draft.isConnected) { t.remove(); log.append(draft); }
+        line.textContent = full;
+        log.scrollTop = log.scrollHeight;
+      }
+    } catch { /* keep what arrived */ }
+    full += dec.decode();
+    draft.remove();
+    if (!full.trim()) return fallback();
+    t.remove();
+    remember('assistant', full);
+    botSay({ book: full.includes('calendly.com/omharregidor') }, follows(match(text)), paragraphs(full));
+    busy = false;
   }
   function greet() {
     const where = ctx();
@@ -228,7 +308,7 @@
     e.preventDefault();
     const text = input.value.trim(); if (!text || busy) return;
     input.value = '';
-    ask(match(text), text);
+    askLive(text);
   });
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-ask-open], [data-ask]');
@@ -238,6 +318,6 @@
     open({ opener: t, ask: t.dataset.ask });
   });
   // On the automation pages the starters follow the workflow on screen, so a new page starts a fresh chat.
-  addEventListener('hashchange', () => { if (!onAutoPage || !started) return; log.replaceChildren(); sent = 0; cardShown = false; if (!panel.hidden) greet(); else started = false; });
+  addEventListener('hashchange', () => { if (!onAutoPage || !started) return; log.replaceChildren(); history.length = 0; sent = 0; cardShown = false; if (!panel.hidden) greet(); else started = false; });
   window.AskOmhar = { open, close };
 })();

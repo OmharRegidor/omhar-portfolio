@@ -577,6 +577,10 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .shot-body::after{ content:""; position:absolute; right:6cqi; top:6cqi; width:30cqi; aspect-ratio:4/5; background:currentColor; opacity:.12 }
 .shot-tag{ position:absolute; left:6cqi; bottom:5cqi; font-family:ui-monospace, Consolas, monospace; font-size:max(9px, 2.4cqi); letter-spacing:.1em; text-transform:uppercase; opacity:.75 }
 .pshot{ display:block; width:100%; aspect-ratio:16/10; object-fit:cover; object-position:top center; background:#E4E3DE }
+/* The hover preview eases down the whole live page, then back up, for as long as it shows. */
+.float.on .pshot.full{ animation:pscroll var(--scroll, 9s) cubic-bezier(.45, 0, .55, 1) 700ms infinite alternate both }
+@keyframes pscroll{ from{ object-position:50% 0% } to{ object-position:50% 100% } }
+@media (prefers-reduced-motion: reduce){ .float.on .pshot.full{ animation:none } }
 .s0{ --sa:#17414B; --sb:#EADFCB } .s1{ --sa:#1E2154; --sb:#D3D6FA } .s2{ --sa:#EBCFCF; --sb:#5B2132 } .s3{ --sa:#1E1E21; --sb:#F2B54B }
 .inline{ display:grid; grid-template-rows:0fr; transition:grid-template-rows 420ms var(--ease) }
 .inline > div{ overflow:hidden }
@@ -650,6 +654,27 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 @media (max-width:720px){ .qa-facts{ grid-template-columns:1fr 1fr; row-gap:18px } }
 .sec-lead{ max-width:62ch; margin:18px 0 0; font-size:17px; line-height:1.65; color:var(--muted) }
 .sec-lead a{ color:var(--ink); text-underline-offset:3px }
+/* Time-saved estimate under the automations. Visitors set their own numbers and the working is always shown. */
+.calc{ display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); gap:clamp(24px, 4vw, 56px); margin-top:clamp(56px, 7vw, 88px); padding-top:clamp(32px, 4vw, 48px); border-top:1px solid var(--line) }
+.calc h3{ font-family:var(--display); font-weight:400; font-size:clamp(30px, 3.4vw, 44px); line-height:1.05; letter-spacing:-0.015em; margin:0 0 12px; text-wrap:balance }
+.calc-in > p:not(.eyebrow-s){ margin:0 0 24px; color:var(--muted); max-width:48ch }
+.calc-field{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:4px 16px; align-items:baseline; padding:14px 0 10px; border-top:1px solid var(--line) }
+.calc-field output, .calc-peso{ font-family:var(--display); font-size:22px; font-variant-numeric:tabular-nums }
+.calc-field input[type="range"]{ grid-column:1 / -1; width:100%; height:28px; margin:0; accent-color:var(--accent); cursor:pointer }
+.calc-rate{ align-items:center; padding-bottom:14px; border-bottom:1px solid var(--line) }
+.calc-peso{ display:inline-flex; align-items:center; gap:6px }
+.calc-peso input{ width:7ch; min-height:44px; padding:0 10px; border:1px solid var(--line); border-radius:0; background:transparent; color:var(--ink); font:inherit; text-align:right }
+.calc-peso input:focus-visible{ outline:2px solid var(--ink); outline-offset:0 }
+.calc-out{ align-self:start; position:sticky; top:110px; display:grid; gap:10px; padding:clamp(24px, 3vw, 36px); background:var(--hero-bg); color:#FFFFFF }
+.calc-big{ margin:0; font-family:var(--display); font-size:clamp(20px, 2vw, 24px); line-height:1.2 }
+.calc-big b{ display:block; font-weight:400; font-size:clamp(68px, 8vw, 112px); line-height:.95; letter-spacing:-0.03em; font-variant-numeric:tabular-nums }
+.calc-money{ margin:0; font-size:18px; color:rgb(255 255 255 / .8) }
+.calc-money b{ color:#FFFFFF; font-weight:500; font-variant-numeric:tabular-nums }
+.calc-work, .calc-note{ margin:0; font-size:14px; color:rgb(255 255 255 / .66) }
+.calc-work{ margin-top:8px; padding-top:14px; border-top:1px solid rgb(255 255 255 / .14) }
+.calc-out .book{ justify-self:start; margin-top:14px; background:#FFFFFF; color:#111111 }
+.calc-out :focus-visible{ outline-color:#FFFFFF }
+@media (max-width:860px){ .calc{ grid-template-columns:1fr } .calc-out{ position:static } }
 .st-head-r{ display:flex; align-items:center; gap:14px }
 .st-pause{ min-height:36px; padding:6px 14px; border:1px solid var(--line); background:transparent; color:var(--ink); font:inherit; font-size:13px; letter-spacing:.08em; cursor:pointer }
 .st-pause:hover{ border-color:var(--ink) }
@@ -722,6 +747,11 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 ::view-transition-old(root), ::view-transition-new(root){ animation:none; mix-blend-mode:normal }
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important }
+}
+/* Moving between the three pages cross-fades instead of blinking, and the header stays in place. */
+@media (prefers-reduced-motion: no-preference){
+  @view-transition{ navigation:auto }
+  .top{ view-transition-name:top }
 }
 </style>
 <link rel="stylesheet" href="/atelier/glass.css">
@@ -833,12 +863,12 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
       </li>
     </ul>
     <div class="float" id="float" aria-hidden="true">
-      <img class="pshot" src="/atelier/projects/binukbok.jpg" decoding="async" alt="">
-      <img class="pshot" src="/atelier/projects/noxa.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/sweetblooms.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/jaza.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/crisia.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/salespipe.jpg" decoding="async" alt="" hidden>
+      <img class="pshot" src="/atelier/projects/binukbok.jpg" data-full="/atelier/projects/binukbok-full.jpg" decoding="async" alt="">
+      <img class="pshot" src="/atelier/projects/noxa.jpg" data-full="/atelier/projects/noxa-full.jpg" decoding="async" alt="" hidden>
+      <img class="pshot" src="/atelier/projects/sweetblooms.jpg" data-full="/atelier/projects/sweetblooms-full.jpg" decoding="async" alt="" hidden>
+      <img class="pshot" src="/atelier/projects/jaza.jpg" data-full="/atelier/projects/jaza-full.jpg" decoding="async" alt="" hidden>
+      <img class="pshot" src="/atelier/projects/crisia.jpg" data-full="/atelier/projects/crisia-full.jpg" decoding="async" alt="" hidden>
+      <img class="pshot" src="/atelier/projects/salespipe.jpg" data-full="/atelier/projects/salespipe-full.jpg" decoding="async" alt="" hidden>
     </div>
   </section>
 
@@ -858,6 +888,26 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 <div><svg viewBox="0 0 330 200" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="rgb(255 255 255 / .08)"></circle></pattern></defs><rect width="330" height="200" fill="url(#dots)"></rect><path d="M43.9 73.5 C50.3 73.5 51.7 73.5 58.1 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M75.8 73.5 C82.0 73.5 83.0 73.5 89.3 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M129.8 73.5 C136.2 73.5 137.6 73.5 144.0 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M161.5 73.5 C168.3 73.5 169.8 73.5 176.7 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M157.3 77.3 C166.0 77.3 167.9 102.9 176.7 102.9 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M194.4 73.5 C200.6 73.5 201.6 73.5 207.9 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M248.3 73.5 C254.6 73.5 254.1 73.5 260.4 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M278.1 73.5 C284.3 73.5 283.8 73.5 290.1 73.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><rect x="27.3" y="65.8" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" style="stroke:var(--glow)"></rect><rect x="59.3" y="65.8" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="90.5" y="65.8" width="38.2" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="145.2" y="66.2" width="14.7" height="14.7" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="177.8" y="65.8" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="209.1" y="65.8" width="38.2" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="261.5" y="65.8" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="291.3" y="65.8" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="177.8" y="95.2" width="15.4" height="15.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><circle r="3.6" style="fill:var(--glow)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M43.9 73.5 C50.3 73.5 51.7 73.5 58.1 73.5  M75.8 73.5 C82.0 73.5 83.0 73.5 89.3 73.5  M129.8 73.5 C136.2 73.5 137.6 73.5 144.0 73.5  M161.5 73.5 C168.3 73.5 169.8 73.5 176.7 73.5  M194.4 73.5 C200.6 73.5 201.6 73.5 207.9 73.5  M248.3 73.5 C254.6 73.5 254.1 73.5 260.4 73.5  M278.1 73.5 C284.3 73.5 283.8 73.5 290.1 73.5 "></animateMotion></circle><circle r="9" style="fill:color-mix(in srgb, var(--glow) 22%, transparent)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M43.9 73.5 C50.3 73.5 51.7 73.5 58.1 73.5  M75.8 73.5 C82.0 73.5 83.0 73.5 89.3 73.5  M129.8 73.5 C136.2 73.5 137.6 73.5 144.0 73.5  M161.5 73.5 C168.3 73.5 169.8 73.5 176.7 73.5  M194.4 73.5 C200.6 73.5 201.6 73.5 207.9 73.5  M248.3 73.5 C254.6 73.5 254.1 73.5 260.4 73.5  M278.1 73.5 C284.3 73.5 283.8 73.5 290.1 73.5 "></animateMotion></circle></svg><p>9 nodes · Gmail · OpenAI</p></div>
 <div hidden><svg viewBox="0 0 330 200" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="rgb(255 255 255 / .08)"></circle></pattern></defs><rect width="330" height="200" fill="url(#dots)"></rect><path d="M50.7 86.5 C60.8 86.5 63.0 86.5 73.2 86.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M95.9 86.5 C106.1 86.5 108.3 86.5 118.4 86.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M141.2 86.5 C151.3 86.5 153.6 86.5 163.7 86.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M215.7 86.5 C225.8 86.5 228.1 86.5 238.2 86.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M261.0 86.5 C271.1 86.5 273.3 86.5 283.5 86.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><rect x="29.4" y="76.6" width="19.8" height="19.8" rx="4.0" fill="#1E1E1E" style="stroke:var(--glow)"></rect><rect x="74.7" y="76.6" width="19.8" height="19.8" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="120.0" y="76.6" width="19.8" height="19.8" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="165.2" y="76.6" width="49.0" height="19.8" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="239.7" y="76.6" width="19.8" height="19.8" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="285.0" y="76.6" width="19.8" height="19.8" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><circle r="3.6" style="fill:var(--glow)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M50.7 86.5 C60.8 86.5 63.0 86.5 73.2 86.5  M95.9 86.5 C106.1 86.5 108.3 86.5 118.4 86.5  M141.2 86.5 C151.3 86.5 153.6 86.5 163.7 86.5  M215.7 86.5 C225.8 86.5 228.1 86.5 238.2 86.5  M261.0 86.5 C271.1 86.5 273.3 86.5 283.5 86.5 "></animateMotion></circle><circle r="9" style="fill:color-mix(in srgb, var(--glow) 22%, transparent)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M50.7 86.5 C60.8 86.5 63.0 86.5 73.2 86.5  M95.9 86.5 C106.1 86.5 108.3 86.5 118.4 86.5  M141.2 86.5 C151.3 86.5 153.6 86.5 163.7 86.5  M215.7 86.5 C225.8 86.5 228.1 86.5 238.2 86.5  M261.0 86.5 C271.1 86.5 273.3 86.5 283.5 86.5 "></animateMotion></circle></svg><p>6 nodes · Shopify · Slack</p></div>
 <div hidden><svg viewBox="0 0 330 200" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="rgb(255 255 255 / .08)"></circle></pattern></defs><rect width="330" height="200" fill="url(#dots)"></rect><path d="M57.7 68.0 C70.4 68.0 73.3 68.0 86.0 68.0 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M114.0 68.0 C126.9 68.0 129.8 68.0 142.8 68.0 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M218.4 68.0 C232.1 68.0 235.2 68.0 249.0 68.0 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.2"></path><path d="M159.1 84.3 C159.1 97.6 160.4 94.1 160.4 107.5 " fill="none" stroke="rgb(255 255 255 / .2)" stroke-width="1.1" stroke-dasharray="3 4"></path><rect x="31.6" y="55.8" width="24.4" height="24.4" rx="4.0" fill="#1E1E1E" style="stroke:var(--glow)"></rect><rect x="87.9" y="55.8" width="24.4" height="24.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="144.7" y="53.5" width="71.9" height="29.0" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="151.1" y="107.5" width="18.6" height="18.6" rx="9.3" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><rect x="250.8" y="55.8" width="24.4" height="24.4" rx="4.0" fill="#1E1E1E" stroke="rgb(255 255 255 / .2)"></rect><circle r="3.6" style="fill:var(--glow)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M57.7 68.0 C70.4 68.0 73.3 68.0 86.0 68.0  M114.0 68.0 C126.9 68.0 129.8 68.0 142.8 68.0  M218.4 68.0 C232.1 68.0 235.2 68.0 249.0 68.0 "></animateMotion></circle><circle r="9" style="fill:color-mix(in srgb, var(--glow) 22%, transparent)"><animateMotion dur="2.4s" repeatCount="indefinite" path="M57.7 68.0 C70.4 68.0 73.3 68.0 86.0 68.0  M114.0 68.0 C126.9 68.0 129.8 68.0 142.8 68.0  M218.4 68.0 C232.1 68.0 235.2 68.0 249.0 68.0 "></animateMotion></circle></svg><p>AI agent · Slack · OpenAI</p></div>
+    </div>
+
+    <div class="calc" id="calc">
+      <form class="calc-in" aria-labelledby="calc-h">
+        <p class="eyebrow-s"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-clock-countdown"/></svg>Time-saved estimate</p>
+        <h3 id="calc-h">How much time could a workflow give back?</h3>
+        <p>Set the numbers for one task your team repeats every week, like answering the same emails or copying orders into a sheet.</p>
+        <label class="calc-field"><span>Hours a week spent on it</span><output for="calc-hrs" data-unit=" h">6 h</output><input id="calc-hrs" type="range" min="1" max="40" step="1" value="6"></label>
+        <label class="calc-field"><span>People doing it</span><output for="calc-ppl" data-unit="">2</output><input id="calc-ppl" type="range" min="1" max="20" step="1" value="2"></label>
+        <label class="calc-field"><span>Share a workflow could take over</span><output for="calc-share" data-unit="%">60%</output><input id="calc-share" type="range" min="10" max="90" step="10" value="60"></label>
+        <label class="calc-field calc-rate"><span>Cost of one hour of their time</span><span class="calc-peso"><span aria-hidden="true">₱</span><input id="calc-rate" type="number" inputmode="numeric" min="0" max="100000" step="10" value="150" aria-label="Cost of one hour of their time, in pesos"></span></label>
+      </form>
+      <div class="calc-out">
+        <p class="calc-big"><b id="calc-hours">31</b> hours a month back</p>
+        <p class="calc-money">Worth about <b id="calc-money">₱4,650</b> a month</p>
+        <p class="calc-work" id="calc-work">6 h a week × 2 people × 60% × 4.33 weeks</p>
+        <p class="calc-note">An estimate from your own numbers, not a quote.</p>
+        <a class="book" href="https://calendly.com/omharregidor/30min" target="_blank" rel="noopener">Check it on a call <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg><span class="sr"> (opens in a new tab)</span></a>
+        <p class="sr" id="calc-say" aria-live="polite"></p>
+      </div>
     </div>
   </section>
 
@@ -1097,6 +1147,26 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
     shot.tabIndex = -1; shot.setAttribute('aria-hidden', 'true');
     im.replaceWith(shot); shot.append(im);
   });
+  // Mouse users get each live site's full-length capture, which scrolls slowly inside the preview. All six load
+  // the first time the pointer reaches the list, and each swaps in once it has arrived.
+  let fullLoaded = false;
+  const loadFull = () => {
+    if (fullLoaded) return;
+    fullLoaded = true;
+    shots.forEach(s => {
+      const pic = new Image();
+      pic.onload = () => {
+        // About 1.6 seconds per screen of page, so long and short sites scroll at the same pace.
+        const screens = pic.naturalHeight / (pic.naturalWidth * 10 / 16) - 1;
+        if (screens < 0.2) return;
+        s.style.setProperty('--scroll', Math.min(16, Math.max(4, screens * 1.6)).toFixed(1) + 's');
+        s.src = pic.src;
+        s.classList.add('full');
+      };
+      pic.src = s.dataset.full;
+    });
+  };
+  index.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') loadFull(); });
   let x = 0, y = 0, tx = 0, ty = 0, raf = 0, active = -1, fresh = false;
   const put = () => { float.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`; };
   const step = () => { x += (tx - x) * 0.18; y += (ty - y) * 0.18; put(); raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.3 ? requestAnimationFrame(step) : 0; };
@@ -1275,6 +1345,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   play();
 })();
 </script>
+<script src="/atelier/calc.js"></script>
 <script src="/atelier/reveal.js"></script>
 <script src="/atelier/site-menu.js"></script>
 <script src="/atelier/ask-omhar.js"></script>

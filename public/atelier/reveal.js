@@ -13,11 +13,11 @@
   // Home, then gear, then automations. Never list a block together with one of its own children.
   const TARGETS = [
     '.qa > h2', '.qa-answer', '.qa-facts > div',
-    '.work-head', '.sec-lead', '.index > li',
+    '.work-head', '.sec-lead', '.index > li', '.calc',
     '.band-head', '.t-viewport', '.st-row',
     '.faq-side > *', '.faq-item', '.close > *',
     '.g-item', '.g-credit',
-    '.stage', '.story .beat', '.human', '.explain > .eyebrow', '.explain > h2', '#explain > li', '.a-cta',
+    '.stage', '.story .beat', '.human', '.try', '.explain > .eyebrow', '.explain > h2', '#explain > li', '.a-cta',
     '.pn > a', '.foot > *',
   ].join(',');
 

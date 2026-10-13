@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { ProjectsSchema, ChatRequestSchema, ProfileSchema } from "@/content/schemas";
+import { ProjectsSchema, ChatRequestSchema, ProfileSchema, AutomationsSchema, GearSchema } from "@/content/schemas";
 
 describe("schemas", () => {
   it("rejects duplicate project slugs", () => {
@@ -28,5 +28,22 @@ describe("schemas", () => {
 
   it("rejects chat with extra fields (strict)", () => {
     expect(ChatRequestSchema.safeParse({ message: "hi", evil: "x" }).success).toBe(false);
+  });
+
+  it("rejects duplicate automation slugs and pages outside /automations#auto-", () => {
+    const wf = {
+      slug: "a", name: "A", tools: ["n8n"], howItWorks: ["x"], humanInTheLoop: "y",
+      page: "/automations#auto-a",
+    };
+    const platform = { name: "n8n", about: "x" };
+    expect(AutomationsSchema.safeParse({ platform, workflows: [wf] }).success).toBe(true);
+    expect(AutomationsSchema.safeParse({ platform, workflows: [wf, wf] }).success).toBe(false);
+    expect(
+      AutomationsSchema.safeParse({ platform, workflows: [{ ...wf, page: "https://evil.example" }] }).success,
+    ).toBe(false);
+  });
+
+  it("rejects gear with no items", () => {
+    expect(GearSchema.safeParse({ page: "/gear", items: [] }).success).toBe(false);
   });
 });
