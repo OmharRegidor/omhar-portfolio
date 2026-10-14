@@ -1,52 +1,82 @@
-/* Editorial close and footer, loaded last on every atelier page. The closing call to action gets huge tight capitals
-   with a grey accent word and a black pill, and the footer turns black with a giant name and the time in Batangas.
-   html body[data-reveal][data-reveal] matches every page and outranks each page's own font and accent rules. */
-.close, .foot{ --red:var(--ink); --mono:"IBM Plex Mono", ui-monospace, Consolas, monospace }
+/* Editorial layer, loaded last on every atelier page. One minimal font, bold capital headlines at the top and bottom of
+   the homepage, a black footer with a giant name and the time in Batangas, and one pill button style everywhere.
+   Every page's own styles live in an inline <style> with selectors like body[data-head="geist"] h1, so rules here that
+   must win start with html body[data-reveal][data-reveal]. Every atelier page sets data-reveal on <body>. */
+html body[data-reveal][data-reveal]{
+  --display:"Geist", ui-sans-serif, system-ui, sans-serif; --sans:var(--display); --serif:var(--display); --mono:var(--display);
+  --foot-bg:#0C0C0C; --foot-ink:#F2F1EC; --foot-muted:#A9AAA4;
+}
 
-/* The close. A huge statement, a small dot label and a black pill. */
-.close{ padding-block:clamp(88px, 12vw, 160px) clamp(64px, 8vw, 104px); gap:32px }
+/* One minimal font. The accent word in a heading stays in the same font, just quieter grey, instead of a serif italic. */
+html body[data-reveal][data-reveal] :is(h1, h2, h3) em{ font-family:var(--display); font-style:normal; font-weight:inherit; font-size:1em; letter-spacing:inherit; color:var(--muted) }
+html body[data-reveal][data-reveal] :is(.band blockquote p, .t-slide blockquote p){ font-family:var(--display); font-style:normal; font-weight:300; letter-spacing:-0.025em }
+html body[data-reveal][data-reveal] :is(.meta-row .todo, .row.more .name){ font-style:normal }
+html body[data-reveal][data-reveal] :is(.st-pill small, .float.dark p, .case-tag){ font-family:var(--display) }
+
+/* Headings between the bold top and bottom get a firmer medium weight, so the middle of the page holds its own.
+   They keep sentence case, so only the opening and closing statements shout. */
+html body[data-reveal][data-reveal] :is(.work-head h2, .faq h2, .calc h3, .sec-head h2, .explain h2, .a-head h1, .a-cta h2, .case h3, #g-title, .g-body h2, .pn b){ font-weight:500; letter-spacing:-0.03em }
+html body[data-reveal][data-reveal] .work-head h2{ font-size:clamp(36px, 4vw, 56px) }
+html body[data-reveal][data-reveal] .row .name{ font-weight:500; letter-spacing:-0.03em }
+html body[data-reveal][data-reveal] .qa-facts dd{ font-weight:500 }
+
+/* The hero headline. Huge tight capitals with the last line in grey, sized so it stays clear of the face in the photo. */
+html body[data-reveal][data-reveal] .hero h1{
+  font-family:var(--display); font-weight:700; text-transform:uppercase;
+  letter-spacing:-0.045em; line-height:.92; font-size:clamp(40px, 4.8vw, 70px);
+}
+html body[data-reveal][data-reveal] .hero h1 em{ color:rgb(255 255 255 / .58) }
+@media (min-width:861px){ .hero-copy{ max-width:min(1000px, 70%) } }
+/* The line under it steps back so the headline leads. */
+html body[data-reveal][data-reveal] .hero .sub{ font-size:clamp(15px, 1.1vw, 16px); line-height:1.6; max-width:46ch; color:rgb(255 255 255 / .7) }
+html body[data-reveal][data-reveal] .hero .assure{ color:rgb(255 255 255 / .8) }
+
+/* One button everywhere. A pill with bold tight capitals, black on light paper and white on dark. */
+html body[data-reveal][data-reveal] .book{
+  border-radius:999px; font-family:var(--display); font-weight:700; letter-spacing:-0.01em; text-transform:uppercase;
+}
+
+/* The close. A rule marks where the questions end, then a huge statement, a dot label and a big black pill. */
+.close{ border-top:1px solid color-mix(in srgb, var(--ink) 12%, transparent); padding-block:clamp(72px, 9vw, 120px) clamp(64px, 8vw, 104px); gap:32px }
 html body[data-reveal][data-reveal] .close h2{
-  font-family:"Geist", ui-sans-serif, system-ui, sans-serif; font-weight:700; text-transform:uppercase;
+  font-family:var(--display); font-weight:700; text-transform:uppercase;
   letter-spacing:-0.045em; line-height:.92; text-wrap:balance; font-size:clamp(44px, 8.4vw, 132px); max-width:13ch;
 }
-html body[data-reveal][data-reveal] .close h2 em{ font-family:inherit; font-style:normal; font-weight:inherit; font-size:1em; letter-spacing:inherit; color:var(--muted) }
 html body[data-reveal][data-reveal] .close .label{
-  display:flex; align-items:center; gap:10px; font-family:var(--mono); font-weight:500; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink);
+  display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:500; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink);
 }
 .close .label .icon{ display:none }
-.close .label::before{ content:""; flex:none; width:8px; height:8px; border-radius:50%; background:var(--red) }
+.close .label::before{ content:""; flex:none; width:8px; height:8px; border-radius:50%; background:var(--ink) }
+.close-sub{ font-family:var(--display); letter-spacing:-0.01em }
 html body[data-reveal][data-reveal] .close .book{
-  border-radius:999px; padding:13px 22px; background:var(--ink); color:var(--paper);
-  font-family:"Geist", ui-sans-serif, system-ui, sans-serif; font-weight:700; font-size:13.5px; letter-spacing:-0.01em; text-transform:uppercase;
+  min-height:56px; padding:18px 30px; font-size:15px; background:var(--ink); color:var(--paper);
 }
 html body[data-reveal][data-reveal] .close .book:hover{ background:color-mix(in srgb, var(--ink) 82%, var(--paper)) }
 
 /* A black footer with a giant name. The shadow paints the black out to both screen edges while the content keeps its column. */
 html body[data-reveal][data-reveal] .foot{
   container-type:inline-size;
-  --ink:#F2F1EC; --muted:#A9AAA4; background:#0C0C0C; color:var(--muted); box-shadow:0 0 0 100vmax #0C0C0C; clip-path:inset(0 -100vmax);
+  --ink:var(--foot-ink); --muted:var(--foot-muted); background:var(--foot-bg); color:var(--muted);
+  box-shadow:0 0 0 100vmax var(--foot-bg); clip-path:inset(0 -100vmax);
   margin-top:0; padding-block:clamp(48px, 6vw, 80px) 32px; border-top:0;
 }
-.foot a{ color:#F2F1EC }
+.foot a{ color:var(--foot-ink) }
 .foot a:hover{ color:#FFFFFF; text-decoration:underline; text-underline-offset:3px }
+html body[data-reveal][data-reveal] .foot :focus-visible{ outline:2px solid var(--foot-ink); outline-offset:3px }
 .foot-mark{
   order:-1; flex-basis:100%; grid-column:1 / -1; margin:0 0 clamp(24px, 4vw, 48px);
-  font-family:"Geist", ui-sans-serif, system-ui, sans-serif; font-weight:700; text-transform:uppercase; letter-spacing:-0.06em; line-height:.82;
-  font-size:12.4cqi; color:#F2F1EC; white-space:nowrap;
+  font-family:var(--display); font-weight:700; text-transform:uppercase; letter-spacing:-0.06em; line-height:.82;
+  font-size:clamp(34px, 10vw, 150px); /* for browsers without container units */
+  font-size:12.4cqi; color:var(--foot-ink); white-space:nowrap;
 }
-.foot-clock{ font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase }
-.foot-clock time{ color:#F2F1EC }
-.close-sub{ font-family:"Geist", ui-sans-serif, system-ui, sans-serif; letter-spacing:-0.01em }
+.foot-clock{ font-size:12px; font-weight:500; letter-spacing:.12em; text-transform:uppercase }
+.foot-clock time{ color:var(--foot-ink); font-variant-numeric:tabular-nums }
 
-/* One minimal font across the site. Geist for every word, and the accent word in a heading stays in the same font,
-   just quieter grey, instead of switching to a serif italic. */
-html body[data-reveal][data-reveal]{ --display:"Geist", ui-sans-serif, system-ui, sans-serif; --sans:var(--display); --serif:var(--display) }
-html body[data-reveal][data-reveal] :is(h1, h2, h3) em{ font-family:var(--display); font-style:normal; font-weight:inherit; font-size:1em; letter-spacing:inherit; color:var(--muted) }
-html body[data-reveal][data-reveal] .hero h1 em{ color:var(--glow) }
-html body[data-reveal][data-reveal] :is(.band blockquote p, .t-slide blockquote p){ font-family:var(--display); font-style:normal; font-weight:300; letter-spacing:-0.025em }
-html body[data-reveal][data-reveal] :is(.meta-row .todo, .row.more .name){ font-style:normal }
-
-/* On phones the closing headline grows to fill the column, one or two words a line. */
 @media (max-width:600px){
+  html body[data-reveal][data-reveal] .hero h1{ font-size:clamp(40px, 12.4vw, 64px) }
+  /* On phones the closing headline grows to fill the column, one or two words a line. */
   html body[data-reveal][data-reveal] .close h2{ font-size:clamp(44px, 15vw, 76px); max-width:none; line-height:.9 }
+  html body[data-reveal][data-reveal] .close .book{ justify-self:stretch; justify-content:center; max-width:360px }
+  /* Room at the bottom so the floating chat button never covers the last footer line. */
+  html body[data-reveal][data-reveal] .foot{ padding-bottom:calc(104px + env(safe-area-inset-bottom)) }
 }

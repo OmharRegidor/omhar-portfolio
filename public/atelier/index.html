@@ -472,6 +472,7 @@
   ]
 }
 </script>
+<link rel="preload" href="/atelier/fonts/Geist-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/atelier/fonts/fonts.css">
 <style>
 /* Layout: full-bleed photographic hero (photo right, tinted shade from the left), then the Atelier paper page below. */
@@ -1452,10 +1453,16 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 (() => {
   const el = document.getElementById('foot-clock');
   if (!el) return;
-  const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit', hour12: false });
-  const tick = () => { el.textContent = fmt.format(new Date()) + ' PHT'; };
+  // h23 counts 00 to 23, so midnight never shows as 24:05.
+  const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+  const tick = () => {
+    const now = new Date();
+    el.textContent = fmt.format(now) + ' PHT';
+    el.dateTime = now.toISOString();
+  };
   tick();
-  setInterval(tick, 30000);
+  // Wait for the next minute to start, then tick once a minute, so the clock changes exactly on the minute.
+  setTimeout(() => { tick(); setInterval(tick, 60000); }, 60000 - Date.now() % 60000);
 })();
 </script>
 <script src="/atelier/calc.js"></script>
