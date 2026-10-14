@@ -21,7 +21,7 @@ const data: Project[] = [
     slug: "noxa-loyalty",
     name: "Noxa Loyalty",
     blurb:
-      "Customer loyalty rewards platform — web app plus an iOS app on the App Store for end customers to track points and redeem rewards.",
+      "Customer loyalty rewards platform — web app plus iOS (App Store) and Android apps for end customers to track points and redeem rewards.",
     url: "https://www.noxaloyalty.com/",
   },
   {

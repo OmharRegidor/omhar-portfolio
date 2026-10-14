@@ -1,25 +1,49 @@
 # Omhar Regidor
-> AI engineer and software developer based in Batangas, Philippines. Builds web apps, n8n workflow automations and AI assistants for startups and small businesses.
+> AI Systems and Business Automation Engineer based in Batangas, Philippines. Builds web apps, n8n workflow automations and AI assistants for startups and small businesses, and works remotely with clients in other countries.
+
+Updated: 2026-10-14
 
 ## About
 - Role: Software Developer / AI Engineer at Noxa (2026)
 - Education: BS Information Technology, Batangas State University, Malvar Campus (2025)
-- Location: Batangas, Philippines
-- Book a 30-minute call: https://calendly.com/omharregidor/30min
+- Writing code since 2021
+- Location: Batangas, Philippines. Works remotely with clients worldwide.
+- Contact on WhatsApp: +63 950 600 9518, https://wa.me/639506009518
 - Email: omharregidor@gmail.com
 
-## Web projects
+## Services
+- Website and web app development: booking systems, e-commerce, dashboards and business web apps built with Next.js, React and Supabase.
+- n8n workflow automation: automations that connect Gmail, Shopify, Slack and OpenAI so routine tasks run on their own.
+- AI assistants and agents: assistants that answer customer or staff questions inside a website, Slack or a chat window.
+- Mobile app development: iOS and Android apps built with React Native.
+- Shopify store and product page design.
+
+## Web projects (9)
+- Agad: startup application with job alerts, AI-written job applications and one-click sending through Gmail. Watches onlinejobs.ph for new jobs and sends a ready-to-paste application to the user's own Gmail. https://applyfirst.tail1fc6ab.ts.net/
 - BiNuKBoK View Point Resort: resort booking site, admin dashboard and an AI assistant that answers live availability questions. https://binukbok-viewpoint.vercel.app
-- Noxa Loyalty: customer loyalty platform with a web app and an iOS app on the App Store. https://www.noxaloyalty.com/
+- Noxa Loyalty: customer loyalty platform with a web app, an iOS app on the App Store and an Android app. https://www.noxaloyalty.com/
 - SweetBlooms: florist e-commerce with an internal sales, inventory and POS system. https://www.sweetblooms.ph/
 - JAZA Media: website for a media agency. https://www.jazamedia.com/
 - Crisia VA: portfolio site for a virtual assistant. https://crisia-va-portfolio.vercel.app/
 - SalesPipe: sales pipeline and customer tracker. https://pipeline-pal-17.vercel.app/
+- HERA Bathroom: website design for a bathtub and vanity brand in Singapore, with its Shopify store. https://www.herabathroom.com/
+- HERA ATHENA: product page built in Shopify for a modular bathroom vanity system. https://store.herabathroom.com/pages/athena
 
-## n8n automations
-- CS Live Inbox: Gmail and OpenAI workflow that triages support emails and saves AI-drafted replies as Gmail drafts for a person to review. https://omharregidor.vercel.app/automations/cs-live-inbox
-- Daily Sales Pulse: scheduled workflow that pulls Shopify orders, calculates totals in code and posts an AI-written summary to Slack. https://omharregidor.vercel.app/automations/daily-sales-pulse
-- SOP Assistant: AI agent that answers staff questions about company procedures in Slack or a chat window. https://omharregidor.vercel.app/automations/sop-assistant
+## n8n automations (3, built for Comfit, an online store)
+- CS Live Inbox: Gmail and OpenAI workflow that triages support emails with a low-cost model and saves AI-drafted replies as Gmail drafts for a person to review. 9 steps. https://omharregidor.vercel.app/automations#auto-live-inbox
+- Daily Sales Pulse: scheduled workflow that pulls Shopify orders, calculates totals in code and posts an AI-written summary to Slack. 6 steps. https://omharregidor.vercel.app/automations#auto-sales-pulse
+- SOP Assistant: AI agent that answers staff questions about company procedures in Slack or a chat window. https://omharregidor.vercel.app/automations#auto-sop
+
+## Common questions
+- Where can I hire an n8n automation developer in the Philippines? Omhar Regidor is an n8n automation developer based in Batangas, Philippines. Message him on WhatsApp at https://wa.me/639506009518
+- Can AI answer my customer emails? Yes, with a person still in control. In CS Live Inbox, AI drafts each reply as a Gmail draft and a person reviews it before it is sent.
+- How do I automate my Shopify store? Connect Shopify to an n8n workflow. Daily Sales Pulse pulls orders every day, totals them in code and posts an AI-written summary to Slack.
+- Does Omhar work with clients outside the Philippines? Yes. He works remotely, and his clients include HERA Bathroom in Singapore.
+
+## Pages
+- Home: https://omharregidor.vercel.app/
+- Automations: https://omharregidor.vercel.app/automations
+- Gear: https://omharregidor.vercel.app/gear
 
 ## Profiles
 - GitHub: https://github.com/OmharRegidor

@@ -14,11 +14,83 @@
 <meta property="og:site_name" content="Omhar Regidor">
 <meta property="og:locale" content="en_PH">
 <meta property="og:image" content="https://omharregidor.vercel.app/omhar/me-pro-image-crop.jpg">
+<meta property="og:image:width" content="847">
+<meta property="og:image:height" content="715">
+<meta property="og:image:alt" content="Omhar Regidor, AI and automation developer in Batangas, Philippines">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="n8n Automation Case Studies | Omhar Regidor">
+<meta name="twitter:description" content="Watch three real n8n workflows run step by step, built by Omhar Regidor in Batangas, Philippines.">
+<meta name="twitter:image" content="https://omharregidor.vercel.app/omhar/me-pro-image-crop.jpg">
+<meta name="twitter:image:alt" content="Omhar Regidor, AI and automation developer in Batangas, Philippines">
+<meta name="author" content="Omhar Regidor">
+<link rel="icon" href="/icon.jpg" type="image/jpeg">
+<link rel="apple-touch-icon" href="/apple-icon.jpg">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://omharregidor.vercel.app/automations#webpage",
+      "url": "https://omharregidor.vercel.app/automations",
+      "name": "n8n Automation Case Studies | Omhar Regidor",
+      "description": "See three n8n automations by Omhar Regidor run step by step, an AI inbox that drafts support replies, a daily Shopify sales summary in Slack, and an SOP assistant.",
+      "isPartOf": {
+        "@id": "https://omharregidor.vercel.app/#website"
+      },
+      "about": {
+        "@id": "https://omharregidor.vercel.app/#person"
+      },
+      "author": {
+        "@id": "https://omharregidor.vercel.app/#person"
+      },
+      "breadcrumb": {
+        "@id": "https://omharregidor.vercel.app/automations#breadcrumb"
+      },
+      "hasPart": [
+        {
+          "@id": "https://omharregidor.vercel.app/automations/cs-live-inbox#work"
+        },
+        {
+          "@id": "https://omharregidor.vercel.app/automations/daily-sales-pulse#work"
+        },
+        {
+          "@id": "https://omharregidor.vercel.app/automations/sop-assistant#work"
+        }
+      ],
+      "inLanguage": "en",
+      "dateModified": "2026-10-14"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://omharregidor.vercel.app/automations#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I get AI to draft customer service replies in Gmail?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CS Live Inbox is an n8n workflow Omhar Regidor built for Comfit. A low-cost OpenAI model reads every new support email first. Only emails that need an answer go on to a stronger model, which looks up the order in the store and writes a reply. The reply is saved as a Gmail draft, so a person reviews it and presses send. Emails that need no reply get a cs-skipped label."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I get a daily Shopify sales summary in Slack?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Daily Sales Pulse is an n8n workflow Omhar Regidor built for Comfit. Every day a schedule pulls the store’s orders from Shopify. JavaScript code adds up the totals and trends, so the numbers are exact, and an OpenAI model only writes the short summary. The summary is posted to the team’s Slack channel and every run is logged."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I build a Slack bot that answers staff questions about procedures?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SOP Assistant is an n8n AI agent Omhar Regidor built for Comfit. Staff ask a question in Slack or in a chat window, and one AI agent answers it from the company’s written procedures using an OpenAI chat model. Slack gets an instant receipt so it does not time out, and the chat window remembers recent messages so follow-up questions make sense."
+          }
+        }
+      ]
+    },
     {
       "@type": "BreadcrumbList",
       "@id": "https://omharregidor.vercel.app/automations#breadcrumb",
@@ -38,9 +110,9 @@
       ]
     },
     {
-      "@type": "CreativeWork",
+      "@type": ["CreativeWork", "HowTo"],
       "@id": "https://omharregidor.vercel.app/automations/cs-live-inbox#work",
-      "url": "https://omharregidor.vercel.app/automations/cs-live-inbox",
+      "url": "https://omharregidor.vercel.app/automations#auto-live-inbox",
       "name": "CS Live Inbox, an n8n support-email automation",
       "description": "An n8n workflow that triages new support emails with a low-cost OpenAI model and saves AI-drafted replies as Gmail drafts for a person to review.",
       "author": {
@@ -50,7 +122,7 @@
         "@id": "https://omharregidor.vercel.app/#person"
       },
       "inLanguage": "en",
-      "dateModified": "2026-10-09",
+      "dateModified": "2026-10-14",
       "about": [
         {
           "@type": "SoftwareApplication",
@@ -102,9 +174,9 @@
       ]
     },
     {
-      "@type": "CreativeWork",
+      "@type": ["CreativeWork", "HowTo"],
       "@id": "https://omharregidor.vercel.app/automations/daily-sales-pulse#work",
-      "url": "https://omharregidor.vercel.app/automations/daily-sales-pulse",
+      "url": "https://omharregidor.vercel.app/automations#auto-sales-pulse",
       "name": "Daily Sales Pulse, an n8n Shopify to Slack automation",
       "description": "A scheduled n8n workflow that pulls Shopify orders, calculates totals in JavaScript and posts an AI-written sales summary to Slack every day.",
       "author": {
@@ -114,7 +186,7 @@
         "@id": "https://omharregidor.vercel.app/#person"
       },
       "inLanguage": "en",
-      "dateModified": "2026-10-09",
+      "dateModified": "2026-10-14",
       "about": [
         {
           "@type": "SoftwareApplication",
@@ -156,9 +228,9 @@
       ]
     },
     {
-      "@type": "CreativeWork",
+      "@type": ["CreativeWork", "HowTo"],
       "@id": "https://omharregidor.vercel.app/automations/sop-assistant#work",
-      "url": "https://omharregidor.vercel.app/automations/sop-assistant",
+      "url": "https://omharregidor.vercel.app/automations#auto-sop",
       "name": "SOP Assistant, an n8n AI agent for Slack and chat",
       "description": "An n8n AI agent that answers staff questions about company procedures inside Slack or a chat window.",
       "author": {
@@ -168,7 +240,7 @@
         "@id": "https://omharregidor.vercel.app/#person"
       },
       "inLanguage": "en",
-      "dateModified": "2026-10-09",
+      "dateModified": "2026-10-14",
       "about": [
         {
           "@type": "SoftwareApplication",
@@ -517,6 +589,18 @@ body{ overflow-x:clip }
   @view-transition{ navigation:auto }
   .top{ view-transition-name:top }
 }
+/* intro and the plain-text case studies on the list view, readable without scripts */
+.cases{ padding-block:clamp(64px, 9vw, 112px) 8px }
+.case-grid{ display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:clamp(24px, 3vw, 44px); padding-top:12px }
+.case{ display:grid; align-content:start; gap:14px; padding-top:22px; border-top:1px solid var(--ink) }
+.case-tag{ font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted) }
+.case h3{ font-family:var(--display); font-weight:300; font-size:clamp(22px, 2vw, 27px); line-height:1.15; letter-spacing:-0.02em; text-wrap:balance }
+.case p{ font-size:16px; color:var(--muted) }
+.case ol{ margin:0; padding-left:1.3em; display:grid; gap:4px; font-size:15px }
+.case ol li::marker{ font-family:var(--mono); font-size:12px; color:var(--muted) }
+.case-link{ justify-self:start; display:inline-flex; align-items:center; gap:8px; margin-top:4px; font-size:15px; font-weight:500; text-decoration:none; border-bottom:1px solid currentColor; padding-bottom:2px }
+.case-link:hover{ color:var(--accent-ink) }
+@media (max-width:900px){ .case-grid{ grid-template-columns:minmax(0,1fr) } }
 </style>
 <link rel="stylesheet" href="/atelier/glass.css">
 </head>
@@ -529,7 +613,8 @@ body{ overflow-x:clip }
 </nav>
 
 <!-- ================= HOME ================= -->
-<main id="view-home">
+<main id="view-home" hidden>
+
 
   <section class="sec web wrap" id="web" aria-labelledby="web-h">
     <div class="sec-head">
@@ -541,7 +626,7 @@ body{ overflow-x:clip }
     <ul class="index">
       <li><a class="row" href="https://applyfirst.tail1fc6ab.ts.net/" target="_blank" rel="noopener" data-shot="0"><span class="name">Agad <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Startup application with job alerts, AI-written job applications and one-click sending through Gmail</span><span class="meta">applyfirst.tail1fc6ab.ts.net</span></a></li>
       <li><a class="row" href="https://binukbok-viewpoint.vercel.app" target="_blank" rel="noopener" data-shot="1"><span class="name">BiNuKBoK View Point Resort <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Resort booking, admin dashboard and an AI assistant</span><span class="meta">binukbok-viewpoint.vercel.app</span></a></li>
-      <li><a class="row" href="https://www.noxaloyalty.com/" target="_blank" rel="noopener" data-shot="2"><span class="name">Noxa Loyalty <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Loyalty rewards web app and iOS app</span><span class="meta">noxaloyalty.com</span></a></li>
+      <li><a class="row" href="https://www.noxaloyalty.com/" target="_blank" rel="noopener" data-shot="2"><span class="name">Noxa Loyalty <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Loyalty rewards web app, iOS app and Android app</span><span class="meta">noxaloyalty.com</span></a></li>
       <li><a class="row" href="https://www.sweetblooms.ph/" target="_blank" rel="noopener" data-shot="3"><span class="name">SweetBlooms <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Florist e-commerce with sales, inventory and POS</span><span class="meta">sweetblooms.ph</span></a></li>
       <li><a class="row" href="https://www.jazamedia.com/" target="_blank" rel="noopener" data-shot="4"><span class="name">JAZA Media <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Website for a media agency</span><span class="meta">jazamedia.com</span></a></li>
       <li><a class="row" href="https://crisia-va-portfolio.vercel.app/" target="_blank" rel="noopener" data-shot="5"><span class="name">Crisia VA <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span></span><span class="kind">Portfolio site for a virtual assistant</span><span class="meta">crisia-va-portfolio.vercel.app</span></a></li>
@@ -573,16 +658,17 @@ body{ overflow-x:clip }
     <div class="float dark" id="auto-float" aria-hidden="true"></div>
   </section>
 
+
   <footer class="foot wrap"><span>© 2026 Omhar Regidor</span><span>Batangas, Philippines</span></footer>
 </main>
 
 <!-- ================= AUTOMATION PAGE ================= -->
-<main id="view-auto" hidden>
+<main id="view-auto">
   <section class="a-head wrap">
     <a class="crumb" href="/#automations"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-left"/></svg>All automations</a>
     <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-flow-arrow"/></svg>Automation · n8n</p>
-    <h1 id="a-title" tabindex="-1"></h1>
-    <p class="lede" id="a-lede"></p>
+    <h1 id="a-title" tabindex="-1">Support replies, <em>drafted</em> before anyone opens the inbox.</h1>
+    <p class="lede" id="a-lede">Every new customer email gets a quick AI check. The ones that need an answer get a researched draft waiting in Gmail, ready for a person to review.</p>
     <dl class="meta-row" id="a-meta"></dl>
   </section>
 
@@ -619,6 +705,36 @@ body{ overflow-x:clip }
       <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-list-numbers"/></svg>Step by step</p>
       <h2 id="x-h">Every node, <em>explained</em></h2>
       <ol id="explain"></ol>
+    </section>
+    <section class="cases" aria-labelledby="cases-h">
+      <div class="sec-head">
+        <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-list-numbers"/></svg>All three automations</p>
+        <h2 id="cases-h">What each automation <em>does</em></h2>
+        <span class="hair" aria-hidden="true"></span>
+      </div>
+      <div class="case-grid">
+        <article class="case">
+          <p class="case-tag">n8n, Gmail, OpenAI <span aria-hidden="true">·</span> 9 steps</p>
+          <h3>How do I get AI to draft customer service replies in Gmail?</h3>
+          <p>CS Live Inbox is an n8n workflow Omhar Regidor built for Comfit. A low-cost OpenAI model reads every new support email first. Only emails that need an answer go on to a stronger model, which looks up the order in the store and writes a reply. The reply is saved as a Gmail draft, so a person reviews it and presses send. Emails that need no reply get a cs-skipped label.</p>
+          <ol><li>Gmail Trigger starts a run when a new email arrives</li><li>Filter keeps only real customer emails</li><li>A low-cost OpenAI model checks if the email needs a reply</li><li>An IF step sends it to the reply path or the skip path</li><li>An HTTP request looks up the order in the store</li><li>A stronger OpenAI model writes the reply</li><li>The reply is saved as a Gmail draft for review</li><li>The run is logged to a database</li><li>Emails that need no reply get the cs-skipped label</li></ol>
+          <a class="case-link" href="#auto-live-inbox">Watch CS Live Inbox run step by step <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a>
+        </article>
+        <article class="case">
+          <p class="case-tag">n8n, Shopify, OpenAI, Slack <span aria-hidden="true">·</span> 6 steps</p>
+          <h3>How do I get a daily Shopify sales summary in Slack?</h3>
+          <p>Daily Sales Pulse is an n8n workflow Omhar Regidor built for Comfit. Every day a schedule pulls the store’s orders from Shopify. JavaScript code adds up the totals and trends, so the numbers are exact, and an OpenAI model only writes the short summary. The summary is posted to the team’s Slack channel and every run is logged.</p>
+          <ol><li>A schedule starts the run once a day</li><li>Shopify returns the store’s recent orders</li><li>JavaScript code works out the totals and trends</li><li>An OpenAI model writes a short summary of the numbers</li><li>Slack posts the summary to the team channel</li><li>The run is logged to a database</li></ol>
+          <a class="case-link" href="#auto-sales-pulse">Watch Daily Sales Pulse run step by step <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a>
+        </article>
+        <article class="case">
+          <p class="case-tag">n8n, Slack, OpenAI <span aria-hidden="true">·</span> AI agent</p>
+          <h3>How do I build a Slack bot that answers staff questions about procedures?</h3>
+          <p>SOP Assistant is an n8n AI agent Omhar Regidor built for Comfit. Staff ask a question in Slack or in a chat window, and one AI agent answers it from the company’s written procedures using an OpenAI chat model. Slack gets an instant receipt so it does not time out, and the chat window remembers recent messages so follow-up questions make sense.</p>
+          <ol><li>A webhook receives the question from Slack, or the chat window starts a run</li><li>Slack gets an instant receipt so it does not time out</li><li>An AI agent reads the question and answers from the written procedures</li><li>An OpenAI chat model writes the answer, with short memory in the chat window</li><li>The answer is posted back where the question was asked</li></ol>
+          <a class="case-link" href="#auto-sop">Watch SOP Assistant run step by step <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a>
+        </article>
+      </div>
     </section>
     <section class="a-cta" aria-labelledby="a-cta-h">
       <p class="eyebrow"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-chat-circle"/></svg>Start a project</p>
@@ -838,8 +954,7 @@ function miniGraph(v) {
   return `<svg viewBox="0 0 ${VW} ${VH}" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".8" fill="rgb(255 255 255 / .08)"/></pattern></defs><rect width="${VW}" height="${VH}" fill="url(#dots)"/>${edges}${nodes}${motion}</svg>`;
 }
 const autoIndex = $('#auto-index');
-autoIndex.innerHTML = ORDER.map(slug => { const w = WF[slug]; return `<li><a class="row" href="#auto-${slug}" data-wf="${slug}"><span class="name">${w.name} <span class="arr" aria-hidden="true">${UI('arrow-right')}</span></span><span class="kind">${w.kind}</span><span class="meta"><span class="tag">n8n</span>${w.meta}</span></a></li>`; }).join('') +
-  `<li><a class="row more" href="#" data-note="On the real site this opens the full automations list."><span class="name">All automations, 3 <span class="arr" aria-hidden="true">${UI('arrow-right')}</span></span><span class="kind">More workflows land here as they ship</span></a></li>`;
+autoIndex.innerHTML = ORDER.map(slug => { const w = WF[slug]; return `<li><a class="row" href="#auto-${slug}" data-wf="${slug}"><span class="name">${w.name} <span class="arr" aria-hidden="true">${UI('arrow-right')}</span></span><span class="kind">${w.kind}</span><span class="meta"><span class="tag">n8n</span>${w.meta}</span></a></li>`; }).join('');
 $('#auto-float').innerHTML = ORDER.map((slug, i) => `<div data-i="${i}" ${i ? 'hidden' : ''}>${miniGraph(WF[slug].variants[firstVariant(WF[slug])])}<p>${WF[slug].meta}</p></div>`).join('');
 
 function followIndex(section, floatEl, previewOf) {
