@@ -4,6 +4,13 @@ import { ProjectsSchema, type Project } from "./schemas";
 // /projects renders the full list. Cards link directly to the project URL.
 const data: Project[] = [
   {
+    slug: "agad",
+    name: "Agad",
+    blurb:
+      "Startup application that watches onlinejobs.ph for new jobs, writes a ready-to-paste application with AI, and sends it to the user's own Gmail so they can apply first.",
+    url: "https://applyfirst.tail1fc6ab.ts.net/",
+  },
+  {
     slug: "binukbok-viewpoint",
     name: "BiNuKBoK View Point Resort",
     blurb:
@@ -41,6 +48,20 @@ const data: Project[] = [
     name: "SalesPipe",
     blurb: "Sales pipeline and customer relationship tracker.",
     url: "https://pipeline-pal-17.vercel.app/",
+  },
+  {
+    slug: "hera-bathroom",
+    name: "HERA Bathroom",
+    blurb:
+      "Website design for a Singapore bathtub and vanity brand, with its store built in Shopify. Showcases freestanding bathtubs and lets visitors book a site visit or shop the range.",
+    url: "https://www.herabathroom.com/",
+  },
+  {
+    slug: "hera-athena",
+    name: "HERA ATHENA",
+    blurb:
+      "Product page built in Shopify for ATHENA, HERA's modular bathroom vanity system, where buyers choose the size, storage, top, mirror and finish.",
+    url: "https://store.herabathroom.com/pages/athena",
   },
 ];
 

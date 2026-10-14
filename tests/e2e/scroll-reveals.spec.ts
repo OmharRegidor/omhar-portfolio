@@ -40,12 +40,12 @@ test("the homepage numbers count up from 0 and land on their real values", async
   // Mid-count the visible digits differ, but the text a screen reader gets is still the real value.
   await expect(page.locator(".qa-facts dd [aria-hidden]").first()).toBeAttached();
   await expect(page.locator(".qa-facts")).toMatchAriaSnapshot(`
-    - definition: "6"
+    - definition: "9"
     - definition: "3"
     - definition: "2021"
     - definition: "2025"
   `);
-  await expect.poll(() => facts.allTextContents(), { timeout: 4000 }).toEqual(["6", "3", "2021", "2025"]);
+  await expect.poll(() => facts.allTextContents(), { timeout: 4000 }).toEqual(["9", "3", "2021", "2025"]);
   await expect(page.locator(".qa-facts dd span")).toHaveCount(0);
 });
 

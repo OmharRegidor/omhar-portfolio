@@ -17,6 +17,9 @@ describe("buildKnowledgeBlock", () => {
       "JAZA Media",
       "Crisia VA",
       "SalesPipe",
+      "Agad",
+      "HERA Bathroom",
+      "HERA ATHENA",
     ]) {
       expect(kb).toContain(name);
     }
