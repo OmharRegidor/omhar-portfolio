@@ -22,8 +22,8 @@ describe("buildKnowledgeBlock", () => {
     }
   });
 
-  it("includes the Calendly URL so the bot can route to a booking", () => {
-    expect(kb).toContain("calendly.com/omharregidor/30min");
+  it("includes the WhatsApp link so the bot can route to a chat with Omhar", () => {
+    expect(kb).toContain("wa.me/639506009518");
   });
 
   it("includes tech-stack and experience facts", () => {

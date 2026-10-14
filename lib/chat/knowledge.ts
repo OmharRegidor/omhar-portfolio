@@ -20,7 +20,7 @@ let cached: string | null = null;
  * no RAG, no embeddings, no vector DB. This is the bot's ONLY source of truth.
  *
  * Note: the phone number is intentionally omitted — the bot routes contact intent
- * to Calendly/email rather than handing out a personal number.
+ * to the WhatsApp chat link or email, never the bare number.
  */
 export function buildKnowledgeBlock(): string {
   if (cached) return cached;
@@ -35,7 +35,7 @@ export function buildKnowledgeBlock(): string {
   lines.push("</profile>");
 
   lines.push("<contact>");
-  lines.push(`Preferred — book a 30-min call on Calendly: ${profile.calendlyUrl}`);
+  lines.push(`Preferred, message Omhar on WhatsApp: ${profile.whatsappUrl ?? profile.calendlyUrl}`);
   if (profile.email) lines.push(`Email: ${profile.email}`);
   for (const s of profile.socials) lines.push(`${s.label}: ${s.url}`);
   lines.push("</contact>");

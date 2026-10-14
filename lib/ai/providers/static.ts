@@ -3,7 +3,7 @@ import type { ChatProvider } from "@/lib/ai/types";
 
 /** Terminal fallback message — shown only if every live provider fails. */
 export const STATIC_FALLBACK_REPLY =
-  `Thanks for reaching out! I can't answer that right now, but the quickest way to reach Omhar is to book a 30-min call: ${profile.calendlyUrl}`;
+  `Thanks for reaching out! I can't answer that right now, but the quickest way to reach Omhar is a WhatsApp message: ${profile.whatsappUrl ?? profile.calendlyUrl}`;
 
 /**
  * Always-available terminal provider. It never throws, so the fallback chain is

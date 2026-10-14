@@ -81,7 +81,7 @@ describe("runChatWithFallback", () => {
     expect(await res.text()).toBe("from gemini");
   });
 
-  it("degrades to the static Calendly reply when every live provider fails (never 5xx)", async () => {
+  it("degrades to the static WhatsApp reply when every live provider fails (never 5xx)", async () => {
     const res = await runChatWithFallback({
       messages: ask,
       providers: [throwingOnFirstChunk("groq"), throwingOnFirstChunk("google"), staticProvider],

@@ -15,9 +15,9 @@ describe("buildSystemPrompt", () => {
     expect(prompt).toContain("BiNuKBoK View Point Resort");
   });
 
-  it("instructs the model to redirect off-topic questions to Calendly", () => {
-    expect(prompt.toLowerCase()).toContain("calendly");
-    expect(prompt).toContain("calendly.com/omharregidor/30min");
+  it("instructs the model to redirect off-topic questions to WhatsApp", () => {
+    expect(prompt.toLowerCase()).toContain("whatsapp");
+    expect(prompt).toContain("wa.me/639506009518");
   });
 
   it("forbids inventing facts not present in the knowledge base", () => {

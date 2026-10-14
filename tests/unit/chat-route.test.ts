@@ -160,7 +160,7 @@ describe("POST /api/chat", () => {
     const { POST } = await import("@/app/api/chat/route");
     const res = await POST(jsonReq(valid));
     expect(res.status).toBe(200);
-    expect((await res.text()).toLowerCase()).toContain("calendly");
+    expect((await res.text()).toLowerCase()).toContain("whatsapp");
     expect(runChat).not.toHaveBeenCalled();
   });
 

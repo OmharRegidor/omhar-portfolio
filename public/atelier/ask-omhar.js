@@ -5,7 +5,7 @@
    switched off or out of reach, the nearest prepared answer is shown instead, or a short note on what it can
    answer. */
 (() => {
-  const CALENDLY = 'https://calendly.com/omharregidor/30min';
+  const WHATSAPP = 'https://wa.me/639506009518?text=Hi%20Omhar%2C%20I%20saw%20your%20portfolio%20and%20want%20to%20talk%20about%20a%20project.';
   const EMAIL = 'omharregidor@gmail.com';
   const onAutoPage = !!document.getElementById('view-auto');
   const autoHref = slug => (onAutoPage ? '' : '/automations') + '#auto-' + slug;
@@ -14,9 +14,9 @@
   const KB = {
     automate: { q: 'What can Omhar automate?', a: ['Omhar builds n8n automations that connect apps like Gmail, Shopify, Slack and OpenAI. He has built three so far. One drafts replies to customer emails for a person to review, one posts a daily sales summary to Slack, and one answers staff questions about company procedures.', 'If a task in your business repeats every day, it is worth asking about.'], follow: ['emails', 'pulse', 'sop'] },
     emails: { q: 'Can AI answer my emails?', a: ['Yes, with a person still in control. In Omhar’s CS Live Inbox workflow, a low-cost AI model first checks whether each new email needs a reply. The ones that do get a reply written by a stronger model and saved as a Gmail draft, so someone on the team reviews it before it is sent.'], link: ['See it run', autoHref('live-inbox')], follow: ['inbox-sends', 'start'] },
-    start: { q: 'How do I start a project?', a: ['Book a 30-minute call, or email ' + EMAIL + ' with a short note about what you need. On the call you walk through what is slowing your business down and what you would like to build.'], book: true, follow: ['cost', 'built'] },
-    cost: { q: 'How much does a project cost?', a: ['It depends on what you need, so Omhar prices each project on its own. The quickest way to a clear answer is a 30-minute call.'], book: true, follow: ['built', 'automate'] },
-    available: { q: 'Is Omhar taking new projects?', a: ['The best way to check is a quick call, or an email to ' + EMAIL + '.'], book: true, follow: ['start', 'built'] },
+    start: { q: 'How do I start a project?', a: ['Message Omhar on WhatsApp, or email ' + EMAIL + ' with a short note about what you need. Then you walk through what is slowing your business down and what you would like to build.'], book: true, follow: ['cost', 'built'] },
+    cost: { q: 'How much does a project cost?', a: ['It depends on what you need, so Omhar prices each project on its own. The quickest way to a clear answer is a WhatsApp message to Omhar.'], book: true, follow: ['built', 'automate'] },
+    available: { q: 'Is Omhar taking new projects?', a: ['The best way to check is a WhatsApp message, or an email to ' + EMAIL + '.'], book: true, follow: ['start', 'built'] },
     built: { q: 'What has Omhar built?', a: ['Six live web projects. A resort booking site with an AI assistant (BiNuKBoK View Point Resort), a loyalty platform with an iOS app (Noxa Loyalty), a florist shop with sales, inventory and POS (SweetBlooms), a media agency website (JAZA Media), a portfolio site for a virtual assistant (Crisia VA) and a sales pipeline tracker (SalesPipe).'], follow: ['booking', 'mobile', 'stack'] },
     booking: { q: 'Can he build a booking site with AI?', a: ['Yes. BiNuKBoK View Point Resort is a full-stack booking site with online reservations, an availability calendar, QR-code check-in, an admin dashboard and an AI assistant that answers live availability and guest-arrival questions from the database.'], follow: ['built', 'start'] },
     mobile: { q: 'Does he build mobile apps?', a: ['Yes. Noxa Loyalty has a web app plus an iOS app on the App Store where customers track points and redeem rewards. Omhar builds mobile apps with React Native.'], follow: ['stack', 'start'] },
@@ -27,16 +27,16 @@
     agent: { q: 'What is an AI agent?', a: ['An AI model given a specific job and the tools or information it needs to act on it, not just chat. In the SOP Assistant, the agent reads a staff question and answers it from the company’s written procedures.'], follow: ['sop', 'start'] },
     // CS Live Inbox page
     'inbox-sends': { q: 'Does it send emails by itself?', a: ['No. It only saves the reply as a Gmail draft. A person on the team reviews each draft and presses send, so nothing reaches a customer without that check.'], follow: ['inbox-mine', 'start'] },
-    'inbox-mine': { q: 'Could this work with my inbox?', a: ['It is built in n8n with Gmail and OpenAI. n8n connects to many common business apps, so on a quick call Omhar can check how it would fit your inbox and tools.'], book: true, follow: ['cost'] },
+    'inbox-mine': { q: 'Could this work with my inbox?', a: ['It is built in n8n with Gmail and OpenAI. n8n connects to many common business apps, so over WhatsApp Omhar can check how it would fit your inbox and tools.'], book: true, follow: ['cost'] },
     'inbox-cheap': { q: 'Why use two AI models?', a: ['To keep costs low. A cheap model reads every email first, and only the ones that truly need an answer reach the stronger model, which writes the reply with real order details.'], follow: ['inbox-sends', 'inbox-mine'] },
     // Daily Sales Pulse page
     'pulse-numbers': { q: 'Where do the numbers come from?', a: ['From the store’s Shopify orders. A code step adds them up and works out the trends, and the AI only explains the numbers, so it never has to calculate them.'], follow: ['pulse-mine', 'start'] },
-    'pulse-mine': { q: 'Could it post to my team chat?', a: ['This one posts to Slack. n8n connects to many chat and email apps, so on a call Omhar can check whether yours works.'], book: true, follow: ['cost'] },
+    'pulse-mine': { q: 'Could it post to my team chat?', a: ['This one posts to Slack. n8n connects to many chat and email apps, so over WhatsApp Omhar can check whether yours works.'], book: true, follow: ['cost'] },
     'pulse-human': { q: 'What does a person still do?', a: ['A person reads the summary and decides what to act on. The workflow does the gathering and the math, people make the calls.'], follow: ['pulse-numbers', 'start'] },
     // SOP Assistant page
     'sop-source': { q: 'Where do the answers come from?', a: ['From the company’s written procedures. The agent reads the staff question and answers from those documents. A person writes and updates the procedures it answers from.'], follow: ['sop-where', 'sop-mine'] },
     'sop-where': { q: 'Does it work outside Slack?', a: ['Yes. The same assistant works in Slack and in a chat window, so staff get the same answers wherever they ask.'], follow: ['sop-source', 'sop-mine'] },
-    'sop-mine': { q: 'Could I get one for my team?', a: ['That is a good thing to talk through on a call, starting with which procedures your team asks about most.'], book: true, follow: ['cost'] },
+    'sop-mine': { q: 'Could I get one for my team?', a: ['That is a good thing to talk through on WhatsApp, starting with which procedures your team asks about most.'], book: true, follow: ['cost'] },
     // Gear page
     gear: { q: 'What gear does Omhar use?', a: ['A MacBook Pro with the M4 Pro chip in Space Black is his main machine, and a Lenovo ThinkPad T460 is his second laptop. He types on an AULA F75 mechanical keyboard and uses an A4Tech 2X Click mouse.'], link: ['See the gear', '/gear'], follow: ['stack', 'built'] },
     scope: { a: ['I can answer questions about Omhar’s work, his projects and automations, and how to start a project. Try one of these.'] }
@@ -165,7 +165,7 @@
     ids.filter(id => KB[id] && KB[id].q).forEach(id => { const b = el('button', null, KB[id].q); b.type = 'button'; b.addEventListener('click', () => { wrap.remove(); ask(id); }); wrap.append(b); });
     return wrap;
   }
-  function bookLink() { const a = el('a', 'ao-book', 'Book a 30-min call'); a.href = CALENDLY; a.target = '_blank'; a.rel = 'noopener'; a.insertAdjacentHTML('beforeend', icon('arrow-right')); return a; }
+  function bookLink() { const a = el('a', 'ao-book', 'Chat on WhatsApp'); a.href = WHATSAPP; a.target = '_blank'; a.rel = 'noopener'; a.insertAdjacentHTML('beforeend', icon('arrow-right')); return a; }
   // A prepared answer is entry.a. A live answer arrives already split into paragraphs as body.
   function botSay(entry, followIds, body) {
     const m = el('div', 'ao-msg ao-bot');
@@ -212,11 +212,11 @@
 
   // Live answers are plain text. Blank lines start a new paragraph, and the booking link, the email and the site's
   // own pages become links.
-  const LINKS = /(https:\/\/calendly\.com\/omharregidor\/30min|omharregidor@gmail\.com|\/automations#auto-(?:live-inbox|sales-pulse|sop)\b|\/automations\b|\/gear\b)/;
+  const LINKS = /(https:\/\/wa\.me\/639506009518[^\s)]*|omharregidor@gmail\.com|\/automations#auto-(?:live-inbox|sales-pulse|sop)\b|\/automations\b|\/gear\b)/;
   function inline(node, text) {
     text.split(LINKS).forEach((part, i) => {
       if (!(i % 2)) { node.append(part.replace(/\s*\n\s*/g, ' ')); return; }
-      const a = el('a', null, part.replace('https://', ''));
+      const a = el('a', null, part.includes('wa.me') ? 'WhatsApp' : part.replace('https://', ''));
       a.href = part.includes('@') ? 'mailto:' + part : part;
       if (part.startsWith('https://')) { a.target = '_blank'; a.rel = 'noopener'; }
       node.append(a);
@@ -247,7 +247,7 @@
     try {
       res = await fetch('/api/chat', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages: history }), signal: AbortSignal.timeout(25000) });
     } catch { return fallback(); }
-    // The static provider means no live model answered, so a prepared answer beats its generic "book a call".
+    // The static provider means no live model answered, so a prepared answer beats its generic "book a call" reply.
     if (!res.ok || !res.body || res.headers.get('x-chat-provider') === 'static') return fallback();
     // The answer shows as it streams in. Screen readers hear it once, complete, when the finished message lands.
     const draft = el('div', 'ao-msg ao-bot'); draft.setAttribute('aria-hidden', 'true');
@@ -269,7 +269,7 @@
     if (!full.trim()) return fallback();
     t.remove();
     remember('assistant', full);
-    botSay({ book: full.includes('calendly.com/omharregidor') }, follows(match(text)), paragraphs(full));
+    botSay({ book: /wa\.me\/639506009518/.test(full) }, follows(match(text)), paragraphs(full));
     busy = false;
   }
   function greet() {

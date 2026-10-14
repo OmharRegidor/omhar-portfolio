@@ -22,6 +22,8 @@ const data: Profile = {
     },
   ],
   calendlyUrl: 'https://calendly.com/omharregidor/30min',
+  // The live site's contact path. Every call to action opens a WhatsApp chat with this greeting filled in.
+  whatsappUrl: 'https://wa.me/639506009518?text=Hi%20Omhar%2C%20I%20saw%20your%20portfolio%20and%20want%20to%20talk%20about%20a%20project.',
   email: 'omharregidor@gmail.com',
   phone: '+639506009518',
   // Featured awards intentionally empty — the rotator hides at length<=1.

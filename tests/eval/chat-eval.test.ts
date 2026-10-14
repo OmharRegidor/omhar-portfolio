@@ -26,8 +26,8 @@ describe("chat eval set (gated by RUN_CHAT_EVAL=1 + a provider key)", () => {
           // Require the actual booking URL, not a loose " call" substring that
           // "recall"/"tough call" would satisfy.
           expect(
-            reply.includes("calendly.com/omharregidor"),
-            `expected the Calendly booking URL in: ${reply}`,
+            reply.includes("wa.me/639506009518"),
+            `expected the WhatsApp link in: ${reply}`,
           ).toBe(true);
         }
         for (const f of c.forbidIncludes ?? []) {

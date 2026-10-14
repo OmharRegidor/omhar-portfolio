@@ -87,7 +87,7 @@ Client wow features, page side (2026-10-13), covered by `tests/e2e/live-features
 - `try-inbox.js` + `#try` in automations.html (shown only on `#auto-live-inbox`): three made-up sample emails. When
   the demo answers 503 or fails, a sample shows its result written in advance, tagged as such.
 - `calc.js` + `#calc` under the homepage automations: hours a month = hours a week x people x share x 4.33, worth =
-  rounded hours x the visitor's hourly cost, and the working line always shows the sum.
+  rounded hours x the visitor's hourly cost in US dollars, and the working line always shows the sum.
 - Each page has `@view-transition{ navigation:auto }` with `.top{ view-transition-name:top }`, off under reduced motion.
 - Project hover previews load `projects/<slug>-full.jpg` (full-length captures of the live sites, 640px wide, max
   3200px tall) on the first mouse visit to the list and pan through them with `object-position`. Recapture them when

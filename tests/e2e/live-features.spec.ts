@@ -6,13 +6,13 @@ import { test, expect } from "@playwright/test";
 test("the time-saved estimate shows its working and multiplies out", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("#calc-hours")).toHaveText("31");
-  await expect(page.locator("#calc-money")).toHaveText("₱4,650");
+  await expect(page.locator("#calc-money")).toHaveText("$465");
   await page.locator("#calc-hrs").fill("10");
   await page.locator("#calc-ppl").fill("3");
-  await page.locator("#calc-rate").fill("200");
-  // 10 h x 3 people x 60% x 4.33 weeks = 77.9, so 78 h, and 78 x 200 = 15,600.
+  await page.locator("#calc-rate").fill("20");
+  // 10 h x 3 people x 60% x 4.33 weeks = 77.9, so 78 h, and 78 x 20 = 1,560.
   await expect(page.locator("#calc-hours")).toHaveText("78");
-  await expect(page.locator("#calc-money")).toHaveText("₱15,600");
+  await expect(page.locator("#calc-money")).toHaveText("$1,560");
   await expect(page.locator("#calc-work")).toContainText("10 h a week × 3 people × 60% × 4.33 weeks ≈ 78 h");
 });
 
@@ -21,7 +21,7 @@ test("a typed chat question gets the live answer, streamed in", async ({ page })
     route.fulfill({
       status: 200,
       headers: { "content-type": "text/plain; charset=utf-8", "x-chat-provider": "anthropic" },
-      body: "Omhar builds n8n automations and web apps.\n\nBook a call: https://calendly.com/omharregidor/30min",
+      body: "Omhar builds n8n automations and web apps.\n\nMessage him: https://wa.me/639506009518?text=Hi",
     }),
   );
   await page.goto("/");
@@ -30,7 +30,7 @@ test("a typed chat question gets the live answer, streamed in", async ({ page })
   await page.locator(".ao-form button[type=submit]").click();
   const answer = page.locator(".ao-bot").last();
   await expect(answer).toContainText("Omhar builds n8n automations and web apps.");
-  await expect(answer.locator('a[href="https://calendly.com/omharregidor/30min"]').first()).toBeVisible();
+  await expect(answer.locator('a[href^="https://wa.me/639506009518"]').first()).toBeVisible();
 });
 
 test("when no live model answers, the chat falls back to a prepared answer", async ({ page }) => {

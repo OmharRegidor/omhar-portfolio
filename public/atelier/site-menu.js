@@ -1,4 +1,4 @@
-/* Phone menu, shared by every Atelier page. Under 860px the header's "Book a call" button is replaced by a menu
+/* Phone menu, shared by every Atelier page. Under 860px the header's WhatsApp button is replaced by a menu
    button. The menu is built from the page's own header links, so it always lists the same pages as desktop.
    It opens as a full-screen black sheet that wipes down from the top, the links rise in one by one, and the two
    lines of the button turn into a cross. Esc, the button, or any link closes it. */
@@ -66,7 +66,7 @@
     li.append(l); list.append(li);
   });
   const foot = document.createElement('div'); foot.className = 'mm-foot';
-  if (book) foot.insertAdjacentHTML('beforeend', `<a class="mm-book" href="${book.getAttribute('href')}" target="_blank" rel="noopener">Book a 30-min call <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a>`);
+  if (book) foot.insertAdjacentHTML('beforeend', `<a class="mm-book" href="${book.getAttribute('href')}" target="_blank" rel="noopener">Chat on WhatsApp <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a>`);
   foot.insertAdjacentHTML('beforeend', '<button class="mm-ask" type="button" data-ask-open aria-haspopup="dialog"><i aria-hidden="true"></i>Ask Omhar AI</button><a class="mm-mail" href="mailto:omharregidor@gmail.com">omharregidor@gmail.com</a>');
   panel.append(list, foot);
   document.body.append(panel);
