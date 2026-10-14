@@ -1,0 +1,52 @@
+/* Editorial close and footer, loaded last on every atelier page. The closing call to action gets huge tight capitals
+   with a grey accent word and a black pill, and the footer turns black with a giant name and the time in Batangas.
+   html body[data-reveal][data-reveal] matches every page and outranks each page's own font and accent rules. */
+.close, .foot{ --red:var(--ink); --mono:"IBM Plex Mono", ui-monospace, Consolas, monospace }
+
+/* The close. A huge statement, a small dot label and a black pill. */
+.close{ padding-block:clamp(88px, 12vw, 160px) clamp(64px, 8vw, 104px); gap:32px }
+html body[data-reveal][data-reveal] .close h2{
+  font-family:"Geist", ui-sans-serif, system-ui, sans-serif; font-weight:700; text-transform:uppercase;
+  letter-spacing:-0.045em; line-height:.92; text-wrap:balance; font-size:clamp(44px, 8.4vw, 132px); max-width:13ch;
+}
+html body[data-reveal][data-reveal] .close h2 em{ font-family:inherit; font-style:normal; font-weight:inherit; font-size:1em; letter-spacing:inherit; color:var(--muted) }
+html body[data-reveal][data-reveal] .close .label{
+  display:flex; align-items:center; gap:10px; font-family:var(--mono); font-weight:500; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink);
+}
+.close .label .icon{ display:none }
+.close .label::before{ content:""; flex:none; width:8px; height:8px; border-radius:50%; background:var(--red) }
+html body[data-reveal][data-reveal] .close .book{
+  border-radius:999px; padding:13px 22px; background:var(--ink); color:var(--paper);
+  font-family:"Geist", ui-sans-serif, system-ui, sans-serif; font-weight:700; font-size:13.5px; letter-spacing:-0.01em; text-transform:uppercase;
+}
+html body[data-reveal][data-reveal] .close .book:hover{ background:color-mix(in srgb, var(--ink) 82%, var(--paper)) }
+
+/* A black footer with a giant name. The shadow paints the black out to both screen edges while the content keeps its column. */
+html body[data-reveal][data-reveal] .foot{
+  container-type:inline-size;
+  --ink:#F2F1EC; --muted:#A9AAA4; background:#0C0C0C; color:var(--muted); box-shadow:0 0 0 100vmax #0C0C0C; clip-path:inset(0 -100vmax);
+  margin-top:0; padding-block:clamp(48px, 6vw, 80px) 32px; border-top:0;
+}
+.foot a{ color:#F2F1EC }
+.foot a:hover{ color:#FFFFFF; text-decoration:underline; text-underline-offset:3px }
+.foot-mark{
+  order:-1; flex-basis:100%; grid-column:1 / -1; margin:0 0 clamp(24px, 4vw, 48px);
+  font-family:"Geist", ui-sans-serif, system-ui, sans-serif; font-weight:700; text-transform:uppercase; letter-spacing:-0.06em; line-height:.82;
+  font-size:12.4cqi; color:#F2F1EC; white-space:nowrap;
+}
+.foot-clock{ font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase }
+.foot-clock time{ color:#F2F1EC }
+.close-sub{ font-family:"Geist", ui-sans-serif, system-ui, sans-serif; letter-spacing:-0.01em }
+
+/* One minimal font across the site. Geist for every word, and the accent word in a heading stays in the same font,
+   just quieter grey, instead of switching to a serif italic. */
+html body[data-reveal][data-reveal]{ --display:"Geist", ui-sans-serif, system-ui, sans-serif; --sans:var(--display); --serif:var(--display) }
+html body[data-reveal][data-reveal] :is(h1, h2, h3) em{ font-family:var(--display); font-style:normal; font-weight:inherit; font-size:1em; letter-spacing:inherit; color:var(--muted) }
+html body[data-reveal][data-reveal] .hero h1 em{ color:var(--glow) }
+html body[data-reveal][data-reveal] :is(.band blockquote p, .t-slide blockquote p){ font-family:var(--display); font-style:normal; font-weight:300; letter-spacing:-0.025em }
+html body[data-reveal][data-reveal] :is(.meta-row .todo, .row.more .name){ font-style:normal }
+
+/* On phones the closing headline grows to fill the column, one or two words a line. */
+@media (max-width:600px){
+  html body[data-reveal][data-reveal] .close h2{ font-size:clamp(44px, 15vw, 76px); max-width:none; line-height:.9 }
+}

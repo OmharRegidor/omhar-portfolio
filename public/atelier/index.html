@@ -235,7 +235,7 @@
             "@type": "CreativeWork",
             "name": "Agad",
             "url": "https://applyfirst.tail1fc6ab.ts.net/",
-            "description": "Startup application with job alerts, AI-written job applications and one-click sending through Gmail.",
+            "description": "Omhar Regidor's own startup. A job application app with job alerts, AI-written job applications and one-click sending through Gmail.",
             "creator": {
               "@id": "https://omharregidor.vercel.app/#person"
             }
@@ -820,6 +820,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 }
 </style>
 <link rel="stylesheet" href="/atelier/glass.css">
+<link rel="stylesheet" href="/atelier/editorial.css">
 </head>
 <body data-reveal="pop" data-photo="slideshow" data-accent="mono" data-head="geist" data-mode="light"><a class="skip" href="#main">Skip to content</a>
 
@@ -881,7 +882,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
       <li>
         <a class="row" href="https://applyfirst.tail1fc6ab.ts.net/" target="_blank" rel="noopener">
           <span class="name">Agad <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">Startup application with job alerts, AI-written job applications and one-click sending through Gmail</span>
+          <span class="kind">My own startup. Job alerts, AI-written job applications and one-click sending through Gmail</span>
           <span class="dom">applyfirst.tail1fc6ab.ts.net</span>
         </a>
         <div class="inline"><div><div class="in"><img class="pshot" data-i="0" src="/atelier/projects/agad.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Homepage of Agad"></div></div></div>
@@ -1155,6 +1156,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   </section>
 </main>
 <footer class="foot wrap">
+  <p class="foot-mark" aria-hidden="true">Omhar Regidor</p>
   <div class="foot-id">
     <b>Omhar Regidor</b>
     <span>AI engineer and software developer · Batangas, Philippines</span>
@@ -1165,7 +1167,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
     <a href="https://www.linkedin.com/in/omhar-regidor-84827136a/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="https://www.facebook.com/christian.omhar.regidor" target="_blank" rel="noopener">Facebook</a>
   </nav>
-  <p class="foot-meta">© 2026 Omhar Regidor <span aria-hidden="true">·</span> Updated <time datetime="2026-10-09">October 2026</time></p>
+  <p class="foot-meta">© 2026 Omhar Regidor <span aria-hidden="true">·</span> Updated <time datetime="2026-10-09">October 2026</time> <span aria-hidden="true">·</span> <span class="foot-clock">Batangas <time id="foot-clock">--:--</time></span></p>
 </footer>
 
 <details class="tweaks" hidden>
@@ -1443,6 +1445,17 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   })();
 
   play();
+})();
+</script>
+<script>
+// The footer clock shows the time in Batangas, so visitors abroad can see when Omhar is awake.
+(() => {
+  const el = document.getElementById('foot-clock');
+  if (!el) return;
+  const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Manila', hour: '2-digit', minute: '2-digit', hour12: false });
+  const tick = () => { el.textContent = fmt.format(new Date()) + ' PHT'; };
+  tick();
+  setInterval(tick, 30000);
 })();
 </script>
 <script src="/atelier/calc.js"></script>
