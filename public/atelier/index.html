@@ -713,11 +713,6 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .qa-answer{ max-width:920px; font-family:var(--display); font-weight:300; font-size:clamp(21px, 2.3vw, 29px); line-height:1.42; letter-spacing:-0.015em }
 .qa-answer a{ color:inherit; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.18em; text-decoration-color:color-mix(in srgb, var(--ink) 35%, transparent); transition:text-decoration-color 200ms ease }
 .qa-answer a:hover, .qa-answer a:focus-visible{ text-decoration-color:var(--ink) }
-.qa-facts{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); margin:40px 0 0; border-top:1px solid var(--line) }
-.qa-facts div{ display:flex; flex-direction:column; gap:4px; padding:18px 18px 0 0 }
-.qa-facts dd{ order:-1; margin:0; font-family:var(--display); font-weight:300; font-size:clamp(30px, 3.2vw, 44px); line-height:1; letter-spacing:-0.035em }
-.qa-facts dt{ font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted) }
-@media (max-width:720px){ .qa-facts{ grid-template-columns:1fr 1fr; row-gap:18px } }
 .sec-lead{ max-width:62ch; margin:18px 0 0; font-size:17px; line-height:1.65; color:var(--muted) }
 .sec-lead a{ color:var(--ink); text-underline-offset:3px }
 /* Time-saved estimate under the automations. Visitors set their own numbers and the working is always shown. */
@@ -866,12 +861,6 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   <section class="qa wrap" id="about" aria-labelledby="qa-h">
     <h2 id="qa-h"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-identification-card"/></svg>What does Omhar Regidor do?</h2>
     <p class="qa-answer">Omhar Regidor is an AI engineer and software developer based in Batangas, Philippines. He builds <a href="#work">websites and web apps</a>, <a href="#automations">n8n workflow automations</a> and <a href="#faq">AI assistants</a> for startups and small businesses, and works at Noxa as a Software Developer and AI Engineer. His portfolio includes 9 live web projects, such as a resort booking system with an AI assistant and a loyalty platform with iOS and Android apps.</p>
-    <dl class="qa-facts">
-      <div><dt>Live web projects</dt><dd data-count>9</dd></div>
-      <div><dt>n8n automations</dt><dd data-count>3</dd></div>
-      <div><dt>Writing code since</dt><dd data-count>2021</dd></div>
-      <div><dt>BS Information Technology</dt><dd data-count>2025</dd></div>
-    </dl>
   </section>
   <section class="work wrap" id="work" aria-labelledby="work-h">
     <div class="work-head">

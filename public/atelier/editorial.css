@@ -18,7 +18,6 @@ html body[data-reveal][data-reveal] :is(.st-pill small, .float.dark p, .case-tag
 html body[data-reveal][data-reveal] :is(.work-head h2, .faq h2, .calc h3, .sec-head h2, .explain h2, .a-head h1, .a-cta h2, .case h3, #g-title, .g-body h2, .pn b){ font-weight:500; letter-spacing:-0.03em }
 html body[data-reveal][data-reveal] .work-head h2{ font-size:clamp(36px, 4vw, 56px) }
 html body[data-reveal][data-reveal] .row .name{ font-weight:500; letter-spacing:-0.03em }
-html body[data-reveal][data-reveal] .qa-facts dd{ font-weight:500 }
 
 /* The hero headline. Huge tight capitals with the last line in grey, sized so it stays clear of the face in the photo. */
 html body[data-reveal][data-reveal] .hero h1{
