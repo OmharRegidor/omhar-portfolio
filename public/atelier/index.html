@@ -208,7 +208,7 @@
       "dateModified": "2026-10-14",
       "speakable": {
         "@type": "SpeakableSpecification",
-        "cssSelector": [".qa-answer", ".faq-a"]
+        "cssSelector": [".faq-a"]
       }
     },
     {
@@ -656,7 +656,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .band{ background:var(--band); color:var(--band-fg); margin-top:clamp(56px, 8vw, 96px) }
 .band .wrap{ padding-block:clamp(72px, 11vw, 140px); display:grid; gap:28px }
 .band .label{ color:color-mix(in srgb, var(--band-fg) 70%, transparent) }
-.qa h2 .icon, .band-head .label .icon, .close .label .icon{ width:16px; height:16px; margin-top:calc((1.6em - 16px) / 2) }
+.band-head .label .icon, .close .label .icon{ width:16px; height:16px; margin-top:calc((1.6em - 16px) / 2) }
 .band-head .label, .close .label{ display:flex; align-items:flex-start; gap:10px }
 .close .label .icon{ color:var(--accent-ink) }
 .band blockquote{ margin:0; display:grid; gap:26px }
@@ -708,11 +708,6 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .skip:focus{ top:12px }
 .hero :focus-visible, .top :focus-visible, .band :focus-visible, .float.dark :focus-visible{ outline-color:#FFFFFF }
 .assure{ margin-top:2px; font-size:14px; letter-spacing:.04em; color:rgb(255 255 255 / .72) }
-.qa{ padding-block:clamp(64px, 9vw, 112px) 0 }
-.qa h2{ display:flex; align-items:flex-start; gap:10px; margin:0 0 18px; font-family:var(--sans); font-size:13px; font-weight:500; letter-spacing:.24em; text-transform:uppercase; color:var(--muted) }
-.qa-answer{ max-width:920px; font-family:var(--display); font-weight:300; font-size:clamp(21px, 2.3vw, 29px); line-height:1.42; letter-spacing:-0.015em }
-.qa-answer a{ color:inherit; text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:.18em; text-decoration-color:color-mix(in srgb, var(--ink) 35%, transparent); transition:text-decoration-color 200ms ease }
-.qa-answer a:hover, .qa-answer a:focus-visible{ text-decoration-color:var(--ink) }
 .sec-lead{ max-width:62ch; margin:18px 0 0; font-size:17px; line-height:1.65; color:var(--muted) }
 .sec-lead a{ color:var(--ink); text-underline-offset:3px }
 /* Time-saved estimate under the automations. Visitors set their own numbers and the working is always shown. */
@@ -858,10 +853,6 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 </header>
 
 <main id="main">
-  <section class="qa wrap" id="about" aria-labelledby="qa-h">
-    <h2 id="qa-h"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-identification-card"/></svg>What does Omhar Regidor do?</h2>
-    <p class="qa-answer">Omhar Regidor is an AI engineer and software developer based in Batangas, Philippines. He builds <a href="#work">websites and web apps</a>, <a href="#automations">n8n workflow automations</a> and <a href="#faq">AI assistants</a> for startups and small businesses, and works at Noxa as a Software Developer and AI Engineer. His portfolio includes 9 live web projects, such as a resort booking system with an AI assistant and a loyalty platform with iOS and Android apps.</p>
-  </section>
   <section class="work wrap" id="work" aria-labelledby="work-h">
     <div class="work-head">
       <div><p class="eyebrow-s"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-browser"/></svg>01 Websites &amp; apps</p><h2 id="work-h">Websites and apps I’ve <em>built</em></h2></div>
