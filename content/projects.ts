@@ -4,6 +4,13 @@ import { ProjectsSchema, type Project } from "./schemas";
 // /projects renders the full list. Cards link directly to the project URL.
 const data: Project[] = [
   {
+    slug: "documentary-generator",
+    name: "Documentary Generator",
+    blurb:
+      "Web app that turns a script and a voiceover into a finished 1080p documentary. AI plans the scenes, finds the pictures, makes the cuts and mixes the sound. Sign-in required.",
+    url: "https://v2202610431966533958.ultrasrv.de/",
+  },
+  {
     slug: "agad",
     name: "Agad",
     blurb:

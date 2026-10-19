@@ -18,6 +18,7 @@ describe("buildKnowledgeBlock", () => {
       "Crisia VA",
       "SalesPipe",
       "Agad",
+      "Documentary Generator",
       "HERA Bathroom",
       "HERA ATHENA",
     ]) {
