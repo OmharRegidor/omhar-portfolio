@@ -1,4 +1,102 @@
-# Handoff, Omhar's Portfolio (updated 2026-10-10)
+# Handoff, Omhar's Portfolio (updated 2026-10-24)
+
+## ▶ LATEST (2026-10-18 to 2026-10-24): new project, SalesPipe out, projects and automations as a scroll deck
+
+All of this is committed and pushed to `main` (`f678cb8`). The live site was not checked after these pushes.
+
+| Commit | What |
+|---|---|
+| `30b0e90` | Removed the four-number stats row (9 / 3 / 2021 / 2025) under the homepage quick answer, because the hero strip already says the same thing. |
+| `7676a7f` | Removed the whole "What does Omhar Regidor do?" quick answer section, its styles, its reveal target and its `.qa-answer` speakable selector (JSON-LD speakable now only `.faq-a`). |
+| `387cd8b` | Added **Documentary Generator** (`https://v2202610431966533958.ultrasrv.de/`) as the first project everywhere: homepage, `/automations` list, JSON-LD, `llms.txt`, `ask-omhar.js`, `content/projects.ts`, chat KB test. Screenshots `projects/docgen.jpg` and `docgen-full.jpg` were taken after logging in to the app. It is password protected, so the site says "Sign-in required" instead of a domain. Also deleted the e2e test for the removed stats row. |
+| `73fec95` | **SalesPipe removed** "for now" from every list (homepage, `/automations`, JSON-LD, `llms.txt`, `ask-omhar.js`, `content/projects.ts`, chat KB test, eval case `fact:salespipe`). Its images `salespipe.jpg` / `salespipe-full.jpg` are still in `public/atelier/projects/` in case it comes back. Counts are now **9 live web projects**. The hover-preview list was replaced by a filter shelf (Option C). That shelf was then replaced by the deck in the next commit. The intro line now says "Each card opens the live project, and only the Documentary Generator needs a sign-in." |
+| `c2298d4` | **Scroll deck.** Projects and the three n8n automations are one pinned section (`<section class="dk" id="deck">`, right after `#work`). Scrolling flips the cards past one at a time, and the stage turns dark for the automations chapter. Modelled on the homepage of https://bwerk-website.vercel.app/. |
+| `f678cb8` | Bigger deck cards. Laptop front card is about 630px wide, phone card about 88% of the screen. Cards sit at 49% height so they clear the caption. |
+
+### Owner decisions this round
+1. Asked for three layout options before building. Mockups: https://claude.ai/artifact/Bd3LvD2gdvB6cT3uaXwaF7 (A card rail, B bento grid, C filter shelf). Picked C.
+2. Was offered a 10% blue accent (Ultramarine `#2B44FF`, Klein, Cobalt). **Said no. Stay black and white.** Do not add a brand colour.
+3. Then asked for the bwerk scroll style for projects and automations together. Preview: https://claude.ai/artifact/LTjc8RWLsV1XxgWNBvrKJM. Said yes, then asked for bigger cards.
+
+### How the deck works (all in `public/atelier/index.html`)
+- **Markup** is static HTML, so crawlers and no-JS visitors get every card. Two `ul.dk-list` lists inside `.dk-stage`, with `h3.dk-ch` chapter headings. The second heading carries `id="automations"`, so `/#automations` links still work.
+- **CSS** sits under the comment "Work deck." in the inline `<style>`. Every class starts with `dk-` because `.top`, `.cap` and `.pill` already exist on the page (`.top` is the fixed nav).
+- **Default (no `.on` class)** is a plain responsive grid with the description visible. This is what reduced-motion and no-JS visitors see.
+- **Pinned mode** is switched on by the script block "work deck" in the main IIFE. It adds `.on`, sets `--dk-vh`, `--dk-cw`, `--dk-gut`, `--dk-n`, and builds the chapter row, ghost word, side rail, caption, buttons, hint and phone progress bar. Deck height is `100 + 12 × 55` screen-heights. Card motion uses a lerp of the scroll position, and `render()` sets each card's transform from its distance to the current card.
+- Width under 760px adds `.small`. The rail is hidden, cards stack with a small peek, and only "Open project" shows, because the chat bubble needs the corner. Desktop buttons sit `76px` left of the gutter for the same reason.
+- `--dk-vh` only re-measures on a width change or a height change over 120px, so the phone address bar sliding away does not make the deck jump.
+- The "Automations" nav link and `location.hash === '#automations'` jump to card 10. Tabbing onto a card jumps the deck to it. "Skip" scrolls past the deck, and a keyboard-only `.dk-skip` link goes to `#calc`.
+- The automations section above the time-saved calculator lost its header, intro, list and hover preview. It is now `<section class="work auto wrap" id="estimate">` holding only `#calc`.
+- The automation diagrams are the old `#auto-float` SVGs with pattern ids renamed `dk-dots0..2`. The reduced-motion cleanup now removes `.dk-card animateMotion`.
+- `reveal.js` no longer targets the shelf. `cursor.js` shows "View" over `.dk-card`.
+- The `/automations` page still has its own project list (9 rows, `data-shot` 0 to 8). It was not changed to the deck.
+
+### Tests at push
+183 unit tests pass (`npx vitest run`). The e2e suite was not run this round. The deck was checked by hand with Playwright against `python -m http.server` on `public/` at 1440x900 and 390x844. There were no console errors and no sideways scroll, the menu jump worked and the reduced-motion grid rendered.
+
+### Open (offer to the owner, not done)
+- Documentary Generator is behind a password. A demo video or a guest login would let visitors see it. Owner has not said if it is their own product or a client's.
+- `/automations` still lists projects in the old row style. Ask whether it should match the deck.
+- This file has uncommitted edits from the previous session as well as this one. `AGENTS.md` and `CLAUDE.md` stay uncommitted (see Gotchas).
+
+## ▶ EARLIER (2026-10-14 to 2026-10-17): content, search signals and the black and white editorial look
+
+All of this is committed, pushed and live at https://omharregidor.vercel.app (live site checked serving `9f28e82`).
+
+| Commit | What |
+|---|---|
+| `10e0246` | WhatsApp (`https://wa.me/639506009518`) is the contact everywhere: pages, chat KB, `content/profile.ts`, schema, system prompt. The time-saved calculator works in US dollars. New homepage intro. |
+| `d4647da` | Three new project rows with photos and hover previews: Agad, HERA Bathroom (Singapore), HERA ATHENA (Shopify product page). Also in `content/projects.ts` and the chat KB. |
+| `429e354` | Search and AI-answer signals. `llms.txt` rewritten (9 projects, WhatsApp, common questions). The automation page and its plain-text case studies now sit in the HTML so crawlers that skip scripts can read them (`/automations` shows CS Live Inbox by default). JSON-LD page data on gear and automations, HowTo on the case studies, FAQ data, two new homepage questions, a location line in the hero, speakable sections, fresh `lastmod` dates. Dead "All automations" row removed, site icon on every page. Noxa Loyalty now lists its Android app. |
+| `301542e` | Bold black and white close section and footer, one font (Geist) everywhere, Agad called Omhar's own startup (homepage row, JSON-LD, `llms.txt`, `ask-omhar.js`). |
+| `9f28e82` | Bold capital hero headline, one pill button style, fixes from the Gemini and Jazelei review. |
+
+### How the design got here (owner decisions, in order)
+1. Asked for a glassmorphism vibe with a minimal font. Built frosted panels and Geist.
+2. Asked for a https://raycorral.com/ vibe. A full bold editorial redesign was built.
+3. Said revert all of it except two parts: the "Start a project" close (huge bold capitals) and the black footer
+   with a giant "OMHAR REGIDOR" and a live Batangas clock. Colours and shapes went back to before.
+4. Said keep the minimal font and drop the red. **Locked: Geist only, black and white, grey accent words, no red.**
+5. Close heading made bigger on phones.
+6. Hero headline made bold capitals like the close, the line under it made smaller.
+7. Agad marked as their own startup.
+8. Gemini and Jazelei reviewed the new look, owner said fix all. Everything was fixed except the two items in "Open" below.
+
+### Where it lives
+Everything for the new look is in **`public/atelier/editorial.css`**, loaded after `glass.css` on all three pages.
+- Selectors start with `html body[data-reveal][data-reveal]` so they beat each page's inline `<style>` (every page
+  sets `data-reveal` on `<body>`). A comment at the top explains this instead of an `@layer` restructure.
+- Font: `--display`, `--sans`, `--serif`, `--mono` all point to Geist. Heading `em` words are grey, not italic.
+  `fonts/fonts.css` declares Geist once per subset with `font-weight: 100 900`. `Geist-latin.woff2` is preloaded on every page.
+- Middle headings (`.work-head h2`, `.row .name`, `.faq h2`, `.calc h3`, `.sec-head h2`, `.explain h2`, `.a-head h1`,
+  `.a-cta h2`, `.case h3`, `#g-title`, `.g-body h2`, `.pn b`, `.qa-facts dd`) are weight 500, sentence case.
+- Hero h1: 700, uppercase, `clamp(40px, 4.8vw, 70px)`, `12.4vw` on phones, em line white at .58. `.hero-copy` is 70%
+  wide on desktop so it clears the face in the photo. `.sub` is 15 to 16px.
+- Buttons: every `.book` is a 700 uppercase pill.
+- Close: 12% top rule, h2 `clamp(44px, 8.4vw, 132px)` (15vw on phones), dot label, black 56px pill that stretches
+  up to 360px on phones.
+- Footer: `--foot-bg #0C0C0C` / `--foot-ink #F2F1EC`, painted edge to edge with `box-shadow` + `clip-path`, visible
+  focus outline, wordmark `.foot-mark` at `12.4cqi` (container query) with a `clamp` fallback, 104px bottom padding
+  on phones so the chat bubble never covers it.
+- Clock: inline script in `index.html`, `<time id="foot-clock">` in `.foot-clock`, Asia/Manila, `hourCycle: 'h23'`,
+  sets `datetime`, ticks on the minute.
+
+### Tests at push
+183 unit tests pass, lint clean. 31 of 33 e2e pass. The `/resume` and `/certifications` smoke tests fail only on
+the local dev server because of a dev-only `eval()` CSP console warning, with or without these changes.
+
+### Open (offer to the owner, not done)
+- "Replies within a day" line under the hero button, only if it is true for them.
+- A 1200x630 share image.
+- WebP images.
+- A page per project.
+- Review schema.
+- Owner thought there were 4 automations. Asked for details of a 4th, no reply yet.
+
+### Gotchas this round
+- Never commit `AGENTS.md` or `CLAUDE.md` at the repo root. `next dev` creates them.
+- No `Co-Authored-By` lines in commits (owner rule).
+- The local dev server was stopped once by Claude Code for low memory. Start it again only when needed.
 
 ## ▶ LIVE (2026-10-10): the Atelier pages are the site now
 
