@@ -680,7 +680,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .dk.on .dk-list{ display:contents }
 .dk.on .dk-list > li{ display:contents }
 .dk.on .dk-desc{ display:none }
-.dk.on .dk-card{ position:absolute; left:50%; top:52%; width:var(--dk-cw); height:auto; aspect-ratio:1.22; grid-template-rows:auto minmax(0,1fr) auto; gap:14px; padding:calc(var(--dk-cw) * .045); border-radius:22px; box-shadow:0 40px 80px -40px rgb(18 20 19 / .45), 0 2px 0 rgb(255 255 255 / .8) inset; will-change:transform, opacity; backface-visibility:hidden; z-index:1 }
+.dk.on .dk-card{ position:absolute; left:50%; top:49%; width:var(--dk-cw); height:auto; aspect-ratio:1.22; grid-template-rows:auto minmax(0,1fr) auto; gap:14px; padding:calc(var(--dk-cw) * .045); border-radius:22px; box-shadow:0 40px 80px -40px rgb(18 20 19 / .45), 0 2px 0 rgb(255 255 255 / .8) inset; will-change:transform, opacity; backface-visibility:hidden; z-index:1 }
 .dk.on .dk-card.auto{ box-shadow:0 40px 80px -40px rgb(0 0 0 / .7) }
 .dk.on .dk-name{ font-size:calc(var(--dk-cw) * .072) }
 .dk.on .dk-cat{ font-size:calc(var(--dk-cw) * .024) }
@@ -692,7 +692,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .dk-top b{ font-weight:600 }
 .dk-top button{ padding:0; border:0; background:none; color:inherit; font:500 12.5px var(--sans); letter-spacing:0; text-transform:none; text-decoration:underline; text-underline-offset:3px; opacity:.6; cursor:pointer }
 .dk-top button:hover{ opacity:1 }
-.dk-ghost{ position:absolute; left:50%; top:52%; translate:-50% -50%; z-index:0; white-space:nowrap; font-family:var(--display); font-size:calc(var(--dk-cw) * .42); font-weight:800; letter-spacing:-0.05em; line-height:1; text-transform:uppercase; color:transparent; -webkit-text-stroke:1px color-mix(in srgb, currentColor 18%, transparent); pointer-events:none; transition:opacity 300ms ease }
+.dk-ghost{ position:absolute; left:50%; top:49%; translate:-50% -50%; z-index:0; white-space:nowrap; font-family:var(--display); font-size:calc(var(--dk-cw) * .42); font-weight:800; letter-spacing:-0.05em; line-height:1; text-transform:uppercase; color:transparent; -webkit-text-stroke:1px color-mix(in srgb, currentColor 18%, transparent); pointer-events:none; transition:opacity 300ms ease }
 .dk-rail{ position:absolute; right:var(--dk-gut); top:52%; translate:0 -50%; z-index:200; display:grid; gap:2px; justify-items:end }
 .dk-rail button{ display:flex; align-items:center; gap:12px; height:22px; padding:0; border:0; background:none; color:inherit; font:500 12px var(--sans); cursor:pointer }
 .dk-rail i{ display:block; width:14px; height:1px; background:currentColor; opacity:.35; transition:width 400ms var(--ease), opacity 300ms ease }
@@ -1323,7 +1323,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
       const w = dk.clientWidth;
       small = w < 760;
       dk.classList.toggle('small', small);
-      cw = small ? Math.min(w * 0.8, vh * 0.5) : Math.min(w * 0.42, vh * 0.62, 600);
+      cw = small ? Math.min(w * 0.88, vh * 0.56) : Math.min(w * 0.5, vh * 0.7, 760);
       dk.style.setProperty('--dk-cw', cw + 'px');
       dk.style.setProperty('--dk-gut', (small ? 20 : Math.max(24, w * 0.04)) + 'px');
       read();
