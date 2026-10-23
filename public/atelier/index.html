@@ -205,7 +205,7 @@
         "@id": "https://omharregidor.vercel.app/#breadcrumb"
       },
       "inLanguage": "en",
-      "dateModified": "2026-10-19",
+      "dateModified": "2026-10-24",
       "speakable": {
         "@type": "SpeakableSpecification",
         "cssSelector": [".faq-a"]
@@ -324,19 +324,6 @@
           "position": 8,
           "item": {
             "@type": "CreativeWork",
-            "name": "SalesPipe",
-            "url": "https://pipeline-pal-17.vercel.app/",
-            "description": "Sales pipeline and customer tracker.",
-            "creator": {
-              "@id": "https://omharregidor.vercel.app/#person"
-            }
-          }
-        },
-        {
-          "@type": "ListItem",
-          "position": 9,
-          "item": {
-            "@type": "CreativeWork",
             "name": "HERA Bathroom",
             "url": "https://www.herabathroom.com/",
             "description": "Website design for a bathtub and vanity brand in Singapore, with its Shopify store.",
@@ -347,7 +334,7 @@
         },
         {
           "@type": "ListItem",
-          "position": 10,
+          "position": 9,
           "item": {
             "@type": "CreativeWork",
             "name": "HERA ATHENA",
@@ -490,7 +477,7 @@
 <style>
 /* Layout: full-bleed photographic hero (photo right, tinted shade from the left), then the Atelier paper page below. */
 :root{
-  --paper:#F7F6F2; --ink:#121413; --muted:#5B5D59; --line:#DCDBD5;
+  --paper:#F7F6F2; --ink:#121413; --muted:#5B5D59; --line:#DCDBD5; --card:#FFFFFF;
   --accent:#1F7A5A; --on-accent:#FFFFFF; --accent-ink:#1A6B4F; --glow:#8EDDB8; --band:#0F3B2D; --band-fg:#EAF5EF; --hero-bg:#0D1411;
   --display:"Bodoni Moda","Bodoni 72",Didot,Georgia,serif;
   --sans:"Jost","Futura","Century Gothic",ui-sans-serif,system-ui,sans-serif;
@@ -510,7 +497,7 @@ body[data-head="geist"] .logo span{ font-weight:300; font-size:17px }
 body[data-head="geist"] .work-head h2, body[data-head="geist"] .close h2{ font-weight:300; letter-spacing:-0.035em; font-size:clamp(30px, 3.6vw, 48px) }
 body[data-head="geist"] .row .name{ font-weight:300; letter-spacing:-0.03em; font-size:clamp(24px, 3vw, 36px) }
 body[data-head="geist"] .band blockquote p{ font-family:"Instrument Serif", Georgia, serif }
-body[data-mode="dark"]{ --paper:#0F1211; --ink:#ECEDEA; --muted:#A2A49F; --line:#2A2D2B; --accent-ink:var(--glow); color-scheme:dark }
+body[data-mode="dark"]{ --paper:#0F1211; --ink:#ECEDEA; --muted:#A2A49F; --line:#2A2D2B; --card:#161A18; --accent-ink:var(--glow); color-scheme:dark }
 
 *,*::before,*::after{ box-sizing:border-box }
 [hidden]{ display:none !important }
@@ -656,10 +643,57 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 .shot-body::after{ content:""; position:absolute; right:6cqi; top:6cqi; width:30cqi; aspect-ratio:4/5; background:currentColor; opacity:.12 }
 .shot-tag{ position:absolute; left:6cqi; bottom:5cqi; font-family:ui-monospace, Consolas, monospace; font-size:max(9px, 2.4cqi); letter-spacing:.1em; text-transform:uppercase; opacity:.75 }
 .pshot{ display:block; width:100%; height:auto; aspect-ratio:16/10; object-fit:cover; object-position:top center; background:#E4E3DE }
-/* The hover preview eases down the whole live page, then back up, for as long as it shows. */
-.float.on .pshot.full{ animation:pscroll var(--scroll, 9s) cubic-bezier(.45, 0, .55, 1) 700ms infinite alternate both }
-@keyframes pscroll{ from{ object-position:50% 0% } to{ object-position:50% 100% } }
-@media (prefers-reduced-motion: reduce){ .float.on .pshot.full{ animation:none } }
+/* Project shelf. Filter pills, then two rows of cards that slide sideways, picture on the left and details on the right. */
+.ptools{ display:flex; justify-content:space-between; align-items:center; gap:16px; margin-top:32px }
+.pchips{ display:flex; flex-wrap:wrap; gap:8px }
+.pchip{ display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border:1px solid var(--line); border-radius:999px; background:transparent; color:var(--ink); font:500 14px/1.2 var(--sans); cursor:pointer; transition:background 250ms ease, color 250ms ease, border-color 250ms ease }
+.pchip small{ font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums }
+.pchip:hover{ border-color:var(--ink) }
+.pchip[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:var(--paper) }
+.pchip[aria-pressed="true"] small{ color:color-mix(in srgb, var(--paper) 70%, transparent) }
+.pnav{ display:flex; gap:10px; flex-shrink:0 }
+.pnav button{ width:44px; height:44px; display:grid; place-items:center; padding:0; border:1px solid var(--line); border-radius:50%; background:transparent; color:var(--ink); cursor:pointer; transition:background 250ms ease, color 250ms ease, border-color 250ms ease, opacity 250ms ease }
+.pnav button:hover:not(:disabled){ background:var(--ink); border-color:var(--ink); color:var(--paper) }
+.pnav button:disabled{ opacity:.35; cursor:default }
+.pnav .icon{ width:16px; height:16px }
+:is(.pchip, .pnav button, .pcard):focus-visible{ outline:2px solid var(--ink); outline-offset:3px }
+.prail{ list-style:none; margin:20px 0 0; padding:4px 0 8px; display:grid; grid-auto-flow:column; grid-template-rows:repeat(2, auto); grid-auto-columns:calc((100% - 20px) / 2.2); gap:20px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; overscroll-behavior-x:contain }
+.prail::-webkit-scrollbar, .pchips::-webkit-scrollbar{ display:none }
+.prail > li{ display:flex; min-width:0; scroll-snap-align:start }
+.prail > li[hidden]{ display:none }
+.pcard{ position:relative; flex:1; display:grid; grid-template-columns:180px minmax(0,1fr); gap:16px; min-width:0; padding:10px; background:var(--card); border:1px solid var(--line); border-radius:14px; color:inherit; text-decoration:none; transition:transform 400ms var(--ease), box-shadow 400ms var(--ease), border-color 300ms ease }
+.pcard:hover{ transform:translateY(-3px); box-shadow:0 18px 36px -20px rgb(0 0 0 / .35); border-color:color-mix(in srgb, var(--ink) 28%, var(--line)) }
+.pshot-w{ display:block; align-self:start; overflow:hidden; border:1px solid var(--line); border-radius:9px }
+.pcard .pshot{ transition:transform 700ms var(--ease) }
+.pcard:hover .pshot{ transform:scale(1.045) }
+.ptext{ display:grid; align-content:start; gap:5px; min-width:0; padding:2px 36px 2px 0 }
+.pbadges{ display:flex; flex-wrap:wrap; gap:6px }
+.pst, .pown{ display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:999px; font-size:11.5px; font-weight:500; line-height:1.3 }
+.pst{ background:color-mix(in srgb, var(--ink) 6%, transparent) }
+.pst i{ width:6px; height:6px; border-radius:50%; background:var(--ink) }
+.pst.lock i{ background:transparent; box-shadow:inset 0 0 0 1px var(--muted) }
+.pown{ background:var(--ink); color:var(--paper) }
+.pname{ font-family:var(--display); font-size:19px; font-weight:500; letter-spacing:-0.02em; line-height:1.2 }
+.pkind{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:14px; line-height:1.45; color:var(--muted) }
+.pdom{ overflow:hidden; white-space:nowrap; text-overflow:ellipsis; font-size:12.5px; color:var(--muted) }
+.pgo{ position:absolute; right:10px; top:10px; width:30px; height:30px; display:grid; place-items:center; border:1px solid var(--line); border-radius:50%; transition:background 250ms ease, color 250ms ease, border-color 250ms ease, transform 400ms var(--ease) }
+.pgo .icon{ width:13px; height:13px }
+.pcard:is(:hover, :focus-visible) .pgo{ background:var(--ink); border-color:var(--ink); color:var(--paper); transform:rotate(45deg) }
+.pprog{ position:relative; height:2px; margin-top:20px; background:var(--line); border-radius:2px; overflow:hidden }
+.pprog span{ position:absolute; inset:0 auto 0 0; width:40%; background:var(--ink); border-radius:2px; transition:left 200ms ease, width 200ms ease }
+@media (max-width:760px){
+  .ptools{ margin-top:24px }
+  .pnav{ display:none }
+  .pchips{ flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; margin-inline:calc(-1 * clamp(20px, 6vw, 72px)); padding-inline:clamp(20px, 6vw, 72px) }
+  .pchip{ flex-shrink:0 }
+  .prail{ grid-auto-columns:86%; gap:12px }
+  .pcard{ grid-template-columns:112px minmax(0,1fr); gap:12px; padding:9px }
+  .pname{ font-size:16px }
+  .pkind{ font-size:13px }
+  .ptext{ padding-right:30px }
+  .pgo{ right:8px; top:8px; width:26px; height:26px }
+}
+@media (prefers-reduced-motion: reduce){ .pcard, .pcard .pshot, .pgo{ transition:none } .pcard:hover, .pcard:hover .pshot{ transform:none } }
 .s0{ --sa:#17414B; --sb:#EADFCB } .s1{ --sa:#1E2154; --sb:#D3D6FA } .s2{ --sa:#EBCFCF; --sb:#5B2132 } .s3{ --sa:#1E1E21; --sb:#F2B54B }
 .inline{ display:grid; grid-template-rows:0fr; transition:grid-template-rows 420ms var(--ease) }
 .inline > div{ overflow:hidden }
@@ -860,7 +894,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
     </h1>
     <p class="sub fade-in" style="--d:520ms">I help growing businesses eliminate repetitive operations, connect disconnected tools, and build custom AI-powered systems that improve productivity and business performance.</p>
     <div class="ctas fade-in" style="--d:680ms">
-      <a class="book" href="https://wa.me/639506009518?text=Hi%20Omhar%2C%20I%20saw%20your%20portfolio%20and%20want%20to%20talk%20about%20a%20project." target="_blank" rel="noopener">Chat on WhatsApp <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a>    </div>    <p class="assure fade-in" style="--d:820ms">10 live web projects <span aria-hidden="true">·</span> 3 n8n automations <span aria-hidden="true">·</span> Writing code since 2021 <span aria-hidden="true">·</span> Based in Batangas, Philippines</p>
+      <a class="book" href="https://wa.me/639506009518?text=Hi%20Omhar%2C%20I%20saw%20your%20portfolio%20and%20want%20to%20talk%20about%20a%20project." target="_blank" rel="noopener">Chat on WhatsApp <svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></a>    </div>    <p class="assure fade-in" style="--d:820ms">9 live web projects <span aria-hidden="true">·</span> 3 n8n automations <span aria-hidden="true">·</span> Writing code since 2021 <span aria-hidden="true">·</span> Based in Batangas, Philippines</p>
   </div>
   <div class="slides-ui" role="group" aria-label="Hero photos"><button class="s-pause" id="s-pause" type="button" aria-label="Pause slideshow"></button></div>
 </header>
@@ -869,103 +903,124 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   <section class="work wrap" id="work" aria-labelledby="work-h">
     <div class="work-head">
       <div><p class="eyebrow-s"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-browser"/></svg>01 Websites &amp; apps</p><h2 id="work-h">Websites and apps I’ve <em>built</em></h2></div>
-      <p class="label">Ten live projects</p>
+      <p class="label">Nine live projects</p>
     </div>
-    <p class="sec-lead">Ten live projects for small businesses, from a resort booking system with an AI assistant that answers availability questions to a loyalty platform with iOS and Android apps. Each one is live, so you can open it and try it.</p>
-    <ul class="index" id="index">
-      <li>
-        <a class="row" href="https://v2202610431966533958.ultrasrv.de/" target="_blank" rel="noopener">
-          <span class="name">Documentary Generator <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">Turns a script and a voiceover into a finished documentary, with AI-picked scenes, pictures, cuts and sound</span>
-          <span class="dom">Sign-in required</span>
+    <p class="sec-lead">Nine live projects for small businesses, from a resort booking system with an AI assistant that answers availability questions to a loyalty platform with iOS and Android apps. Each card opens the live project, and only the Documentary Generator needs a sign-in.</p>
+    <div class="ptools">
+      <div class="pchips" role="group" aria-label="Filter projects"><button class="pchip" type="button" data-f="all" aria-pressed="true">All <small>9</small></button><button class="pchip" type="button" data-f="ai" aria-pressed="false">AI products <small>3</small></button><button class="pchip" type="button" data-f="app" aria-pressed="false">Web apps <small>2</small></button><button class="pchip" type="button" data-f="site" aria-pressed="false">Websites &amp; Shopify <small>4</small></button></div>
+      <div class="pnav"><button type="button" data-dir="-1" aria-label="Previous projects"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-left"/></svg></button><button type="button" data-dir="1" aria-label="Next projects"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-right"/></svg></button></div>
+    </div>
+    <ul class="prail" id="index" aria-label="Projects">
+      <li data-c="ai">
+        <a class="pcard" href="https://v2202610431966533958.ultrasrv.de/" target="_blank" rel="noopener">
+          <span class="pshot-w"><img class="pshot" src="/atelier/projects/docgen.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Screenshot of Documentary Generator"></span>
+          <span class="ptext">
+            <span class="pbadges"><span class="pst lock"><i></i>Sign-in</span></span>
+            <span class="pname">Documentary Generator<span class="sr"> (opens in a new tab)</span></span>
+            <span class="pkind">Turns a script and a voiceover into a finished documentary, with AI-picked scenes, pictures, cuts and sound</span>
+            <span class="pdom">Sign-in required</span>
+          </span>
+          <span class="pgo" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span>
         </a>
-        <div class="inline"><div><div class="in"><img class="pshot" data-i="0" src="/atelier/projects/docgen.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Finished film screen of the Documentary Generator"></div></div></div>
       </li>
-      <li>
-        <a class="row" href="https://applyfirst.tail1fc6ab.ts.net/" target="_blank" rel="noopener">
-          <span class="name">Agad <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">My own startup. Job alerts, AI-written job applications and one-click sending through Gmail</span>
-          <span class="dom">applyfirst.tail1fc6ab.ts.net</span>
+      <li data-c="ai">
+        <a class="pcard" href="https://applyfirst.tail1fc6ab.ts.net/" target="_blank" rel="noopener">
+          <span class="pshot-w"><img class="pshot" src="/atelier/projects/agad.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Screenshot of Agad"></span>
+          <span class="ptext">
+            <span class="pbadges"><span class="pst"><i></i>Live</span><span class="pown">Own startup</span></span>
+            <span class="pname">Agad<span class="sr"> (opens in a new tab)</span></span>
+            <span class="pkind">Job alerts, AI-written job applications and one-click sending through Gmail</span>
+            <span class="pdom">applyfirst.tail1fc6ab.ts.net</span>
+          </span>
+          <span class="pgo" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span>
         </a>
-        <div class="inline"><div><div class="in"><img class="pshot" data-i="1" src="/atelier/projects/agad.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Homepage of Agad"></div></div></div>
       </li>
-      <li>
-        <a class="row" href="https://binukbok-viewpoint.vercel.app" target="_blank" rel="noopener">
-          <span class="name">BiNuKBoK View Point Resort <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">Resort booking, admin dashboard and an AI assistant</span>
-          <span class="dom">binukbok-viewpoint.vercel.app</span>
+      <li data-c="ai">
+        <a class="pcard" href="https://binukbok-viewpoint.vercel.app" target="_blank" rel="noopener">
+          <span class="pshot-w"><img class="pshot" src="/atelier/projects/binukbok.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Screenshot of BiNuKBoK View Point Resort"></span>
+          <span class="ptext">
+            <span class="pbadges"><span class="pst"><i></i>Live</span></span>
+            <span class="pname">BiNuKBoK View Point Resort<span class="sr"> (opens in a new tab)</span></span>
+            <span class="pkind">Resort booking, admin dashboard and an AI assistant</span>
+            <span class="pdom">binukbok-viewpoint.vercel.app</span>
+          </span>
+          <span class="pgo" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span>
         </a>
-        <div class="inline"><div><div class="in"><img class="pshot" data-i="2" src="/atelier/projects/binukbok.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Homepage of BiNuKBoK View Point Resort"></div></div></div>
       </li>
-      <li>
-        <a class="row" href="https://www.noxaloyalty.com/" target="_blank" rel="noopener">
-          <span class="name">Noxa Loyalty <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">Loyalty rewards web app, iOS app and Android app</span>
-          <span class="dom">noxaloyalty.com</span>
+      <li data-c="app">
+        <a class="pcard" href="https://www.noxaloyalty.com/" target="_blank" rel="noopener">
+          <span class="pshot-w"><img class="pshot" src="/atelier/projects/noxa.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Screenshot of Noxa Loyalty"></span>
+          <span class="ptext">
+            <span class="pbadges"><span class="pst"><i></i>Live</span></span>
+            <span class="pname">Noxa Loyalty<span class="sr"> (opens in a new tab)</span></span>
+            <span class="pkind">Loyalty rewards web app, iOS app and Android app</span>
+            <span class="pdom">noxaloyalty.com</span>
+          </span>
+          <span class="pgo" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span>
         </a>
-        <div class="inline"><div><div class="in"><img class="pshot" data-i="3" src="/atelier/projects/noxa.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Homepage of Noxa Loyalty"></div></div></div>
       </li>
-      <li>
-        <a class="row" href="https://www.sweetblooms.ph/" target="_blank" rel="noopener">
-          <span class="name">SweetBlooms <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">Florist e-commerce with sales, inventory and POS</span>
-          <span class="dom">sweetblooms.ph</span>
+      <li data-c="app">
+        <a class="pcard" href="https://www.sweetblooms.ph/" target="_blank" rel="noopener">
+          <span class="pshot-w"><img class="pshot" src="/atelier/projects/sweetblooms.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Screenshot of SweetBlooms"></span>
+          <span class="ptext">
+            <span class="pbadges"><span class="pst"><i></i>Live</span></span>
+            <span class="pname">SweetBlooms<span class="sr"> (opens in a new tab)</span></span>
+            <span class="pkind">Florist e-commerce with sales, inventory and POS</span>
+            <span class="pdom">sweetblooms.ph</span>
+          </span>
+          <span class="pgo" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span>
         </a>
-        <div class="inline"><div><div class="in"><img class="pshot" data-i="4" src="/atelier/projects/sweetblooms.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Homepage of SweetBlooms"></div></div></div>
       </li>
-      <li>
-        <a class="row" href="https://www.jazamedia.com/" target="_blank" rel="noopener">
-          <span class="name">JAZA Media <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">Website for a media agency</span>
-          <span class="dom">jazamedia.com</span>
+      <li data-c="site">
+        <a class="pcard" href="https://www.jazamedia.com/" target="_blank" rel="noopener">
+          <span class="pshot-w"><img class="pshot" src="/atelier/projects/jaza.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Screenshot of JAZA Media"></span>
+          <span class="ptext">
+            <span class="pbadges"><span class="pst"><i></i>Live</span></span>
+            <span class="pname">JAZA Media<span class="sr"> (opens in a new tab)</span></span>
+            <span class="pkind">Website for a media agency</span>
+            <span class="pdom">jazamedia.com</span>
+          </span>
+          <span class="pgo" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span>
         </a>
-        <div class="inline"><div><div class="in"><img class="pshot" data-i="5" src="/atelier/projects/jaza.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Homepage of JAZA Media"></div></div></div>
       </li>
-      <li>
-        <a class="row" href="https://crisia-va-portfolio.vercel.app/" target="_blank" rel="noopener">
-          <span class="name">Crisia VA <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">Portfolio site for a virtual assistant</span>
-          <span class="dom">crisia-va-portfolio.vercel.app</span>
+      <li data-c="site">
+        <a class="pcard" href="https://crisia-va-portfolio.vercel.app/" target="_blank" rel="noopener">
+          <span class="pshot-w"><img class="pshot" src="/atelier/projects/crisia.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Screenshot of Crisia VA"></span>
+          <span class="ptext">
+            <span class="pbadges"><span class="pst"><i></i>Live</span></span>
+            <span class="pname">Crisia VA<span class="sr"> (opens in a new tab)</span></span>
+            <span class="pkind">Portfolio site for a virtual assistant</span>
+            <span class="pdom">crisia-va-portfolio.vercel.app</span>
+          </span>
+          <span class="pgo" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span>
         </a>
-        <div class="inline"><div><div class="in"><img class="pshot" data-i="6" src="/atelier/projects/crisia.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Homepage of Crisia VA"></div></div></div>
       </li>
-      <li>
-        <a class="row" href="https://pipeline-pal-17.vercel.app/" target="_blank" rel="noopener">
-          <span class="name">SalesPipe <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">Sales pipeline and customer tracker</span>
-          <span class="dom">pipeline-pal-17.vercel.app</span>
+      <li data-c="site">
+        <a class="pcard" href="https://www.herabathroom.com/" target="_blank" rel="noopener">
+          <span class="pshot-w"><img class="pshot" src="/atelier/projects/hera.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Screenshot of HERA Bathroom"></span>
+          <span class="ptext">
+            <span class="pbadges"><span class="pst"><i></i>Live</span></span>
+            <span class="pname">HERA Bathroom<span class="sr"> (opens in a new tab)</span></span>
+            <span class="pkind">Website design for a bathtub and vanity brand in Singapore, with its Shopify store</span>
+            <span class="pdom">herabathroom.com</span>
+          </span>
+          <span class="pgo" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span>
         </a>
-        <div class="inline"><div><div class="in"><img class="pshot" data-i="7" src="/atelier/projects/salespipe.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Homepage of SalesPipe"></div></div></div>
       </li>
-      <li>
-        <a class="row" href="https://www.herabathroom.com/" target="_blank" rel="noopener">
-          <span class="name">HERA Bathroom <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">Website design for a bathtub and vanity brand in Singapore, with its Shopify store</span>
-          <span class="dom">herabathroom.com</span>
+      <li data-c="site">
+        <a class="pcard" href="https://store.herabathroom.com/pages/athena" target="_blank" rel="noopener">
+          <span class="pshot-w"><img class="pshot" src="/atelier/projects/athena.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Screenshot of HERA ATHENA"></span>
+          <span class="ptext">
+            <span class="pbadges"><span class="pst"><i></i>Live</span></span>
+            <span class="pname">HERA ATHENA<span class="sr"> (opens in a new tab)</span></span>
+            <span class="pkind">Built in Shopify. Product page for a modular bathroom vanity system</span>
+            <span class="pdom">store.herabathroom.com</span>
+          </span>
+          <span class="pgo" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span>
         </a>
-        <div class="inline"><div><div class="in"><img class="pshot" data-i="8" src="/atelier/projects/hera.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Homepage of HERA Bathroom"></div></div></div>
-      </li>
-      <li>
-        <a class="row" href="https://store.herabathroom.com/pages/athena" target="_blank" rel="noopener">
-          <span class="name">HERA ATHENA <span class="arr" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-arrow-up-right"/></svg></span><span class="sr"> (opens in a new tab)</span></span>
-          <span class="kind">Built in Shopify. Product page for a modular bathroom vanity system</span>
-          <span class="dom">store.herabathroom.com</span>
-        </a>
-        <div class="inline"><div><div class="in"><img class="pshot" data-i="9" src="/atelier/projects/athena.jpg" width="960" height="600" loading="lazy" decoding="async" alt="Homepage of HERA ATHENA"></div></div></div>
       </li>
     </ul>
-    <div class="float" id="float" aria-hidden="true">
-      <img class="pshot" src="/atelier/projects/docgen.jpg" data-full="/atelier/projects/docgen-full.jpg" decoding="async" alt="">
-      <img class="pshot" src="/atelier/projects/agad.jpg" data-full="/atelier/projects/agad-full.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/binukbok.jpg" data-full="/atelier/projects/binukbok-full.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/noxa.jpg" data-full="/atelier/projects/noxa-full.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/sweetblooms.jpg" data-full="/atelier/projects/sweetblooms-full.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/jaza.jpg" data-full="/atelier/projects/jaza-full.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/crisia.jpg" data-full="/atelier/projects/crisia-full.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/salespipe.jpg" data-full="/atelier/projects/salespipe-full.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/hera.jpg" data-full="/atelier/projects/hera-full.jpg" decoding="async" alt="" hidden>
-      <img class="pshot" src="/atelier/projects/athena.jpg" data-full="/atelier/projects/athena-full.jpg" decoding="async" alt="" hidden>
-    </div>
+    <div class="pprog" aria-hidden="true"><span></span></div>
   </section>
 
   <section class="work auto wrap" id="automations" aria-labelledby="auto-h">
@@ -1236,77 +1291,26 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 
   // Light mode only: the theme toggle was removed at the owner's request.
 
-  /* project list preview */
-  const work = document.getElementById('work');
-  const index = document.getElementById('index');
-  const rows = [...index.querySelectorAll('.row')];
-  const float = document.getElementById('float');
-  const shots = [...float.querySelectorAll('.pshot')];
-  document.querySelectorAll('.inline img[data-i]').forEach(im => { im.src = shots[Number(im.dataset.i)].src; });
-  // Phones show the screenshot under each project. Make it open the live site too, like the title above it.
-  index.querySelectorAll('li').forEach(li => {
-    const row = li.querySelector('.row'), im = li.querySelector('.inline img');
-    if (!row || !im) return;
-    const shot = document.createElement('a');
-    shot.className = 'shot-link'; shot.href = row.href; shot.target = '_blank'; shot.rel = 'noopener';
-    shot.tabIndex = -1; shot.setAttribute('aria-hidden', 'true');
-    im.replaceWith(shot); shot.append(im);
-  });
-  // Mouse users get each live site's full-length capture, which scrolls slowly inside the preview. All ten load
-  // the first time the pointer reaches the list, and each swaps in once it has arrived.
-  let fullLoaded = false;
-  const loadFull = () => {
-    if (fullLoaded) return;
-    fullLoaded = true;
-    shots.forEach(s => {
-      const pic = new Image();
-      pic.onload = () => {
-        // About 1.6 seconds per screen of page, so long and short sites scroll at the same pace.
-        const screens = pic.naturalHeight / (pic.naturalWidth * 10 / 16) - 1;
-        if (screens < 0.2) return;
-        s.style.setProperty('--scroll', Math.min(16, Math.max(4, screens * 1.6)).toFixed(1) + 's');
-        s.src = pic.src;
-        s.classList.add('full');
-      };
-      pic.src = s.dataset.full;
-    });
+  /* project shelf: filters, arrows and the progress line under the cards */
+  const rail = document.getElementById('index');
+  const pbar = document.querySelector('.pprog span');
+  const pnav = [...document.querySelectorAll('.pnav button')];
+  const pstep = () => { const li = [...rail.children].find(x => !x.hidden); return li ? li.offsetWidth + parseFloat(getComputedStyle(rail).columnGap) : 300; };
+  const psync = () => {
+    const max = rail.scrollWidth - rail.clientWidth, w = rail.clientWidth / rail.scrollWidth;
+    pbar.parentElement.hidden = max < 4;
+    pbar.style.width = (w * 100) + '%';
+    pbar.style.left = (max > 0 ? rail.scrollLeft / max * (1 - w) * 100 : 0) + '%';
+    pnav.forEach(b => { b.disabled = b.dataset.dir === '-1' ? rail.scrollLeft < 4 : rail.scrollLeft > max - 4; });
   };
-  index.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') loadFull(); });
-  let x = 0, y = 0, tx = 0, ty = 0, raf = 0, active = -1, fresh = false;
-  const put = () => { float.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`; };
-  const step = () => { x += (tx - x) * 0.18; y += (ty - y) * 0.18; put(); raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.3 ? requestAnimationFrame(step) : 0; };
-  const move = snap => { if (snap || reduce.matches) { x = tx; y = ty; put(); return; } if (!raf) raf = requestAnimationFrame(step); };
-  const setActive = i => {
-    if (i >= 0 && active < 0) fresh = true;
-    active = i;
-    rows.forEach((r, k) => r.classList.toggle('on', k === i));
-    index.classList.toggle('has-active', i >= 0);
-    float.classList.toggle('on', i >= 0);
-    shots.forEach((s, k) => { s.hidden = k !== i; });
-  };
-  rows.forEach((r, i) => {
-    r.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') setActive(i); });
-    r.addEventListener('focus', () => {
-      if (!r.matches(':focus-visible')) return;
-      setActive(i);
-      const wr = work.getBoundingClientRect(), rr = r.getBoundingClientRect();
-      tx = Math.max(0, wr.width - float.offsetWidth - 24);
-      ty = rr.top - wr.top - float.offsetHeight * 0.3;
-      move(fresh); fresh = false;
-    });
-    r.addEventListener('blur', () => setActive(-1));
-  });
-  index.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') setActive(-1); });
-  work.addEventListener('pointermove', e => {
-    if (e.pointerType !== 'mouse' || active < 0) return;
-    const wr = work.getBoundingClientRect();
-    const w = float.offsetWidth, h = float.offsetHeight;
-    let nx = e.clientX - wr.left + 28;
-    if (nx + w > wr.width) nx = e.clientX - wr.left - 28 - w;
-    tx = clamp(nx, 0, Math.max(0, wr.width - w));
-    ty = e.clientY - wr.top - h / 2;
-    move(fresh); fresh = false;
-  });
+  pnav.forEach(b => b.addEventListener('click', () => rail.scrollBy({ left: Number(b.dataset.dir) * pstep() * 2, behavior: reduce.matches ? 'auto' : 'smooth' })));
+  rail.addEventListener('scroll', psync, { passive: true });
+  new ResizeObserver(psync).observe(rail);
+  document.querySelectorAll('.pchip').forEach(ch => ch.addEventListener('click', () => {
+    document.querySelectorAll('.pchip').forEach(x => x.setAttribute('aria-pressed', String(x === ch)));
+    [...rail.children].forEach(li => { li.hidden = ch.dataset.f !== 'all' && li.dataset.c !== ch.dataset.f; });
+    rail.scrollLeft = 0; psync();
+  }));
 
   /* ---------- hero slideshow ---------- */
   const SLIDES = ['campus', 'lobby', 'studio', 'grad', 'nightcode'];

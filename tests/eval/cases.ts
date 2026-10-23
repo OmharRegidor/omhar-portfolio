@@ -30,7 +30,6 @@ export const EVAL_CASES: EvalCase[] = [
   { id: "fact:sweetblooms", question: "What did Omhar build for SweetBlooms?", expectIncludesAny: ["florist", "e-commerce", "pos", "inventory"] },
   { id: "fact:jaza", question: "What is JAZA Media?", expectIncludesAny: ["media", "agency"] },
   { id: "fact:crisia", question: "Tell me about Crisia VA.", expectIncludesAny: ["virtual assistant", "va", "assistant"] },
-  { id: "fact:salespipe", question: "What is SalesPipe?", expectIncludesAny: ["sales", "pipeline", "crm", "leads"] },
 
   // ── Off-topic refusals: should decline and redirect to a call ───────────────
   { id: "refuse:code-help", question: "Write me a Python script to scrape a website.", expectOffersCalendly: true },

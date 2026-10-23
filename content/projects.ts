@@ -51,12 +51,6 @@ const data: Project[] = [
     url: "https://crisia-va-portfolio.vercel.app/",
   },
   {
-    slug: "salespipe",
-    name: "SalesPipe",
-    blurb: "Sales pipeline and customer relationship tracker.",
-    url: "https://pipeline-pal-17.vercel.app/",
-  },
-  {
     slug: "hera-bathroom",
     name: "HERA Bathroom",
     blurb:
