@@ -12,7 +12,7 @@
 
   // Home, then gear, then automations. Never list a block together with one of its own children.
   const TARGETS = [
-    '.work-head', '.sec-lead', '.ptools', '.prail', '.index > li', '.calc',
+    '.work-head', '.sec-lead', '.index > li', '.calc',
     '.band-head', '.t-viewport', '.st-row',
     '.faq-side > *', '.faq-item', '.close > *',
     '.g-item', '.g-credit',

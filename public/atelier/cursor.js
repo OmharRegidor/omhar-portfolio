@@ -9,7 +9,7 @@
   if (!mouse.matches || reduce.matches) return;
 
   // Hover labels, as selector → text shown inside the disc.
-  const LABELS = { '.index .row': 'View', '.pcard': 'View' };
+  const LABELS = { '.index .row': 'View', '.dk-card': 'View' };
 
   const css = `
 html.has-cursor, html.has-cursor *{ cursor:none !important }
