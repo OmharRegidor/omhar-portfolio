@@ -18,9 +18,10 @@ Updated: 2026-10-14
 - Mobile app development: iOS and Android apps built with React Native.
 - Shopify store and product page design.
 
-## Web projects (9)
-- Documentary Generator: web app that turns a script and a voiceover into a finished 1080p documentary. AI plans the scenes, finds the pictures, makes the cuts and mixes the sound. Sign-in required. https://v2202610431966533958.ultrasrv.de/
+## Web projects (10)
+- Video Generator: web app that turns a script and a voiceover into a finished 1080p documentary. AI plans the scenes, finds the pictures, makes the cuts and mixes the sound. Sign-in required. https://v2202610431966533958.ultrasrv.de/
 - Agad (Omhar's own startup): job application app with job alerts, AI-written job applications and one-click sending through Gmail. Watches onlinejobs.ph for new jobs and sends a ready-to-paste application to the user's own Gmail. https://applyfirst.tail1fc6ab.ts.net/
+- Creator Finder: invite-only web app for finding affordable UGC creators by country, tier, rate and follower count, nano and micro tier first. Sign-in required. https://comfit-creator-finder.vercel.app/login
 - BiNuKBoK View Point Resort: resort booking site, admin dashboard and an AI assistant that answers live availability questions. https://binukbok-viewpoint.vercel.app
 - Noxa Loyalty: customer loyalty platform with a web app, an iOS app on the App Store and an Android app. https://www.noxaloyalty.com/
 - SweetBlooms: florist e-commerce with an internal sales, inventory and POS system. https://www.sweetblooms.ph/

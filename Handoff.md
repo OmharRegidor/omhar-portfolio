@@ -1,4 +1,12 @@
-# Handoff, Omhar's Portfolio (updated 2026-10-24)
+# Handoff, Omhar's Portfolio (updated 2026-10-25)
+
+## ▶ 2026-10-25: Creator Finder added, Documentary Generator renamed
+
+- **Creator Finder** (`https://comfit-creator-finder.vercel.app/login`) added as project 3, right after Agad, everywhere: deck card on the homepage, `/automations` list, JSON-LD, `llms.txt`, `ask-omhar.js`, `content/projects.ts`, chat KB test. It is invite-only, so the card says "Sign-in required". The screenshot `projects/creatorfinder.jpg` is cropped from the owner's own `Desktop/creator-finder-home.png`. Labelled "Web app" because it is not known whether it uses AI. Ask the owner.
+- **Documentary Generator is now "Video Generator"** everywhere (slug `video-generator`). The description still says it makes documentaries.
+- Counts are now **10 live web projects** and the deck has **13 cards** (card numbers in `.dk-num` are static text, so renumber them when adding a card).
+- Intro line: "Each card opens the live project. The Video Generator and Creator Finder need a sign-in."
+- Tests: on the full `npx vitest run`, 2 gallery tests failed once and passed when run alone. That looks like a timing flake under load, not these changes.
 
 ## ▶ LATEST (2026-10-18 to 2026-10-24): new project, SalesPipe out, projects and automations as a scroll deck
 

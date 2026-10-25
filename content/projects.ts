@@ -4,8 +4,8 @@ import { ProjectsSchema, type Project } from "./schemas";
 // /projects renders the full list. Cards link directly to the project URL.
 const data: Project[] = [
   {
-    slug: "documentary-generator",
-    name: "Documentary Generator",
+    slug: "video-generator",
+    name: "Video Generator",
     blurb:
       "Web app that turns a script and a voiceover into a finished 1080p documentary. AI plans the scenes, finds the pictures, makes the cuts and mixes the sound. Sign-in required.",
     url: "https://v2202610431966533958.ultrasrv.de/",
@@ -16,6 +16,13 @@ const data: Project[] = [
     blurb:
       "Startup application that watches onlinejobs.ph for new jobs, writes a ready-to-paste application with AI, and sends it to the user's own Gmail so they can apply first.",
     url: "https://applyfirst.tail1fc6ab.ts.net/",
+  },
+  {
+    slug: "creator-finder",
+    name: "Creator Finder",
+    blurb:
+      "Invite-only web app for finding affordable UGC creators by country, tier, rate and follower count, nano and micro tier first. Sign-in required.",
+    url: "https://comfit-creator-finder.vercel.app/login",
   },
   {
     slug: "binukbok-viewpoint",

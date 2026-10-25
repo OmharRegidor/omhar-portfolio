@@ -17,7 +17,8 @@ describe("buildKnowledgeBlock", () => {
       "JAZA Media",
       "Crisia VA",
       "Agad",
-      "Documentary Generator",
+      "Video Generator",
+      "Creator Finder",
       "HERA Bathroom",
       "HERA ATHENA",
     ]) {
