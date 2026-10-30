@@ -1,5 +1,10 @@
 import { test, expect } from "@playwright/test";
 
+// Pin the clock to a normal day (no seasonal greeting), so these checks never depend on today's date.
+test.beforeEach(async ({ page }) => {
+  await page.clock.setFixedTime(new Date("2026-09-15T12:00:00+08:00"));
+});
+
 // The live assistant, the inbox demo and the time-saved estimate on the Atelier pages. The AI routes are mocked
 // here so the checks hold with or without a provider key; the routes themselves are covered by unit tests.
 

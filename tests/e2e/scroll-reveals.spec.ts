@@ -1,5 +1,10 @@
 import { test, expect, type Page } from "@playwright/test";
 
+// Pin the clock to a normal day (no seasonal greeting), so these checks never depend on today's date.
+test.beforeEach(async ({ page }) => {
+  await page.clock.setFixedTime(new Date("2026-09-15T12:00:00+08:00"));
+});
+
 // Scroll pop-ins from public/atelier/reveal.js. A block below the fold is held invisible by a paused Web
 // Animation, so its computed opacity reads 0 until it scrolls in, then 1 once the pop has landed.
 const opacity = (page: Page, selector: string) =>

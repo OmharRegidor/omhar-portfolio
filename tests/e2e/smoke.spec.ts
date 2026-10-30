@@ -1,5 +1,10 @@
 import { test, expect } from "@playwright/test";
 
+// Pin the clock to a normal day (no seasonal greeting), so these checks never depend on today's date.
+test.beforeEach(async ({ page }) => {
+  await page.clock.setFixedTime(new Date("2026-09-15T12:00:00+08:00"));
+});
+
 // "/", "/automations" and "/gear" are the static Atelier pages (public/atelier, served by rewrites in
 // next.config.ts). "/certifications" and "/resume" are still the React routes. Project rows link out,
 // so there is no /projects/[slug] page to test.

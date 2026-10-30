@@ -52,3 +52,6 @@ next-env.d.ts
 
 # superpowers visual-brainstorm mockups (local only)
 .superpowers/
+
+graphify-out/
+strix_runs/
