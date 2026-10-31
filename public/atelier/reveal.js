@@ -1,6 +1,9 @@
 /* Scroll entrances, shared by every Atelier page. Blocks that start below the fold are held invisible, then animate
-   into place as they scroll into view, one after another when several arrive together. Each page picks its own
-   style with data-reveal on <body> (see STYLES). Numbers marked data-count run up from 0 as their block comes in.
+   into place as they scroll into view, one after another when several arrive together. Every page uses the dot
+   style: a block shows through a fine dot screen whose dots grow until they touch and the block is solid, while a
+   soft edge sweeps across it. Big blocks, and browsers that cannot animate a mask, get a plain fade and rise
+   instead, so scrolling stays smooth. Nothing inside the project deck or the hero is ever touched, since both run
+   their own motion. Numbers marked data-count run up from 0 as their block comes in.
    Blocks already on screen when the page loads are left alone, so nothing flashes. The hold and the entrance are
    both Web Animations, so no class or inline style is left behind once a block is in. Reduced motion, printing and
    a page without JS all show everything as normal. A page that redraws its content calls
@@ -16,39 +19,45 @@
     '.band-head', '.t-viewport', '.st-row',
     '.faq-side > *', '.faq-item', '.close > *',
     '.g-item', '.g-credit',
+    '.sec-head', '.case',
     '.stage', '.story .beat', '.human', '.try', '.explain > .eyebrow', '.explain > h2', '#explain > li', '.a-cta',
     '.pn > a', '.foot > *',
   ].join(',');
+  const SKIP = '#deck, .hero';
 
+  // The dot screen is two mask layers added together: a soft edge that sweeps across the block, and a 9px grid of
+  // dots that grow from nothing to 7px. At 7px the dots overlap and cover every tile, so the last frame is solid
+  // and nothing jumps when the animation lets go. Both sizes are registered properties, so they animate smoothly.
+  const MASK = 'linear-gradient(100deg, #000 var(--fx-sweep), transparent calc(var(--fx-sweep) + 25%)), '
+    + 'radial-gradient(circle, #000 var(--fx-dot), transparent calc(var(--fx-dot) + 1px))';
+  const dotPose = (dot, sweep, rise) => ({
+    '--fx-dot': dot, '--fx-sweep': sweep, translate: rise,
+    maskImage: MASK, webkitMaskImage: MASK, maskSize: '100% 100%, 9px 9px', webkitMaskSize: '100% 100%, 9px 9px',
+    maskComposite: 'add', webkitMaskComposite: 'source-over',
+  });
   const STYLES = {
-    // Home. Rise and grow, then settle with a small overshoot, like a card popping up.
-    pop: {
-      frames: [{ opacity: 0, translate: '0 40px', scale: '.94' }, { opacity: 1, translate: '0 0', scale: '1' }],
-      duration: 800, easing: 'cubic-bezier(.175, .885, .32, 1.275)', step: 80,
-    },
-    // Gear. Tip up from lying flat, like a product being stood up on a table.
-    lift: {
-      frames: [
-        { opacity: 0, transform: 'perspective(1200px) translateY(70px) rotateX(24deg)', transformOrigin: '50% 100%' },
-        { opacity: 1, transform: 'perspective(1200px) translateY(0) rotateX(0deg)', transformOrigin: '50% 100%' },
-      ],
-      duration: 1100, easing: 'cubic-bezier(.16, 1, .3, 1)', step: 120,
-    },
-    // Automations. Wipe in from the left, the way a run moves through a workflow.
-    wipe: {
-      frames: [
-        { opacity: 0, clipPath: 'inset(0 100% 0 0)', translate: '-28px 0' },
-        { opacity: 1, clipPath: 'inset(0 0% 0 0)', translate: '0 0' },
-      ],
-      duration: 900, easing: 'cubic-bezier(.65, 0, .35, 1)', step: 90,
-    },
+    dot: { frames: [dotPose('0px', '-30%', '0 14px'), dotPose('7px', '130%', '0 0')], duration: 1100, easing: 'cubic-bezier(.45, 0, .2, 1)', step: 110 },
   };
-  const style = STYLES[document.body.dataset.reveal] || STYLES.pop;
+  const PLAIN = { frames: [{ opacity: 0, translate: '0 14px' }, { opacity: 1, translate: '0 0' }], duration: 900 };
+  const masks = !!(window.CSS && CSS.registerProperty && CSS.supports && CSS.supports('mask-image', 'radial-gradient(#000, #000)'));
+  if (masks) {
+    for (const [name, syntax, initialValue] of [['--fx-dot', '<length>', '0px'], ['--fx-sweep', '<percentage>', '130%']]) {
+      try { CSS.registerProperty({ name, syntax, inherits: false, initialValue }); } catch { /* already registered by an earlier run */ }
+    }
+  }
+  const style = STYLES[document.body.dataset.reveal] || STYLES.dot;
+  // A mask repaints the whole block every frame, so a block taller than 90% of the window, or bigger than 60% of
+  // its area, gets the plain fade and rise.
+  function framesFor(r) {
+    if (!masks) return PLAIN;
+    const vw = innerWidth, vh = innerHeight;
+    return r.height > vh * 0.9 || r.width * r.height > vw * vh * 0.6 ? PLAIN : style;
+  }
   // While a block waits it is only faded out, never moved or clipped. The observer measures what is actually
   // painted, so a block clipped to nothing would never count as showing and would wait forever.
   const HOLD = [{ opacity: 0 }, { opacity: 0 }];
   // fill:backwards keeps a block at the start pose while it waits its turn, and drops the effect once it lands.
-  const TIMING = { duration: style.duration, easing: style.easing, fill: 'backwards' };
+  const TIMING = { easing: style.easing, fill: 'backwards' };
   const MAX_STEPS = 7, COUNT_MS = 1400;
 
   const known = new WeakSet(); // every block ever handed to the observer
@@ -92,16 +101,22 @@
         hold.pause();
         held.set(el, hold);
       } else if (e.intersectionRatio >= SHOWING && held.has(el)) {
-        due.push({ el, top: Math.round(r.top), left: r.left });
+        due.push({ el, r, top: Math.round(r.top), left: r.left });
       }
     }
+    // A block the page scrolled straight past, too fast for any report, is let go as it is. Nobody saw it wait,
+    // and scrolling back up must never find it missing.
+    for (const [el, hold] of held) {
+      if (el.getBoundingClientRect().bottom < 0) { hold.cancel(); held.delete(el); io.unobserve(el); }
+    }
     due.sort((a, b) => a.top - b.top || a.left - b.left);
-    due.forEach(({ el }, i) => {
+    due.forEach(({ el, r }, i) => {
       const delay = Math.min(i, MAX_STEPS) * style.step;
       held.get(el).cancel();
       held.delete(el);
       io.unobserve(el);
-      el.animate(style.frames, { ...TIMING, delay });
+      const look = framesFor(r);
+      el.animate(look.frames, { ...TIMING, duration: look.duration, delay });
       el.querySelectorAll('[data-count]').forEach(n => countUp(n, delay + 100));
     });
   }, { threshold: [0, SHOWING] });
@@ -119,7 +134,7 @@
     if (reduce.matches) return;
     for (const [el, hold] of held) if (!el.isConnected) { hold.cancel(); held.delete(el); io.unobserve(el); }
     document.querySelectorAll(TARGETS).forEach(el => {
-      if (el.parentElement.closest(TARGETS)) return;
+      if (el.parentElement.closest(TARGETS) || el.closest(SKIP)) return;
       if (!known.has(el) || (root && root.contains(el) && !held.has(el))) arm(el);
     });
   }

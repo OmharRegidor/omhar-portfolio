@@ -529,7 +529,7 @@ h1,h2,p{ margin:0 }
 .hero{ position:relative; isolation:isolate; min-height:max(640px, min(100svh, 920px)); background:var(--hero-bg); color:#FFFFFF; overflow:hidden; display:grid; grid-template-rows:102px 1fr }
 .hero-media{ position:absolute; inset:0 0 0 auto; width:64%; z-index:-2 }
 .ph{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 500ms ease }
-.ph-campus-day, .ph-campus-night, .ph-campus-day-hover, .ph-campus-night-hover{ object-position:50% 22% }
+.ph-campus-day, .ph-campus-night, .ph-campus-day-hover, .ph-campus-night-hover, .ph-costume{ object-position:50% 22% }
 .ph-lobby{ object-position:78% 40% }
 .ph-studio{ object-position:50% 28% }
 .ph-grad{ object-position:50% 28% }
@@ -546,6 +546,11 @@ body[data-photo="slideshow"] .ph.show{ opacity:1 }
 body[data-photo="slideshow"] .ph{ transition:opacity 650ms ease }
 body[data-photo="slideshow"] .ph.show{ animation:kb 3.6s ease-out both }
 @keyframes kb{ from{ transform:scale(1.06) } to{ transform:none } }
+/* The point portrait from hero-particles.js sits over the photos, under the shade, and fades in once it has drawn
+   the photo already showing. The photos stop their slow zoom under it, so the crop is the same if it ever goes. */
+.hero-canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:pan-y; opacity:0; transition:opacity 600ms var(--ease) }
+.hero[data-fx="particles"] .hero-canvas{ opacity:1 }
+.hero[data-fx="particles"] .ph{ animation:none }
 .slides-ui{ position:absolute; right:clamp(20px, 7vw, 120px); bottom:clamp(28px, 6vh, 56px); z-index:2; display:flex; align-items:center; gap:14px }
 body:not([data-photo="slideshow"]) .slides-ui{ display:none }
 .s-pause{ width:34px; height:34px; border-radius:50%; border:1px solid rgb(255 255 255 / .3); background:rgb(255 255 255 / .06); color:#FFFFFF; display:grid; place-items:center; cursor:pointer; backdrop-filter:blur(6px) }
@@ -560,6 +565,10 @@ body.play .hero-media{ animation:settle 1800ms var(--ease) both }
     linear-gradient(90deg, var(--hero-bg) 0%, var(--hero-bg) 34%, color-mix(in srgb, var(--hero-bg) 82%, transparent) 44%, color-mix(in srgb, var(--hero-bg) 25%, transparent) 62%, transparent 78%),
     linear-gradient(0deg, color-mix(in srgb, var(--hero-bg) 55%, transparent) 0%, transparent 38%),
     linear-gradient(180deg, color-mix(in srgb, var(--hero-bg) 45%, transparent) 0%, transparent 22%) }
+/* The point portrait is brighter than the photo behind the nav, so it gets a deeper top shade that fades in with it. */
+.hero-shade::before{ content:""; position:absolute; inset:0; opacity:0; transition:opacity 600ms var(--ease);
+  background:linear-gradient(180deg, color-mix(in srgb, var(--hero-bg) 62%, transparent) 0%, color-mix(in srgb, var(--hero-bg) 42%, transparent) 10%, transparent 28%) }
+.hero[data-fx="particles"] .hero-shade::before{ opacity:1 }
 /* Header stays fixed at the top. Clear over the hero, a solid dark bar once the page scrolls. */
 .top{ position:fixed; top:0; left:0; right:0; z-index:40; display:flex; align-items:center; gap:clamp(16px, 3vw, 40px); padding:26px clamp(20px, 7vw, 120px); transition:padding 300ms var(--ease), background-color 300ms ease, box-shadow 300ms ease }
 .top.solid{ padding-block:14px; background:color-mix(in srgb, var(--hero-bg) 96%, transparent); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); box-shadow:0 1px 0 rgb(255 255 255 / .08) }
@@ -914,7 +923,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 <link rel="stylesheet" href="/atelier/glass.css">
 <link rel="stylesheet" href="/atelier/editorial.css">
 </head>
-<body data-reveal="pop" data-photo="slideshow" data-accent="mono" data-head="geist" data-mode="light"><a class="skip" href="#main">Skip to content</a>
+<body data-reveal="dot" data-photo="slideshow" data-accent="mono" data-head="geist" data-mode="light"><a class="skip" href="#main">Skip to content</a>
 
 <nav class="top" aria-label="Main">
   <a class="logo" href="#"><b>Omhar</b><span>Regidor</span></a>
@@ -931,12 +940,13 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 
 <header class="hero">
   <div class="hero-media">
-    <img class="ph ph-campus-day" src="/atelier/hero/campus-day.jpg" decoding="async" alt="Omhar Regidor, AI engineer and software developer in Batangas, Philippines">
-    <img class="ph ph-campus-day-hover" src="/atelier/hero/campus-day-hover.jpg" decoding="async" alt="">
-    <img class="ph ph-lobby" src="/atelier/hero/lobby.jpg" decoding="async" alt="">
-    <img class="ph ph-studio" src="/atelier/hero/studio.jpg" decoding="async" alt="">
-    <img class="ph ph-grad" src="/atelier/hero/grad.jpg" decoding="async" alt="">
-    <img class="ph ph-nightcode" src="/atelier/hero/nightcode.jpg" decoding="async" alt="">
+    <img class="ph ph-costume" decoding="async" fetchpriority="high" alt="">
+    <img class="ph ph-campus-day" src="/atelier/hero/campus-day.jpg" decoding="async" fetchpriority="high" alt="Omhar Regidor, AI engineer and software developer in Batangas, Philippines">
+    <img class="ph ph-campus-day-hover" src="/atelier/hero/campus-day-hover.jpg" decoding="async" fetchpriority="low" alt="">
+    <img class="ph ph-lobby" src="/atelier/hero/lobby.jpg" decoding="async" fetchpriority="low" alt="">
+    <img class="ph ph-studio" src="/atelier/hero/studio.jpg" decoding="async" fetchpriority="low" alt="">
+    <img class="ph ph-grad" src="/atelier/hero/grad.jpg" decoding="async" fetchpriority="low" alt="">
+    <img class="ph ph-nightcode" src="/atelier/hero/nightcode.jpg" decoding="async" fetchpriority="low" alt="">
   </div>
   <div class="hero-shade" aria-hidden="true"></div>
   <div class="hero-copy">
@@ -1267,7 +1277,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
         <button type="button" data-val="bodoni" aria-pressed="false" style="font-family:'Bodoni Moda',Georgia,serif">Bodoni</button>
       </div>
     </div>
-    <p class="tw-note">Slideshow changes the photo every 3 seconds and pauses while someone points at it. The Campus photo follows the theme. Light mode shows the day version and dark mode shows the night version. With Campus, point at the photo to see the second pose.</p>
+    <p class="tw-note">Slideshow changes the photo every 6 seconds and pauses while someone points at it. The Campus photo follows the theme. Light mode shows the day version and dark mode shows the night version. With Campus, point at the photo to see the second pose.</p>
   </div>
 </details>
 
@@ -1275,6 +1285,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 <script src="/atelier/vendor/embla-carousel-autoplay.js"></script>
 <script src="/atelier/vendor/embla-carousel-auto-scroll.js"></script>
 <script src="/atelier/vendor/embla-carousel-class-names.js"></script>
+<script src="/atelier/hero-slides.js"></script>
 <script>
 (() => {
   const body = document.body;
@@ -1414,37 +1425,87 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
   })();
 
   /* ---------- hero slideshow ---------- */
-  const SLIDES = ['campus', 'lobby', 'studio', 'grad', 'nightcode'];
-  const sPause = document.getElementById('s-pause');
-  const PAUSE_I = '<svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-pause"/></svg>';
-  const PLAY_I = '<svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-play"/></svg>';
-  let si = 0, sTimer = 0, sPaused = reduce.matches, hold = false;
-  const imgFor = (key, pose) => {
-    const dark = body.dataset.mode === 'dark';
-    const cls = { campus: dark ? 'ph-campus-night' : 'ph-campus-day', lobby: 'ph-lobby', studio: 'ph-studio', grad: 'ph-grad', nightcode: 'ph-nightcode' }[key];
-    return document.querySelector('.' + cls + (pose && key === 'campus' ? '-hover' : ''));
+  // The one controller for the hero photos: their order, the 6 second hold, the pause button and the hover peek.
+  // During an event, or with a ?theme= preview, the costume photo comes first. It shows the right <img> first,
+  // then writes data-slide and data-paused on the hero. hero-particles.js only draws what those say, and writes
+  // data-fx="particles" while its point portrait is up. It starts once the page is parsed, because seasonal.js,
+  // which knows the event, loads after this script.
+  const startHero = () => {
+    const slides = window.atelierHeroSlides;
+    const hero = document.querySelector('.hero');
+    const sPause = document.getElementById('s-pause');
+    const costume = document.querySelector('.ph-costume');
+    if (!slides || !hero || !sPause) return;
+    const PAUSE_I = '<svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-pause"/></svg>';
+    const PLAY_I = '<svg class="icon" aria-hidden="true" focusable="false"><use href="/atelier/icons.svg#i-play"/></svg>';
+    const seasonal = window.atelierSeasonal;
+    const theme = seasonal ? seasonal.resolve(new Date(), location.search) : null;
+    const costumeSrc = costume ? slides.costumeFor(theme) : null;
+    let SLIDES = slides.order(costumeSrc);
+    let si = 0, sTimer = 0, sPaused = reduce.matches, hold = false, heroSeen = true;
+    if (costumeSrc) {
+      hero.dataset.costume = theme.id;
+      costume.src = costumeSrc;
+      // A costume photo that fails to load drops out, and the usual photos carry on.
+      costume.addEventListener('error', () => {
+        SLIDES = slides.order(null);
+        delete hero.dataset.costume;
+        showSlide(0);
+        schedule();
+      }, { once: true });
+    }
+    const particles = () => hero.dataset.fx === 'particles';
+    // Dark mode asks for the night campus photo. The page only ships the day one, so it falls back to that.
+    const imgFor = (key, pose) => {
+      if (key === 'costume') return costume;
+      const dark = body.dataset.mode === 'dark';
+      const cls = { campus: dark ? 'ph-campus-night' : 'ph-campus-day', lobby: 'ph-lobby', studio: 'ph-studio', grad: 'ph-grad', nightcode: 'ph-nightcode' }[key];
+      const find = c => document.querySelector('.' + c + (pose && key === 'campus' ? '-hover' : ''));
+      return find(cls) || (key === 'campus' ? find('ph-campus-day') : null);
+    };
+    function showSlide(k) {
+      si = (k + SLIDES.length) % SLIDES.length;
+      document.querySelectorAll('.ph.show').forEach(x => x.classList.remove('show'));
+      if (body.dataset.photo !== 'slideshow') return;
+      const img = imgFor(SLIDES[si], hold);
+      if (img) img.classList.add('show');
+      hero.dataset.slide = SLIDES[si];
+    }
+    // With the point portrait up, each change also spends BURST_MS forming the next photo, so the wait grows by
+    // that much and the photo still stands still for HOLD_MS. While the 3D is still on its way, the first photo
+    // waits for it, up to WAIT_3D_MS, so the costume is the one that turns into points on a slow phone.
+    const WAIT_3D_MS = 15000;
+    const waitFor3d = () => !hero.dataset.fx && si === 0;
+    function schedule(ms = waitFor3d() ? WAIT_3D_MS : slides.HOLD_MS + (particles() ? slides.BURST_MS : 0)) {
+      clearTimeout(sTimer);
+      if (body.dataset.photo !== 'slideshow' || sPaused || hold || !heroSeen || document.hidden) return;
+      sTimer = setTimeout(() => { showSlide(si + 1); schedule(); }, ms);
+    }
+    function setPauseUi() {
+      sPause.innerHTML = sPaused ? PLAY_I : PAUSE_I;
+      sPause.setAttribute('aria-label', sPaused ? 'Play slideshow' : 'Pause slideshow');
+      hero.dataset.paused = String(sPaused);
+    }
+    sPause.addEventListener('click', () => { sPaused = !sPaused; setPauseUi(); showSlide(si); schedule(slides.HOLD_MS); });
+    // The hover peek shows the second campus pose. It only runs on the plain photos, never under the points.
+    media.addEventListener('pointerenter', e => { if (e.pointerType !== 'mouse' || body.dataset.photo !== 'slideshow' || particles()) return; hold = true; clearTimeout(sTimer); showSlide(si); });
+    media.addEventListener('pointerleave', () => { if (!hold) return; hold = false; showSlide(si); schedule(); });
+    document.querySelector('.thumbs').addEventListener('click', () => { if (body.dataset.photo === 'slideshow') { showSlide(0); schedule(); } else { clearTimeout(sTimer); document.querySelectorAll('.ph.show').forEach(x => x.classList.remove('show')); } });
+    new MutationObserver(() => { if (body.dataset.photo === 'slideshow') showSlide(si); }).observe(body, { attributes: true, attributeFilter: ['data-mode'] });
+    // When the point portrait comes up or falls back to the photos, the photo showing gets a fresh full hold.
+    new MutationObserver(() => {
+      if (particles() && hold) { hold = false; showSlide(si); }
+      schedule(slides.HOLD_MS);
+    }).observe(hero, { attributes: true, attributeFilter: ['data-fx'] });
+    // Motion switched off mid-visit pauses the photos, the same as pressing pause.
+    reduce.addEventListener('change', () => { if (!reduce.matches || sPaused) return; sPaused = true; setPauseUi(); clearTimeout(sTimer); });
+    setPauseUi(); showSlide(0); schedule();
+    // Stop the slideshow while the hero is off screen or the tab is hidden.
+    new IntersectionObserver(es => { heroSeen = es[0].isIntersecting; if (heroSeen) schedule(); else clearTimeout(sTimer); }, { threshold: .2 }).observe(hero);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) clearTimeout(sTimer); else schedule(); });
   };
-  function showSlide(k) {
-    si = (k + SLIDES.length) % SLIDES.length;
-    document.querySelectorAll('.ph.show').forEach(x => x.classList.remove('show'));
-    if (body.dataset.photo === 'slideshow') imgFor(SLIDES[si], hold).classList.add('show');
-  }
-  function schedule() {
-    clearTimeout(sTimer);
-    if (body.dataset.photo !== 'slideshow' || sPaused || hold) return;
-    sTimer = setTimeout(() => { showSlide(si + 1); schedule(); }, 3000);
-  }
-  function setPauseUi() { sPause.innerHTML = sPaused ? PLAY_I : PAUSE_I; sPause.setAttribute('aria-label', sPaused ? 'Play slideshow' : 'Pause slideshow'); }
-  sPause.addEventListener('click', () => { sPaused = !sPaused; setPauseUi(); showSlide(si); schedule(); });
-  media.addEventListener('pointerenter', e => { if (e.pointerType !== 'mouse' || body.dataset.photo !== 'slideshow') return; hold = true; clearTimeout(sTimer); showSlide(si); });
-  media.addEventListener('pointerleave', () => { if (!hold) return; hold = false; showSlide(si); schedule(); });
-  document.querySelector('.thumbs').addEventListener('click', () => { if (body.dataset.photo === 'slideshow') { showSlide(0); schedule(); } else { clearTimeout(sTimer); document.querySelectorAll('.ph.show').forEach(x => x.classList.remove('show')); } });
-  new MutationObserver(() => { if (body.dataset.photo === 'slideshow') showSlide(si); }).observe(body, { attributes: true, attributeFilter: ['data-mode'] });
-  setPauseUi(); showSlide(0); schedule();
-  // Stop the slideshow while the hero is off screen or the tab is hidden.
-  let heroSeen = true;
-  new IntersectionObserver(es => { heroSeen = es[0].isIntersecting; if (heroSeen) schedule(); else clearTimeout(sTimer); }, { threshold: .2 }).observe(document.querySelector('.hero'));
-  document.addEventListener('visibilitychange', () => { if (document.hidden) clearTimeout(sTimer); else if (heroSeen) schedule(); });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', startHero, { once: true });
+  else startHero();
 
   /* ---------- fixed header: solid bar once the page scrolls ---------- */
   const topBar = document.querySelector('.top');
@@ -1533,5 +1594,6 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 <script src="/atelier/glass.js"></script>
 <script src="/atelier/cursor.js"></script>
 <script src="/atelier/seasonal.js"></script>
+<script type="module" src="/atelier/hero-particles.js"></script>
 </body>
 </html>

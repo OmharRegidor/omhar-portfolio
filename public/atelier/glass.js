@@ -95,5 +95,16 @@
   }
 
   PANES.forEach(glaze);
-  document.documentElement.classList.add('lg');
+  const root = document.documentElement;
+  root.classList.add('lg');
+  // Bending the backdrop is redone every frame something scrolls under a pane, which a phone cannot keep up with.
+  // On touch screens the panes fall back to the plain frosted blur while the page moves, and bend again once it stops.
+  if (matchMedia('(pointer: coarse)').matches) {
+    let settle, flat = false;
+    addEventListener('scroll', () => {
+      if (!flat) { flat = true; root.classList.remove('lg'); }
+      clearTimeout(settle);
+      settle = setTimeout(() => { flat = false; root.classList.add('lg'); }, 160);
+    }, { passive: true });
+  }
 })();
