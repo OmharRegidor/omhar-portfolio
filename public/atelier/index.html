@@ -486,6 +486,61 @@
 }
 </script>
 <link rel="preload" href="/atelier/fonts/Geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<script id="splash-boot">
+/* Turns the home page splash on before the first paint. Test browsers (navigator.webdriver) get no splash unless the
+   URL has ?splash=on. Without JavaScript the splash never shows. After 9 s it is cleared even if splash.js never ran.
+   A skip before splash.js has loaded is handled here too, so the hint works from the first frame. */
+(() => {
+  const root = document.documentElement;
+  let on = !navigator.webdriver;
+  try { on = on || new URLSearchParams(location.search).get('splash') === 'on'; } catch { /* keep the webdriver rule */ }
+  if (!on) return;
+  const touch = typeof matchMedia === 'function' && matchMedia('(hover: none) and (pointer: coarse)').matches;
+  root.classList.add('splash-on');
+  root.dataset.splash = 'open';
+  root.dataset.pointer = touch ? 'touch' : 'mouse';
+  const clear = reason => {
+    const el = document.getElementById('splash');
+    if (el) el.remove();
+    root.classList.remove('splash-on');
+    root.dataset.splash = 'done';
+    if (reason) root.dataset.splashReason = reason;
+  };
+  // A fade already under way is left to finish.
+  setTimeout(() => { if (root.dataset.splash === 'open') clear('failsafe'); }, 9000);
+  const early = () => {
+    if (window.atelierSplash || root.dataset.splash !== 'open') return;
+    root.dataset.splashReason = 'skip';
+    root.dataset.splash = 'closing';
+    setTimeout(() => clear(), 400);
+  };
+  const quiet = { passive: true, capture: true };
+  ['click', 'keydown', 'wheel', 'touchmove'].forEach(type => addEventListener(type, early, quiet));
+})();
+</script>
+<style id="splash-style">
+/* Home page splash: paper cover, name, 160 x 2 bar, skip hint. Shown only while <html> has .splash-on. */
+#splash{ display:none }
+html.splash-on #splash{ position:fixed; inset:0; z-index:240; display:grid; grid-template-rows:1fr auto; background:var(--paper); color:var(--ink); cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:transparent; user-select:none; -webkit-user-select:none }
+html[data-splash="closing"] #splash{ opacity:0; transition:opacity 400ms ease-out }
+#splash .splash-mid{ display:grid; place-content:center; justify-items:center; gap:22px; padding:0 16px }
+#splash .splash-name{ margin:0; display:flex; align-items:baseline; gap:10px; font-family:var(--display); line-height:1 }
+#splash .splash-name b{ font-weight:500; font-size:36px; letter-spacing:-0.03em; line-height:1 }
+#splash .splash-name span{ font-weight:300; font-size:25px; color:var(--muted) }
+#splash .splash-bar{ width:160px; height:2px; background:var(--line); overflow:hidden }
+#splash .splash-bar i{ display:block; height:100%; background:var(--ink); transform-origin:left center; transform:scaleX(0); transition:transform 300ms var(--ease) }
+#splash .splash-hint{ margin:0; padding:0 16px calc(36px + env(safe-area-inset-bottom, 0px)); text-align:center; font-size:13px; line-height:1.5; letter-spacing:.02em; color:var(--muted) }
+#splash .hint-touch, html[data-pointer="touch"] #splash .hint-mouse{ display:none }
+html[data-pointer="touch"] #splash .hint-touch{ display:inline }
+@media (max-width:600px){
+  #splash .splash-name b{ font-size:32px }
+  #splash .splash-name span{ font-size:22px }
+  #splash .splash-hint{ padding-bottom:calc(44px + env(safe-area-inset-bottom, 0px)) }
+}
+@media (prefers-reduced-motion: reduce){
+  #splash .splash-bar i, html[data-splash="closing"] #splash{ transition:none }
+}
+</style>
 <link rel="stylesheet" href="/atelier/fonts/fonts.css">
 <style>
 /* Layout: full-bleed photographic hero (photo right, tinted shade from the left), then the Atelier paper page below. */
@@ -924,6 +979,13 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 <link rel="stylesheet" href="/atelier/editorial.css">
 </head>
 <body data-reveal="dot" data-photo="slideshow" data-accent="mono" data-head="geist" data-mode="light"><a class="skip" href="#main">Skip to content</a>
+<div id="splash" class="splash" data-progress="0" aria-hidden="true" data-nosnippet>
+  <div class="splash-mid">
+    <p class="splash-name" translate="no"><b>Omhar</b><span>Regidor</span></p>
+    <div class="splash-bar"><i></i></div>
+  </div>
+  <p class="splash-hint"><span class="hint-touch">Tap anywhere to skip</span><span class="hint-mouse">Click or press any key to skip</span></p>
+</div>
 
 <nav class="top" aria-label="Main">
   <a class="logo" href="#"><b>Omhar</b><span>Regidor</span></a>
@@ -1594,6 +1656,7 @@ body.play .fade-in{ animation:fade 900ms var(--ease) both; animation-delay:var(-
 <script src="/atelier/glass.js"></script>
 <script src="/atelier/cursor.js"></script>
 <script src="/atelier/seasonal.js"></script>
+<script src="/atelier/splash.js"></script>
 <script type="module" src="/atelier/hero-particles.js"></script>
 </body>
 </html>
