@@ -1,0 +1,2 @@
+# Vendored libraries are pinned by checksum, so Git must never change their line endings.
+public/atelier/vendor/** -text
