@@ -5,40 +5,35 @@ test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date("2026-09-15T12:00:00+08:00"));
 });
 
-// Scroll pop-ins from public/atelier/reveal.js. A block below the fold is held invisible by a paused Web
-// Animation, so its computed opacity reads 0 until it scrolls in, then 1 once the pop has landed.
+// The pages have no scroll entrance any more: every block below the fold is fully drawn from the start, so a
+// visitor never sees a section waiting or showing through a dot screen.
 const opacity = (page: Page, selector: string) =>
   page.locator(selector).first().evaluate((el) => Number(getComputedStyle(el).opacity));
+const animated = (page: Page, selector: string) =>
+  page.locator(selector).first().evaluate((el) => el.getAnimations().length);
 
 for (const [route, block] of [
   ["/", ".faq-item"],
   ["/gear", ".pn > a"],
   ["/automations", "#explain > li"],
 ] as const) {
-  test(`${route} pops ${block} in when it scrolls into view`, async ({ page }) => {
+  test(`${route} shows ${block} at once, before and after it scrolls into view`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" });
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto(route);
     await page.waitForLoadState("networkidle");
 
-    // A busy machine can take a few seconds to report the first scroll check, so these waits are generous.
-    await expect.poll(() => opacity(page, block), { timeout: 8000 }).toBe(0);
+    expect(await opacity(page, block)).toBe(1);
     await page.locator(block).first().scrollIntoViewIfNeeded();
-    await expect.poll(() => opacity(page, block), { timeout: 8000 }).toBe(1);
+    expect(await opacity(page, block)).toBe(1);
+    expect(await animated(page, block)).toBe(0);
   });
 }
 
-test("the last lines of a page still pop in at the very bottom", async ({ page }) => {
+test("the last lines of a page show at the very bottom", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.goto("/gear");
   await page.waitForLoadState("networkidle");
   await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
-  await expect.poll(() => opacity(page, ".foot > :last-child"), { timeout: 8000 }).toBe(1);
-});
-
-test("under reduced motion, nothing is held back", async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
-  await page.waitForLoadState("networkidle");
-  expect(await opacity(page, ".faq-item")).toBe(1);
+  expect(await opacity(page, ".foot > :last-child")).toBe(1);
 });

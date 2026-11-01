@@ -1,6 +1,6 @@
 import { test, expect, devices, type Page } from "@playwright/test";
 
-// Goal checks for the point portrait hero, the event costumes and the dot scroll effect
+// Goal checks for the point portrait hero and the event costumes
 // (.noxa/threejs-scroll-effects-and-hero-costumes/goals.md, G1 to G13). Each test acts out one goal the way a
 // visitor would. Every test pins the clock, so nothing here depends on today's date.
 //
@@ -22,7 +22,7 @@ const THREE_FILE = "/atelier/vendor/three.module.min.js";
 // Up to 3 s idle wait, then a 690 KB module and the first texture on a software renderer.
 const PORTRAIT_MS = 45_000;
 
-// The scroll entrance targets from public/atelier/reveal.js, kept in step with its TARGETS list.
+// The blocks the old scroll entrance used to hold back. They must now be fully drawn from the start.
 const TARGETS = [
   ".work-head", ".sec-lead", ".index > li", ".calc",
   ".band-head", ".t-viewport", ".st-row",
@@ -254,15 +254,13 @@ const scrollAndWatch = (page: Page, stepMs = 240) =>
     { sel: TARGETS, stepMs },
   );
 
-const expectDotEntrances = (r: ScrollReport, page: string) => {
+const expectShownAtOnce = (r: ScrollReport, page: string) => {
   expect(r.below.length, `${page} has blocks below the fold`).toBeGreaterThan(0);
   expect(r.movedAtLoad, `${page}: blocks visible at load must not move`).toEqual([]);
   for (const b of r.below) {
-    expect(b.kind, `${page}: ${b.name} came in`).not.toBeNull();
-    if (b.kind === "plain") expect(b.big, `${page}: ${b.name} used the plain fade but is not a big block`).toBe(true);
-    expect(b.opacity, `${page}: ${b.name} ends fully visible`).toBe(1);
+    expect(b.kind, `${page}: ${b.name} got a scroll entrance`).toBeNull();
+    expect(b.opacity, `${page}: ${b.name} is fully visible`).toBe(1);
   }
-  expect(r.below.filter((b) => b.kind === "dot").length, `${page}: at least one dot entrance`).toBeGreaterThan(0);
   expect(r.deckMasked, `${page}: nothing in the deck or hero gets the dot effect`).toBe(0);
 };
 
@@ -450,15 +448,14 @@ for (const [label, device] of [
       expect(requested).toEqual([]);
     });
 
-    test("G4 Every section on all 3 pages comes in with the dot effect when scrolled to", async ({ page }) => {
+    test("G4 Every section on all 3 pages is fully shown at once, with no dot effect", async ({ page }) => {
       test.setTimeout(360_000);
       await page.emulateMedia({ reducedMotion: "no-preference" });
       for (const path of ["/", "/gear", "/automations"]) {
-        await test.step(`${path}: each block below the screen comes in through the dot screen`, async () => {
+        await test.step(`${path}: each block below the screen is already drawn`, async () => {
           await open(page, path);
-          await expect(page.locator("body")).toHaveAttribute("data-reveal", "dot");
           const r = await scrollAndWatch(page);
-          expectDotEntrances(r, path);
+          expectShownAtOnce(r, path);
           if (path === "/automations") {
             expect(r.below.filter((b) => b.name.startsWith("div.sec-head")).length, "section heads").toBeGreaterThanOrEqual(1);
             expect(r.below.filter((b) => /\.case\b/.test(b.name)).length, "case cards").toBeGreaterThanOrEqual(3);
