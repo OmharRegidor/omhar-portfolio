@@ -532,11 +532,11 @@ for (const [label, device] of [
           expect(await deckMasked()).toBe(0);
         });
       }
-      await test.step("the side index (or a scroll on a phone) lands on 05 / 14, Noxa Loyalty", async () => {
+      await test.step("the side index (or a scroll on a phone) lands on 06 / 14, Noxa Loyalty", async () => {
         if (desktop) {
           await page.getByRole("navigation", { name: "Jump to a project" }).getByRole("button", { name: "Noxa Loyalty" }).click();
         } else {
-          await deckAt(4);
+          await deckAt(5);
         }
         await expect(meta).toHaveText(/^05 \/ 14/, { timeout: 10_000 });
         await expect(page.locator(".dk-cap .h")).toHaveText("Noxa Loyalty");
