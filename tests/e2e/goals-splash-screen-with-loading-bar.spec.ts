@@ -304,7 +304,7 @@ for (const [label, device] of [
           if (dk) scrollTo({ top: dk.getBoundingClientRect().top + scrollY, behavior: "instant" });
         });
         await expect(page.locator("#deck")).toHaveClass(/\bon\b/);
-        await expect(page.locator(".dk-cap .m")).toHaveText(/^01 \/ 13/, { timeout: 8000 });
+        await expect(page.locator(".dk-cap .m")).toHaveText(/^01 \/ 14/, { timeout: 8000 });
       });
       await test.step("the Halloween greeting strip shows", async () => {
         const y = await page.evaluate(async () => {

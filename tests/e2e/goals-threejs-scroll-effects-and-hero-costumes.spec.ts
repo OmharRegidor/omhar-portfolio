@@ -526,19 +526,19 @@ for (const [label, device] of [
         expect(stage?.height ?? 0).toBeGreaterThanOrEqual(device.viewport.height - 1);
       });
       for (const k of [0, 1, 2]) {
-        await test.step(`the counter reads 0${k + 1} / 13`, async () => {
+        await test.step(`the counter reads 0${k + 1} / 14`, async () => {
           await deckAt(k);
-          await expect(meta).toHaveText(new RegExp(`^0${k + 1} / 13`), { timeout: 8000 });
+          await expect(meta).toHaveText(new RegExp(`^0${k + 1} / 14`), { timeout: 8000 });
           expect(await deckMasked()).toBe(0);
         });
       }
-      await test.step("the side index (or a scroll on a phone) lands on 05 / 13, Noxa Loyalty", async () => {
+      await test.step("the side index (or a scroll on a phone) lands on 05 / 14, Noxa Loyalty", async () => {
         if (desktop) {
           await page.getByRole("navigation", { name: "Jump to a project" }).getByRole("button", { name: "Noxa Loyalty" }).click();
         } else {
           await deckAt(4);
         }
-        await expect(meta).toHaveText(/^05 \/ 13/, { timeout: 10_000 });
+        await expect(meta).toHaveText(/^05 \/ 14/, { timeout: 10_000 });
         await expect(page.locator(".dk-cap .h")).toHaveText("Noxa Loyalty");
         expect(await deckMasked()).toBe(0);
       });
